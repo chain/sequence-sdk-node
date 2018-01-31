@@ -1,0 +1,6 @@
+#!/bin/bash
+set -xeo pipefail
+dropdb --if-exists ledger; createdb ledger
+cd $CHAIN/sdk/node
+npm install --scripts-prepend-node-path
+RATE_LIMIT_QPS=500 RATE_LIMIT_BURST=1000 with-ledgerd npm test --scripts-prepend-node-path

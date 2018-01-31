@@ -1,0 +1,5 @@
+dist
+doc
+node_modules
+sequence-sdk*.tgz
+testCompiled
