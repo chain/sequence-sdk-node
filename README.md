@@ -4,14 +4,16 @@
 
 ### Get the module
 
-The Sequence SDK is available [via npm](https://www.npmjs.com/package/sequence-sdk). Node 4 or greater is required.
+The Sequence SDK is available
+[via npm](https://www.npmjs.com/package/sequence-sdk). Node 4 or greater is
+required.
 
 To install, add the `sequence-sdk` NPM module to your `package.json`:
 
 ```json
 {
   "dependencies": {
-    "sequence-sdk": "~1.0.4"
+    "sequence-sdk": "~1.1.0"
   }
 }
 ```
@@ -22,7 +24,7 @@ To install, add the `sequence-sdk` NPM module to your `package.json`:
 const sequence = require('sequence-sdk')
 const ledger = new sequence.Client({
   ledgerName: 'ledger',
-  credential: '...'
+  credential: '...',
 })
 ```
 
@@ -55,4 +57,5 @@ ledger.assets.create({...}, (err, result) => {
 
 ### Documentation
 
-Comprehensive instructions and examples are available in the [developer documentation](https://dashboard.seq.com/docs).
+Comprehensive instructions and examples are available in the
+[developer documentation](https://dashboard.seq.com/docs).
