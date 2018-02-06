@@ -15,7 +15,7 @@ import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
  * Unique identifier of the account.
  *
  * @property {String} alias
- * Deprecated. Use id instead.
+ * **Deprecated. Use id instead.**
  * User specified, unique identifier.
  *
  * @property {Key[]} keys
@@ -43,7 +43,7 @@ export const accountsAPI = (client: Client) => {
    * Unique identifier. Will be auto-generated if not provided.
    *
    * @property {String} [alias]
-   * Deprecated. Use id instead.
+   * **Deprecated. Use id instead.**
    * User specified, unique identifier.
    *
    * @property {Key[]} keys
@@ -65,7 +65,7 @@ export const accountsAPI = (client: Client) => {
    * The account ID. Either the ID or alias must be specified, but not both.
    *
    * @property {String} [alias]
-   * Deprecated. Use id instead.
+   * **Deprecated. Use id instead.**
    * The account alias. Either the ID or alias must be specified, but not both.
    *
    * @property {Object} tags

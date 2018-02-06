@@ -44,6 +44,7 @@ import {
  * The id of the account transferring the asset (possibly null).
  *
  * @property {String} accountAlias
+ * **Deprecated. Use accountId instead.**
  * The alias of the account transferring the asset (possibly null).
  *
  * @property {Object} accountTags

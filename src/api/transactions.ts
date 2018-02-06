@@ -25,14 +25,6 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * List of specified actions for a transaction.
  */
 
-interface Transaction {
-  id: string
-  timestamp: string
-  sequenceNumber: number
-  referenceData: object
-  actions: TransactionAction[]
-}
-
 /**
  * @typedef {Object} TransactionAction
  * @global
@@ -57,6 +49,7 @@ interface Transaction {
  * action is an issuance).
  *
  * @property {String} sourceAccountAlias
+ * **Deprecated. Use sourceAccountId instead.**
  * The alias of the account transferring the asset (possibly null if the
  * action is an issuance).
  *
@@ -68,6 +61,7 @@ interface Transaction {
  * action is a retirement).
  *
  * @property {String} destinationAccountAlias
+ * **Deprecated. Use destinationAccountId instead.**
  * The alias of the account receiving the asset (possibly null if the
  * action is a retirement).
  *
@@ -77,21 +71,6 @@ interface Transaction {
  * @property {Object} referenceData
  * User specified, unstructured data embedded within an action (possibly null).
  */
-
-interface TransactionAction {
-  type: 'issue' | 'transfer' | 'retire'
-  assetId: string
-  assetAlias: string
-  assetTags: string | null
-  amount: number
-  sourceAccountId: string
-  sourceAccountAlias: string
-  sourceAccountTags: string | null
-  destinationAccountId: string
-  destinationAccountAlias: string
-  destinationAccountTags: string
-  referenceData: object
-}
 
 /**
  * @class
@@ -132,7 +111,8 @@ export class TransactionBuilder {
    * @param {String} params.amount - Amount of the asset to be issued.
    * @param {String} params.destinationAccountId - Account ID specifying the account controlling the asset.
    *                                   You must specify a destination account ID or alias.
-   * @param {String} params.destinationAccountAlias - Account alias specifying the account controlling the asset.
+   * @param {String} params.destinationAccountAlias - **Deprecated. Use destinationAccountId instead.**
+   *                                   Account alias specifying the account controlling the asset.
    *                                   You must specify a destination account ID or alias.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
    */
@@ -153,7 +133,8 @@ export class TransactionBuilder {
    * @param {Object} params - Action parameters.
    * @param {String} params.sourceAccountId - Account ID specifying the account controlling the asset.
    *                                   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.sourceAccountAlias - Account alias specifying the account controlling the asset.
+   * @param {String} params.sourceAccountAlias - **Deprecated. Use sourceAccountId instead.**
+   *                                   Account alias specifying the account controlling the asset.
    *                                   You must specify a source account ID, account alias, or contract ID.
    * @param {String} params.sourceContractId - Contract holding the asset.
    *                                   You must specify a source account ID, account alias, or contract ID.
@@ -184,7 +165,8 @@ export class TransactionBuilder {
    * @param {Object} params Action parameters
    * @param {String} params.sourceAccountId - Account ID specifying the account controlling the asset.
    *                                   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.sourceAccountAlias - Account alias specifying the account controlling the asset.
+   * @param {String} params.sourceAccountAlias - **Deprecated. Use sourceAccountId instead.**
+   *                                   Account alias specifying the account controlling the asset.
    *                                   You must specify a source account ID, account alias, or contract ID.
    * @param {String} params.sourceContractId - Contract holding the asset.
    *                                   You must specify a source account ID, account alias, or contract ID.
@@ -195,7 +177,8 @@ export class TransactionBuilder {
    * @param {Integer} params.amount - Amount of the asset to be transferred.
    * @param {String} params.destinationAccountId - Account ID specifying the account controlling the asset.
    *                                   You must specify a destination account ID or alias.
-   * @param {String} params.destinationAccountAlias - Account alias specifying the account controlling the asset.
+   * @param {String} params.destinationAccountAlias - **Deprecated. Use destinationAccountId instead.**
+   *                                   Account alias specifying the account controlling the asset.
    *                                   You must specify a destination account ID or alias.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
    * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
