@@ -5,6 +5,7 @@ import { assetsAPI } from './api/assets'
 import { BalanceQueryParams, balancesAPI } from './api/balances'
 import { ContractQueryParameters, contractsAPI } from './api/contracts'
 import { devUtilsAPI } from './api/devUtils'
+import { flavorsAPI } from './api/flavors'
 import { keysAPI } from './api/keys'
 import { statsAPI } from './api/stats'
 import {
@@ -54,6 +55,12 @@ export class Client {
    * @type {module:DevUtilsApi}
    */
   public devUtils = devUtilsAPI(this)
+
+  /**
+   * API actions for flavors.
+   * @type {module:FlavorsApi}
+   */
+  public flavors = flavorsAPI(this)
 
   /**
    * API actions for keys.
