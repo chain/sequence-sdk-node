@@ -9,7 +9,7 @@ import {
 
 /**
  * Any balance on the blockchain is simply a summation of contracts.
- * Unlike other queries in Chain Core, balance queries do not return Chain Core
+ * Unlike other queries in Sequence, balance queries do not return Sequence
  * objects, only simple sums over the amount fields in a specified list of
  * contract objects
  *

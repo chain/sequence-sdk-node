@@ -214,8 +214,8 @@ export interface TransactionQueryParameters extends QueryParams {
 export const transactionsAPI = (client: Client) => {
   /**
    * Processing callback for building a transaction. The instance of
-   * {@link TransactionBuilder} modified in the function is used to build a transaction
-   * in Chain Core.
+   * {@link TransactionBuilder} modified in the function is used to
+   * build a transaction in Sequence.
    *
    * @callback builderCallback
    * @param {TransactionBuilder} builder

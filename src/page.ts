@@ -36,7 +36,7 @@ export class Page {
     method: string
   ) {
     /**
-     * Array of Chain Core objects. Available types are documented in the
+     * Array of Sequence objects. Available types are documented in the
      * {@link global global namespace}.
      *
      * @type {Array}

@@ -17,8 +17,8 @@ import { Page } from './page'
 import { CreateRequest, QueryParams, UpdateTagsRequest } from './shared'
 
 /**
- * The Chain API Client object is the root object for all API interactions.
- * To interact with Chain Core, a Client object must always be instantiated
+ * The Sequence API Client object is the root object for all API interactions.
+ * To interact with Sequence, a Client object must always be instantiated
  * first.
  * @class
  */
@@ -81,13 +81,13 @@ export class Client {
 
   /**
    * constructor - create a new Chain client object capable of interacting with
-   * the specified Chain Core.
+   * the specified ledger.
    *
    * Passing a configuration object is the preferred way of calling this constructor.
    *
    * @param {Object} opts - Plain JS object containing configuration options.
    * @param {String} opts.ledgerName - Ledger name.
-   * @param {String} opts.ledger - Ledger name. Deprecated; please use ledgerName instead.
+   * @param {String} opts.ledger - Ledger name. **Deprecated; please use ledgerName instead.**
    * @param {String} opts.credential - API credential secret.
    * @returns {Client}
    */
@@ -113,7 +113,7 @@ export class Client {
     }
 
     /**
-     * The client's connection to Chain Core
+     * The client's connection to Sequence
      * @type {Client}
      */
     this.connection = new Connection(
@@ -125,7 +125,7 @@ export class Client {
   }
 
   /**
-   * Submit a request to the stored Chain Core connection.
+   * Submit a request to the stored Sequence connection.
    *
    * @param {String} path
    * @param {object} [body={}]

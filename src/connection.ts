@@ -83,7 +83,7 @@ const camelize = (object: ApiObject) => {
 
 /**
  * @class
- * Connection information for an instance of Chain Core.
+ * Information about the connection to the Sequence API.
  */
 export class Connection {
   public static snakeize = snakeize
@@ -102,8 +102,7 @@ export class Connection {
   public sessTok: { secret: string; refreshAt: number }
 
   /**
-   * constructor - create a new Chain client object capable of interacting with
-   * the specified Chain Core.
+   * constructor - create a new Sequence client object.
    *
    * @param {String} host         Chain API DNS name.
    * @param {String} ledgerName   Ledger alias or ID.

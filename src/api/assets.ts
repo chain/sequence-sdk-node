@@ -17,7 +17,7 @@ import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
  * Asset version 1 specifies the asset id as the hash of:
  * - the asset version
  * - the asset's issuance program
- * - the core's VM version
+ * - the ledger's VM version
  * - the hash of the network's initial block
  *
  * @property {String} alias
@@ -55,7 +55,7 @@ export const assetsAPI = (client: Client) => {
    * size of rootXpubs.
    *
    * @property {Object} [tags]
-   * User-specified, arbitrary/unstructured data local to the asset's originating core.
+   * User-specified, arbitrary/unstructured data.
    */
 
   /**
