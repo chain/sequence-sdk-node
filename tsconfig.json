@@ -14,5 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/**/*"],
+  "_comment":
+    "NOTE: don't include `test/**/*` in 'include'; it will break the packaging of the SDK by changing the directory structure."
 }
