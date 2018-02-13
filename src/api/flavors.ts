@@ -53,7 +53,7 @@ export const flavorsAPI = (client: Client) => {
   /**
    * @typedef {Object} updateTagsRequest
    *
-   * @property {String} [id]
+   * @property {String} id
    * The flavor ID.
    *
    * @property {Object} [tags]
