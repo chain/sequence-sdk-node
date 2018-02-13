@@ -172,5 +172,62 @@ describe('Errors', () => {
       }
       expect.fail()
     })
+
+    it('has action specific error data within failing transaction', async () => {
+      const goldAlias = (await testHelpers.createAsset('gold')).alias
+      const aliceAlias = (await testHelpers.createAccount('alice')).alias
+      const bobAlias = (await testHelpers.createAccount('bob')).alias
+
+      await client.transactions.transact(builder => {
+        builder.issue({
+          assetAlias: goldAlias,
+          amount: 100,
+          destinationAccountAlias: aliceAlias,
+        })
+      })
+
+      try {
+        await client.transactions.transact(builder => {
+          builder.transfer({
+            assetAlias: goldAlias,
+            amount: 50,
+            sourceAccountId: 'unobtanium',
+            destinationAccountId: bobAlias,
+          }) // failure: not found sourceAccountId
+          builder.transfer({
+            assetAlias: goldAlias,
+            amount: 50,
+            sourceAccountId: aliceAlias,
+            destinationAccountId: bobAlias,
+          }) // success
+          builder.transfer({
+            assetAlias: goldAlias,
+            amount: 100,
+            sourceAccountId: aliceAlias,
+            destinationAccountId: bobAlias,
+          }) // failure: reserved outputs
+          builder.transfer({
+            assetAlias: goldAlias,
+            amount: 200,
+            sourceAccountId: aliceAlias,
+            destinationAccountId: bobAlias,
+          }) // failure: insufficient funds
+        })
+      } catch (err) {
+        const notFoundAction = err.data.actions[0]
+        const reservedAction = err.data.actions[1]
+        const insufficientAction = err.data.actions[2]
+
+        expect(notFoundAction.data.index).to.eq(0)
+        expect(notFoundAction.code).to.eq('CH002')
+        expect(reservedAction.data.index).to.eq(2)
+        expect(reservedAction.code).to.eq('CH761')
+        expect(insufficientAction.data.index).to.eq(3)
+        expect(insufficientAction.code).to.eq('CH760')
+
+        return expect(err.code).to.eq('CH706')
+      }
+      expect.fail()
+    })
   })
 })
