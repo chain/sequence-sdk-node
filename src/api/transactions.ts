@@ -32,37 +32,46 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * @property {String} type
  * The type of the action. Possible values are "issue", "transfer", and "retire".
  *
+ * @property {String} flavorId
+ * The id of the action's flavor.
+ *
+ * @property {Hash} flavorTags
+ * The tags of the action's flavor (possibly null).
+ *
  * @property {String} assetId
+ * **Deprecated. Use flavorId instead.**
  * The id of the action's asset.
  *
  * @property {String} assetAlias
+ * **Deprecated. Use flavorId instead.**
  * The alias of the action's asset (possibly null).
  *
  * @property {Hash} assetTags
+ * **Deprecated. Use flavorTags instead.**
  * The tags of the action's asset (possibly null).
  *
  * @property {Integer} amount
- * The number of units of the action's asset.
+ * The number of units of the action's flavor.
  *
  * @property {String} sourceAccountId
- * The id of the account transferring the asset (possibly null if the
+ * The id of the account transferring the flavor (possibly null if the
  * action is an issuance).
  *
  * @property {String} sourceAccountAlias
  * **Deprecated. Use sourceAccountId instead.**
- * The alias of the account transferring the asset (possibly null if the
+ * The alias of the account transferring the flavor (possibly null if the
  * action is an issuance).
  *
  * @property {String} sourceAccountTags
  * The tags associated with the source account (possibly null).
  *
  * @property {String} destinationAccountId
- * The id of the account receiving the asset (possibly null if the
+ * The id of the account receiving the flavor (possibly null if the
  * action is a retirement).
  *
  * @property {String} destinationAccountAlias
  * **Deprecated. Use destinationAccountId instead.**
- * The alias of the account receiving the asset (possibly null if the
+ * The alias of the account receiving the flavor (possibly null if the
  * action is a retirement).
  *
  * @property {String} destinationAccountTags
@@ -101,22 +110,28 @@ export class TransactionBuilder {
   }
 
   /**
-   * Add an action that issues assets.
+   * Add an action that issues flavors.
    *
    * @param {Object} params - Action parameters.
-   * @param {String} params.assetId - Asset ID specifying the asset to be issued.
-   *                                   You must specify either an ID or an alias.
-   * @param {String} params.assetAlias - Asset alias specifying the asset to be issued.
-   *                                      You must specify either an ID or an alias.
-   * @param {String} params.amount - Amount of the asset to be issued.
-   * @param {String} params.destinationAccountId - Account ID specifying the account controlling the asset.
-   *                                   You must specify a destination account ID or alias.
-   * @param {String} params.destinationAccountAlias - **Deprecated. Use destinationAccountId instead.**
-   *                                   Account alias specifying the account controlling the asset.
-   *                                   You must specify a destination account ID or alias.
+   * @param {String} params.flavorId - ID of flavor to be issued.
+   * @param {String} params.assetId - **Deprecated. Use flavorId instead.**
+   *   Asset ID specifying the asset to be issued.
+   *   You must specify either an ID or an alias.
+   * @param {String} params.assetAlias - **Deprecated. Use flavorId instead.**
+   *   Asset alias specifying the asset to be issued.
+   *   You must specify either an ID or an alias.
+   * @param {String} params.amount - Amount of the flavor to be issued.
+   * @param {String} params.destinationAccountId - Account ID specifying the
+   *   account controlling the flavor.
+   *   You must specify a destination account ID or alias.
+   * @param {String} params.destinationAccountAlias - **Deprecated. Use
+   *   destinationAccountId instead.** Account alias specifying the account
+   *   controlling the asset. You must specify a destination account ID or
+   *   alias.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
    */
   public issue(params: {
+    flavorId?: string
     assetId?: string
     assetAlias?: string
     amount: number
@@ -128,21 +143,26 @@ export class TransactionBuilder {
   }
 
   /**
-   * Add an action that retires units of an asset.
+   * Add an action that retires units of a flavor.
    *
    * @param {Object} params - Action parameters.
-   * @param {String} params.sourceAccountId - Account ID specifying the account controlling the asset.
-   *                                   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.sourceAccountAlias - **Deprecated. Use sourceAccountId instead.**
-   *                                   Account alias specifying the account controlling the asset.
-   *                                   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.sourceContractId - Contract holding the asset.
-   *                                   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.assetId - Asset ID specifying the asset to be retired.
-   *                                   You must specify either an ID or an alias.
-   * @param {String} params.assetAlias - Asset alias specifying the asset to be retired.
-   *                                   You must specify either an ID or an alias.
-   * @param {Number} params.amount - Amount of the asset to be retired.
+   * @param {String} params.sourceAccountId - Account ID specifying the account
+   *   controlling the flavor. You must specify a source account ID, account
+   *   alias, or contract ID.
+   * @param {String} params.sourceAccountAlias - **Deprecated. Use
+   *   sourceAccountId instead.** Account alias specifying the account
+   *   controlling the asset. You must specify a source account ID, account
+   *   alias, or contract ID.
+   * @param {String} params.sourceContractId - Contract holding the flavor.
+   *   You must specify a source account ID, account alias, or contract ID.
+   * @param {String} params.flavorId - ID of flavor to be retired.
+   * @param {String} params.assetId - **Deprecated. Use flavorId instead.**
+   *   Asset ID specifying the asset to be retired.
+   *   You must specify either an ID or an alias.
+   * @param {String} params.assetAlias - **Deprecated. Use flavorId instead.**
+   *   Asset alias specifying the asset to be retired.
+   *   You must specify either an ID or an alias.
+   * @param {Number} params.amount - Amount of the flavor to be retired.
    * @param {Object} params.referenceData - Reference data to add to the retiring contract.
    * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
    */
@@ -150,6 +170,7 @@ export class TransactionBuilder {
     sourceAccountId?: string
     sourceAccountAlias?: string
     sourceContractId?: string
+    flavorId?: string
     assetId?: string
     assetAlias?: string
     amount: number
@@ -160,26 +181,33 @@ export class TransactionBuilder {
   }
 
   /**
-   * Moves assets from a source (an account or contract) to a destination account.
+   * Moves flavors from a source (an account or contract) to a destination
+   * account.
    *
    * @param {Object} params Action parameters
-   * @param {String} params.sourceAccountId - Account ID specifying the account controlling the asset.
-   *                                   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.sourceAccountAlias - **Deprecated. Use sourceAccountId instead.**
-   *                                   Account alias specifying the account controlling the asset.
-   *                                   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.sourceContractId - Contract holding the asset.
-   *                                   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.assetId - Asset ID specifying the asset to be transferred.
-   *                                   You must specify either an ID or an alias.
-   * @param {String} params.assetAlias - Asset alias specifying the asset to be transferred.
-   *                                   You must specify either an ID or an alias.
-   * @param {Integer} params.amount - Amount of the asset to be transferred.
-   * @param {String} params.destinationAccountId - Account ID specifying the account controlling the asset.
-   *                                   You must specify a destination account ID or alias.
-   * @param {String} params.destinationAccountAlias - **Deprecated. Use destinationAccountId instead.**
-   *                                   Account alias specifying the account controlling the asset.
-   *                                   You must specify a destination account ID or alias.
+   * @param {String} params.sourceAccountId - Account ID specifying the account
+   *   controlling the flavor. You must specify a source account ID, account
+   *   alias, or contract ID.
+   * @param {String} params.sourceAccountAlias - **Deprecated. Use
+   *   sourceAccountId instead.** Account alias specifying the account
+   *   controlling the asset. You must specify a source account ID, account
+   *   alias, or contract ID.
+   * @param {String} params.sourceContractId - Contract holding the flavor.
+   *   You must specify a source account ID, account alias, or contract ID.
+   * @param {String} params.assetId - **Deprecated. Use flavorId instead.**
+   *   Asset ID specifying the asset to be transferred.
+   *   You must specify either an ID or an alias.
+   * @param {String} params.assetAlias -  **Deprecated. Use flavorId instead.**
+   *   Asset alias specifying the asset to be transferred.
+   *   You must specify either an ID or an alias.
+   * @param {Integer} params.amount - Amount of the flavor to be transferred.
+   * @param {String} params.destinationAccountId - Account ID specifying the
+   *   account controlling the flavor. You must specify a destination account ID
+   *   or alias.
+   * @param {String} params.destinationAccountAlias - **Deprecated. Use
+   *   destinationAccountId instead.** Account alias specifying the account
+   *   controlling the asset. You must specify a destination account ID or
+   *   alias.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
    * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
    */
@@ -187,6 +215,7 @@ export class TransactionBuilder {
     sourceAccountId?: string
     sourceAccountAlias?: string
     sourceContractId?: string
+    flavorId?: string
     assetId?: string
     assetAlias?: string
     amount: number

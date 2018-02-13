@@ -4,6 +4,7 @@ import { Consumer, ObjectCallback, PageCallback, QueryParams } from '../shared'
 import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
 
 /**
+ * **Deprecated. Use Flavor instead.**
  * An asset is a type of value that can be issued on a blockchain. All units of
  * a given asset are fungible. Units of an asset can be transacted directly
  * between parties without the involvement of the issuer.
@@ -34,6 +35,7 @@ import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
  */
 
 /**
+ * **Deprecated. Use FlavorsApi instead.**
  * API for interacting with {@link Asset assets}.
  *
  * More info: {@link https://dashboard.seq.com/docs/assets}
@@ -41,6 +43,8 @@ import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
  */
 export const assetsAPI = (client: Client) => {
   /**
+   * **Deprecated. Use `flavors.createRequest` instead.**
+   *
    * @typedef {Object} createRequest
    *
    * @property {String} [alias]
@@ -59,6 +63,8 @@ export const assetsAPI = (client: Client) => {
    */
 
   /**
+   * **Deprecated. Use `flavors.updateTagsRequest` instead.**
+   *
    * @typedef {Object} updateTagsRequest
    *
    * @property {String} [id]
@@ -73,6 +79,7 @@ export const assetsAPI = (client: Client) => {
 
   return {
     /**
+     * **Deprecated. Use `flavors.create` instead.**
      * Create a new asset.
      *
      * @param {module:AssetsApi~createRequest} params - Parameters for asset creation.
@@ -83,6 +90,7 @@ export const assetsAPI = (client: Client) => {
       sharedAPI.tryCallback(client.request('/create-asset', params), cb),
 
     /**
+     * **Deprecated. Use `flavors.updateTags` instead.**
      * Update asset tags.
      *
      * @param {module:AssetsApi~updateTagsRequest} params - Parameters for updating asset tags.
@@ -93,6 +101,7 @@ export const assetsAPI = (client: Client) => {
       sharedAPI.tryCallback(client.request('/update-asset-tags', params), cb),
 
     /**
+     * **Deprecated. Use `flavors.list` instead.**
      * Get one page of assets matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
@@ -113,6 +122,7 @@ export const assetsAPI = (client: Client) => {
       ),
 
     /**
+     * **Deprecated. Use `flavors.list` instead.**
      * Iterate over all assets matching the specified query, calling the
      * supplied consume callback once per item.
      *
@@ -129,6 +139,7 @@ export const assetsAPI = (client: Client) => {
       sharedAPI.queryEach(client, 'assets', params, consumer, { cb }),
 
     /**
+     * **Deprecated. Use `flavors.list` instead.**
      * Fetch all assets mathcing the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.

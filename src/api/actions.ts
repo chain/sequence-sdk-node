@@ -17,19 +17,28 @@ import { PageCallback, QueryParams, sharedAPI } from '../shared'
  * @global
  *
  * @property {Number} amount
- * List: the number of units of the action's asset.
+ * List: the number of units of the action's flavor.
  * Sum: the summation of the amount fields of the action objects.
  *
  * @property {String} type
  * The type of the action. Possible values are "issue", "transfer", and "retire".
  *
+ * @property {String} flavorId
+ * The id of the action's flavor.
+ *
+ * @property {Hash} flavorTags
+ * The tags of the action's flavor (possibly null).
+ *
  * @property {String} assetId
+ * **Deprecated. Use flavorId instead.**
  * The id of the action's asset.
  *
  * @property {String} assetAlias
+ * **Deprecated. Use flavorId instead.**
  * The alias of the action's asset (possibly null).
  *
  * @property {Hash} assetTags
+ * **Deprecated. Use flavorTags instead.**
  * The tags of the action's asset (possibly null).
  *
  * @property {String} sourceAccountId
