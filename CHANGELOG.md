@@ -1,8 +1,21 @@
 # Sequence Node SDK changelog
 
+## 1.2.0 (20180216)
+
+For full details on the 1.2 release and how to migrate your code,
+[visit the Sequence changelog](https://dashboard.seq.com/docs/changelog#release-v1-2).
+
+* `Asset` has been renamed to `Flavor`; all references to assets have been
+  deprecated.
+* The `code` field on API errors has been deprecated; the new field is
+  `seqCode`, containing `SEQXXX` error codes.
+* The `sourceAccountTags`, `destinationAccountTags`, and `assetTags` on action
+  objects have been deprecated; All tags on actions are now available within a
+  new `Action.snapshot` object.
+
 ## 1.1.0 (20180206)
 
-For full details on the 1.1 release,
+For full details on the 1.1 release and how to migrate your code,
 [visit the Sequence changelog](https://dashboard.seq.com/docs/changelog#release-v1-1).
 
 * Added support for setting a user-provided id on key and account objects.
