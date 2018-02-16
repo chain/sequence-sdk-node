@@ -46,7 +46,7 @@ describe('Flavor', () => {
     it('rejected due to missing key fields', () => {
       return expect(
         client.flavors.create({ id: 'flavor' } as any)
-      ).to.be.rejectedWith('CH202')
+      ).to.be.rejectedWith('SEQ202')
     })
   })
 
@@ -68,7 +68,7 @@ describe('Flavor', () => {
           // ID intentionally omitted
           tags: { x: 1 },
         })
-      ).to.be.rejectedWith('CH051')
+      ).to.be.rejectedWith('SEQ051')
     })
   })
 

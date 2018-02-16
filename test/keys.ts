@@ -26,7 +26,7 @@ describe('Key', () => {
   it('rejects key creation due to duplicate ID', async () => {
     const id = uuid.v4()
     const resp = await client.keys.create({ id })
-    return expect(client.keys.create({ id })).to.be.rejectedWith('CH050')
+    return expect(client.keys.create({ id })).to.be.rejectedWith('SEQ050')
   })
 
   it('returns key in list after key creation', async () => {

@@ -28,7 +28,7 @@ describe('Errors', () => {
 
     describe('ApiError types', () => {
       const mockResponse = { headers: { get: () => null } }
-      const mockBody = { code: '', detail: '', message: '', rawMessage: '' }
+      const mockBody = { code: '', seqCode: '', detail: '', message: '', rawMessage: '' }
       const errs = [
         new sequence.errors.BadRequestError(mockResponse, mockBody),
         new sequence.errors.NotFoundError(mockResponse, mockBody),
@@ -95,7 +95,8 @@ describe('Errors', () => {
       try {
         await unauthedClient.accounts.queryPage()
       } catch (err) {
-        return expect(err.code).to.eq('CH002')
+        expect(err.code).to.eq('CH002')
+        return expect(err.seqCode).to.eq('SEQ002')
       }
       expect.fail()
     })
@@ -220,12 +221,16 @@ describe('Errors', () => {
 
         expect(notFoundAction.data.index).to.eq(0)
         expect(notFoundAction.code).to.eq('CH002')
+        expect(notFoundAction.seqCode).to.eq('SEQ002')
         expect(reservedAction.data.index).to.eq(2)
         expect(reservedAction.code).to.eq('CH761')
+        expect(reservedAction.seqCode).to.eq('SEQ761')
         expect(insufficientAction.data.index).to.eq(3)
         expect(insufficientAction.code).to.eq('CH760')
+        expect(insufficientAction.seqCode).to.eq('SEQ760')
 
-        return expect(err.code).to.eq('CH706')
+        expect(err.code).to.eq('CH706')
+        return expect(err.seqCode).to.eq('SEQ706')
       }
       expect.fail()
     })

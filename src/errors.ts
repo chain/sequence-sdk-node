@@ -3,13 +3,14 @@ export interface Body {
   detail: string
   message: string
   rawMessage: string
+  seqCode: string
 }
 
 const formatErrMsg = (body: Body, requestId: string) => {
   const tokens: string[] = []
 
-  if (typeof body.code === 'string' && body.code.length > 0) {
-    tokens.push('Code: ' + body.code)
+  if (typeof body.seqCode === 'string' && body.seqCode.length > 0) {
+    tokens.push('Code: ' + body.seqCode)
   }
 
   tokens.push('Message: ' + body.message)

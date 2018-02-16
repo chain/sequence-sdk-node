@@ -61,7 +61,7 @@ describe('Transaction', () => {
           amount: 100,
         })
       })
-    ).to.be.rejectedWith('CH002')
+    ).to.be.rejectedWith('SEQ002')
   })
 
   describe('queryAll', () => {

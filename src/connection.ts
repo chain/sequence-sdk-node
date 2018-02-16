@@ -258,7 +258,7 @@ export class Connection {
       errClass = errors.BadRequestError
     }
 
-    const err = new errClass(resp, body)
+    const err = new errClass(resp, camelize(body) as any)
 
     if (body.retriable) {
       return retry(err, this.retryTimeoutMs)

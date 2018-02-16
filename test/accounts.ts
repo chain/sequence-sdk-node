@@ -28,7 +28,7 @@ describe('Account', () => {
     it('rejected due to missing key fields', () => {
       return expect(
         client.accounts.create({ id: 'david' } as any)
-      ).to.be.rejectedWith('CH202')
+      ).to.be.rejectedWith('SEQ202')
     })
   })
 
@@ -64,7 +64,7 @@ describe('Account', () => {
           // ID/Alias intentionally omitted
           tags: { x: 1 },
         })
-      ).to.be.rejectedWith('CH051')
+      ).to.be.rejectedWith('SEQ051')
     })
   })
 
