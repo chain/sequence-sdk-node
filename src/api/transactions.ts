@@ -35,8 +35,9 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * @property {String} flavorId
  * The id of the action's flavor.
  *
- * @property {Hash} flavorTags
- * The tags of the action's flavor (possibly null).
+ * @property {Hash} snapshot
+ *  A copy of the associated tags (flavor, source account, and destination
+ *  account) as they existed at the time of the transaction (possibly null).
  *
  * @property {String} assetId
  * **Deprecated. Use flavorId instead.**
@@ -47,7 +48,7 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * The alias of the action's asset (possibly null).
  *
  * @property {Hash} assetTags
- * **Deprecated. Use flavorTags instead.**
+ * **Deprecated. Use snapshot instead.**
  * The tags of the action's asset (possibly null).
  *
  * @property {Integer} amount
@@ -63,6 +64,7 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * action is an issuance).
  *
  * @property {String} sourceAccountTags
+ * **Deprecated. Use snapshot instead.**
  * The tags associated with the source account (possibly null).
  *
  * @property {String} destinationAccountId
@@ -75,6 +77,7 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * action is a retirement).
  *
  * @property {String} destinationAccountTags
+ * **Deprecated. Use snapshot instead.**
  * The tags associated with the destination account (possibly null).
  *
  * @property {Object} referenceData
