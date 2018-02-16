@@ -35,7 +35,7 @@ You can use either promises or callbacks for async API calls:
 With promises:
 
 ```js
-ledger.assets.create({...}).then(result => {
+ledger.accounts.create({...}).then(result => {
   // operate on result
 }).catch(err => {
   // handle errors
@@ -45,7 +45,7 @@ ledger.assets.create({...}).then(result => {
 With callbacks:
 
 ```js
-ledger.assets.create({...}, (err, result) => {
+ledger.accounts.create({...}, (err, result) => {
   if (err) {
     // handle errors
     return
