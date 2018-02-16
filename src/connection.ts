@@ -116,7 +116,7 @@ export class Connection {
     credential?: string,
     agent?: Agent
   ) {
-    this.host = host
+    this.host = process.env.SEQADDR || host
     this.baseUrl = 'https://' + host
     this.sessionBaseUrl = 'https://session-' + host
     this.ledgerName = ledgerName
