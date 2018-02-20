@@ -220,8 +220,8 @@ describe('Errors', () => {
         const insufficientAction = err.data.actions[2]
 
         expect(notFoundAction.data.index).to.eq(0)
-        expect(notFoundAction.code).to.eq('CH002')
-        expect(notFoundAction.seqCode).to.eq('SEQ002')
+        expect(notFoundAction.code).to.eq('CH702')
+        expect(notFoundAction.seqCode).to.eq('SEQ702')
         expect(reservedAction.data.index).to.eq(2)
         expect(reservedAction.code).to.eq('CH761')
         expect(reservedAction.seqCode).to.eq('SEQ761')
