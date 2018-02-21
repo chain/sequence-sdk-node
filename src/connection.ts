@@ -95,7 +95,6 @@ export class Connection {
   public baseUrl: string
   public credential?: string
   public agent?: Agent
-  public host: string
   public ledgerName: string
   public sessionBaseUrl: string
   public ledgerUrl: string
@@ -104,19 +103,17 @@ export class Connection {
   /**
    * constructor - create a new Sequence client object.
    *
-   * @param {String} host         Chain API DNS name.
    * @param {String} ledgerName   Ledger alias or ID.
    * @param {String} credential   Sequence credential for API access.
    * @param {String} agent        https.Agent used to provide TLS config.
    * @returns {Client}
    */
   constructor(
-    host: string,
     ledgerName: string,
     credential?: string,
     agent?: Agent
   ) {
-    this.host = process.env.SEQADDR || host
+    const host = process.env.SEQADDR || 'api.seq.com'
     this.baseUrl = 'https://' + host
     this.sessionBaseUrl = 'https://session-' + host
     this.ledgerName = ledgerName

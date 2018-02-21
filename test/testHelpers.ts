@@ -15,7 +15,6 @@ const constructClient = () => {
     ledgerName: ledgerName,
     credential: macaroon,
     agent: new https.Agent({ ca }),
-    host: 'chain.localhost:1999',
   })
   constructingClient.connection.getRefreshTokenInfo = function() {
     const tenHours = 10 * 60 * 60 * 1000

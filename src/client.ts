@@ -102,7 +102,6 @@ export class Client {
     opts: {
       ledger?: string
       ledgerName?: string
-      host?: string
       credential?: string
       agent?: Agent
     } = {}
@@ -114,17 +113,11 @@ export class Client {
       throw new Error('ledgerName or ledger (but not both) must be provided')
     }
 
-    let host = opts.host
-    if (host === undefined || host === '') {
-      host = 'api.seq.com'
-    }
-
     /**
      * The client's connection to Sequence
      * @type {Client}
      */
     this.connection = new Connection(
-      host,
       opts.ledgerName || (opts.ledger as string),
       opts.credential,
       opts.agent
