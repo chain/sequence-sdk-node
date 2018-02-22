@@ -80,6 +80,9 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * **Deprecated. Use snapshot instead.**
  * The tags associated with the destination account (possibly null).
  *
+ * @property {Object} tokenTags
+ * User specified, unstructured data embedded within a token (possibly null).
+ *
  * @property {Object} referenceData
  * User specified, unstructured data embedded within an action (possibly null).
  */
@@ -131,6 +134,7 @@ export class TransactionBuilder {
    *   destinationAccountId instead.** Account alias specifying the account
    *   controlling the asset. You must specify a destination account ID or
    *   alias.
+   * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
    */
   public issue(params: {
@@ -140,6 +144,7 @@ export class TransactionBuilder {
     amount: number
     destinationAccountId?: string
     destinationAccountAlias?: string
+    tokenTags?: object
     referenceData?: object
   }) {
     this.actions.push(Object.assign({}, params, { type: 'issue' }))
@@ -211,6 +216,7 @@ export class TransactionBuilder {
    *   destinationAccountId instead.** Account alias specifying the account
    *   controlling the asset. You must specify a destination account ID or
    *   alias.
+   * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
    * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
    */
@@ -224,6 +230,7 @@ export class TransactionBuilder {
     amount: number
     destinationAccountId?: string
     destinationAccountAlias?: string
+    tokenTags?: object
     referenceData?: object
     changeReferenceData?: object
   }) {

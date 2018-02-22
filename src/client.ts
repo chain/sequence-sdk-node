@@ -8,6 +8,7 @@ import { devUtilsAPI } from './api/devUtils'
 import { flavorsAPI } from './api/flavors'
 import { keysAPI } from './api/keys'
 import { statsAPI } from './api/stats'
+import { tokensAPI, TokenSumParams } from './api/tokens'
 import {
   TransactionBuilder,
   TransactionQueryParameters,
@@ -73,6 +74,12 @@ export class Client {
    * @type {module:StatsApi}
    */
   public stats = statsAPI(this)
+
+  /**
+   * API actions for tokens.
+   * @type {module:TokensApi}
+   */
+  public tokens = tokensAPI(this)
 
   /**
    * API actions for transactions.
