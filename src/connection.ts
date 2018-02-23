@@ -108,11 +108,7 @@ export class Connection {
    * @param {String} agent        https.Agent used to provide TLS config.
    * @returns {Client}
    */
-  constructor(
-    ledgerName: string,
-    credential?: string,
-    agent?: Agent
-  ) {
+  constructor(ledgerName: string, credential?: string, agent?: Agent) {
     const host = process.env.SEQADDR || 'api.seq.com'
     this.baseUrl = 'https://' + host
     this.sessionBaseUrl = 'https://session-' + host
