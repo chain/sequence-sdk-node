@@ -100,7 +100,7 @@ export const accountsAPI = (client: Client) => {
      * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {pageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Account>>} Requested page of results.
      */
     queryPage: (params?: QueryParams, cb?: PageCallback) =>

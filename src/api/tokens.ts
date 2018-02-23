@@ -71,7 +71,7 @@ export const tokensAPI = (client: Client) => {
        * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
        * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
        * @param {Number} params.pageSize - Number of items to return in result set.
-       * @param {pageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+       * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
        * @returns {Promise<Page<TokenGroup>>} Requested page of results.
        */
       page: (params: QueryParams, cb?: PageCallback) =>
@@ -92,7 +92,7 @@ export const tokensAPI = (client: Client) => {
        * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
        * @param {Array<String>} params.groupBy - Fields in Token object to group by.
        * @param {Number} params.pageSize - Number of items to return in result set.
-       * @param {pageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+       * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
        * @returns {Promise<Page<TokenSum>>} Requested page of results.
        */
       page: (params: TokenSumParams, cb?: PageCallback) =>

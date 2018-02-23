@@ -271,7 +271,7 @@ export const transactionsAPI = (client: Client) => {
      * @param {Number} params.endTime - A Unix timestamp in milliseconds. When specified, only transactions with a block time less than the start time will be returned.
      * @param {Number} params.timeout - A time in milliseconds after which a server timeout should occur. Defaults to 1000 (1 second).
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {pageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Transaction>>} Requested page of results.
      */
     queryPage: (params: TransactionQueryParameters, cb: any) =>

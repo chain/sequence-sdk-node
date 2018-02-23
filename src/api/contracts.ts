@@ -75,7 +75,7 @@ export const contractsAPI = (client: Client) => {
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Integer} params.timestamp - A millisecond Unix timestamp. By using this parameter, you can perform queries that reflect the state of the blockchain at different points in time.
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {pageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Contract>>} Requested page of results.
      */
     queryPage: (params: ContractQueryParameters, cb?: PageCallback) =>

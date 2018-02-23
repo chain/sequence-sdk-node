@@ -53,7 +53,7 @@ export const keysAPI = (client: Client) => {
      * @param {Array.<string>} params.aliases - **Deprecated. Use ids instead.**
      *   List of requested aliases, max 200.
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {pageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Key>>} Requested page of results.
      */
     queryPage: (

@@ -89,7 +89,7 @@ export const actionsAPI = (client: Client) => {
      * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {pageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Action>>} Requested page of results.
      * @example <caption>List all actions after a certain time</caption>
      * ledger.actions.list({
@@ -120,7 +120,7 @@ export const actionsAPI = (client: Client) => {
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Array<String>} params.groupBy - Fields in Action object to group by.
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {pageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<ActionSum>>} Requested page of results.
      */
     sum: (params: ActionSumParams, cb?: PageCallback) =>

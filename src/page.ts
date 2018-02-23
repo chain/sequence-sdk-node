@@ -2,7 +2,7 @@ import { Client } from './client'
 import { ObjectCallback } from './shared'
 
 /**
- * @callback pageCallback
+ * @callback PageCallback
  * @param {error} error
  * @param {Page} page - Requested page of results.
  */
