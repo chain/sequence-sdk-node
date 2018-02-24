@@ -10,7 +10,7 @@ import { testHelpers } from './testHelpers'
 
 const { client, createAccount, createFlavor, createRefData, transact } = testHelpers
 
-describe('Tokens', () => {
+describe('Token queries', () => {
   let flavor1: { id: string }
   let flavor2: { id: string }
   let account1: { id: string }
@@ -62,13 +62,13 @@ describe('Tokens', () => {
       })
     })
 
-    // it('should filter by token tags', async () => {
-    //   const page = await client.tokens.list.page({
-    //     filter: 'tags.test=$1',
-    //     filterParams: [tokenTags['test']],
-    //   })
-    //   expect(page.items.length).to.equal(3)
-    // })
+    it('should filter by token tags', async () => {
+      const page = await client.tokens.list.page({
+        filter: 'tags.test=$1',
+        filterParams: [tokenTags['test']],
+      })
+      expect(page.items.length).to.equal(3)
+    })
   })
 
   describe('Summing tokens', () => {
@@ -94,5 +94,66 @@ describe('Tokens', () => {
     it('sum query', done => {
       client.tokens.sum.page({}, done)
     })
+  })
+})
+
+describe('Token spending', () => {
+  let flavor1: { id: string }
+  let flavor2: { id: string }
+  let account1: { id: string }
+  let account2: { id: string }
+  let tokenTags: { [key:string]: string }
+
+  before(async () => {
+    flavor1 = await createFlavor()
+    account1 = await createAccount()
+  })
+
+  it('can spend tokens by tag', async () => {
+    await transact((b: TransactionBuilder) => {
+      b.issue({
+        flavorId: flavor1.id,
+        amount: 3,
+        destinationAccountId: account1.id,
+        tokenTags: {key: 'a'},
+      })
+    })
+    await transact((b: TransactionBuilder) => {
+      b.issue({
+        flavorId: flavor1.id,
+        amount: 7,
+        destinationAccountId: account1.id,
+        tokenTags: {key: 'a'},
+      })
+    })
+    await transact((b: TransactionBuilder) => {
+      b.transfer({
+        flavorId: flavor1.id,
+        amount: 5,
+        sourceAccountId: account1.id,
+        destinationAccountId: account1.id,
+        filter: "tags.key=$1",
+        filterParams: ['a'],
+        tokenTags: {key: 'b'}
+      })
+    })
+    await transact((b: TransactionBuilder) => {
+      b.retire({
+        flavorId: flavor1.id,
+        amount: 5,
+        sourceAccountId: account1.id,
+        filter: "tags.key='a'",
+      })
+    })
+
+    const page = await client.tokens.list.page({
+      filter: 'account_id=$1',
+      filterParams: [account1.id]
+    })
+    page.items.forEach((item : any)  => {
+      expect(item.tags.key).not.to.equal('a')
+      expect(item.tags.key).to.equal('b')
+    })
+
   })
 })

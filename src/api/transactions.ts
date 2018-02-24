@@ -171,6 +171,8 @@ export class TransactionBuilder {
    *   Asset alias specifying the asset to be retired.
    *   You must specify either an ID or an alias.
    * @param {Number} params.amount - Amount of the flavor to be retired.
+   * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/queries}.
+   * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.referenceData - Reference data to add to the retiring contract.
    * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
    */
@@ -182,6 +184,8 @@ export class TransactionBuilder {
     assetId?: string
     assetAlias?: string
     amount: number
+    filter?: string
+    filterParams?: object
     referenceData?: object
     changeReferenceData?: object
   }) {
@@ -216,6 +220,8 @@ export class TransactionBuilder {
    *   destinationAccountId instead.** Account alias specifying the account
    *   controlling the asset. You must specify a destination account ID or
    *   alias.
+   * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/queries}.
+   * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
    * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
@@ -230,6 +236,8 @@ export class TransactionBuilder {
     amount: number
     destinationAccountId?: string
     destinationAccountAlias?: string
+    filter?: string
+    filterParams?: object
     tokenTags?: object
     referenceData?: object
     changeReferenceData?: object
