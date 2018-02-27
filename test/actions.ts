@@ -5,24 +5,30 @@ const expect = chai.expect
 import 'mocha'
 
 import { TransactionBuilder } from '../src/api/transactions'
-import { Page }  from '../src/page'
+import { Page } from '../src/page'
 import { testHelpers } from './testHelpers'
 
-const { client, createAccount, createAsset, createRefData, transact } = testHelpers
+const {
+  client,
+  createAccount,
+  createAsset,
+  createRefData,
+  transact,
+} = testHelpers
 
 describe('Action', () => {
   let asset1: { id: string; alias: string }
   let asset2: { id: string; alias: string }
   let account1: { id: string; alias: string }
   let account2: { id: string; alias: string }
-  let refData: { [key:string]: string } 
+  let refData: { [key: string]: string }
 
   before(async () => {
     asset1 = await createAsset()
     asset2 = await createAsset()
     account1 = await createAccount()
     account2 = await createAccount()
-    refData  = await createRefData()
+    refData = await createRefData()
     await transact((b: TransactionBuilder) => {
       b.issue({
         assetId: asset1.id,
@@ -67,11 +73,11 @@ describe('Action', () => {
         filterParams: [refData['test']],
         groupBy: ['type'],
       })
+      expect(page.items.find((b: any) => b.type === 'issue').amount).to.equal(
+        12
+      )
       expect(
-        page.items.find((b: any) => b.type === "issue").amount
-      ).to.equal(12)
-      expect(
-        page.items.find((b: any) => b.type === "transfer").amount
+        page.items.find((b: any) => b.type === 'transfer').amount
       ).to.equal(5)
     })
   })

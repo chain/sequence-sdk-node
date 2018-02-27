@@ -67,7 +67,7 @@ const createFlavor = async (flavor = 'flavor') => {
   })
 }
 const createRefData = async (keyname = 'test') => {
-  const res : { [key: string]: string } = {}
+  const res: { [key: string]: string } = {}
   res[keyname] = await uuid.v4().toString()
   return res
 }

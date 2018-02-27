@@ -35,7 +35,6 @@ describe('Page', () => {
         })
       }
     })
-
   })
 
   describe('nextPage', async () => {

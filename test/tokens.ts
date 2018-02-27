@@ -5,17 +5,23 @@ const expect = chai.expect
 import 'mocha'
 
 import { TransactionBuilder } from '../src/api/transactions'
-import { Page }  from '../src/page'
+import { Page } from '../src/page'
 import { testHelpers } from './testHelpers'
 
-const { client, createAccount, createFlavor, createRefData, transact } = testHelpers
+const {
+  client,
+  createAccount,
+  createFlavor,
+  createRefData,
+  transact,
+} = testHelpers
 
 describe('Token queries', () => {
   let flavor1: { id: string }
   let flavor2: { id: string }
   let account1: { id: string }
   let account2: { id: string }
-  let tokenTags: { [key:string]: string }
+  let tokenTags: { [key: string]: string }
 
   before(async () => {
     flavor1 = await createFlavor()
@@ -57,7 +63,7 @@ describe('Token queries', () => {
         filterParams: [account2.id],
       })
       expect(page.items.length).to.equal(2)
-      page.items.forEach((item : any)  => {
+      page.items.forEach((item: any) => {
         expect(item.accountId).to.equal(account2.id)
       })
     })
@@ -102,7 +108,7 @@ describe('Token spending', () => {
   let flavor2: { id: string }
   let account1: { id: string }
   let account2: { id: string }
-  let tokenTags: { [key:string]: string }
+  let tokenTags: { [key: string]: string }
 
   before(async () => {
     flavor1 = await createFlavor()
@@ -115,7 +121,7 @@ describe('Token spending', () => {
         flavorId: flavor1.id,
         amount: 3,
         destinationAccountId: account1.id,
-        tokenTags: {key: 'a'},
+        tokenTags: { key: 'a' },
       })
     })
     await transact((b: TransactionBuilder) => {
@@ -123,7 +129,7 @@ describe('Token spending', () => {
         flavorId: flavor1.id,
         amount: 7,
         destinationAccountId: account1.id,
-        tokenTags: {key: 'a'},
+        tokenTags: { key: 'a' },
       })
     })
     await transact((b: TransactionBuilder) => {
@@ -132,9 +138,9 @@ describe('Token spending', () => {
         amount: 5,
         sourceAccountId: account1.id,
         destinationAccountId: account1.id,
-        filter: "tags.key=$1",
+        filter: 'tags.key=$1',
         filterParams: ['a'],
-        tokenTags: {key: 'b'}
+        tokenTags: { key: 'b' },
       })
     })
     await transact((b: TransactionBuilder) => {
@@ -148,12 +154,11 @@ describe('Token spending', () => {
 
     const page = await client.tokens.list.page({
       filter: 'account_id=$1',
-      filterParams: [account1.id]
+      filterParams: [account1.id],
     })
-    page.items.forEach((item : any)  => {
+    page.items.forEach((item: any) => {
       expect(item.tags.key).not.to.equal('a')
       expect(item.tags.key).to.equal('b')
     })
-
   })
 })

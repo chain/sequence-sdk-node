@@ -28,7 +28,13 @@ describe('Errors', () => {
 
     describe('ApiError types', () => {
       const mockResponse = { headers: { get: () => null } }
-      const mockBody = { code: '', seqCode: '', detail: '', message: '', rawMessage: '' }
+      const mockBody = {
+        code: '',
+        seqCode: '',
+        detail: '',
+        message: '',
+        rawMessage: '',
+      }
       const errs = [
         new sequence.errors.BadRequestError(mockResponse, mockBody),
         new sequence.errors.NotFoundError(mockResponse, mockBody),

@@ -72,7 +72,6 @@ describe('Flavor', () => {
     })
   })
 
-
   // These just test that the callback is engaged correctly. Behavior is
   // tested in the promises test.
   describe('Callback support', () => {
