@@ -56,23 +56,36 @@ describe('Action', () => {
     })
   })
 
-  describe('List query', () => {
+  describe('List.page query', () => {
     it('should list three actions', async () => {
       const page = await client.actions.list({
         filter: 'reference_data.test=$1',
-        filterParams: [refData['test']],
-      })
+        filterParams: [refData.test],
+      }).page()
       expect(page.items.length).to.equal(3)
     })
   })
 
-  describe('Sum query with groupBy', () => {
+  describe('List.all query', () => {
+    it('should consume three items', async () => {
+      const processed: any[] = []
+      await client.actions.list({
+        filter: 'reference_data.test=$1',
+        filterParams: [refData.test],
+      }).all((action) => {
+        processed.push(action)
+      })
+      expect(processed.length).to.equal(3)
+    })
+  })
+
+  describe('Sum.page query with groupBy', () => {
     it('should have two items', async () => {
       const page = await client.actions.sum({
         filter: 'reference_data.test=$1',
-        filterParams: [refData['test']],
+        filterParams: [refData.test],
         groupBy: ['type'],
-      })
+      }).page()
       expect(page.items.find((b: any) => b.type === 'issue').amount).to.equal(
         12
       )
@@ -82,14 +95,31 @@ describe('Action', () => {
     })
   })
 
+  describe('Sum.all query with groupBy', () => {
+    it('should have two items', async () => {
+      const sums: any[] = []
+      await client.actions.sum({
+        filter: 'reference_data.test=$1',
+        filterParams: [refData.test],
+        groupBy: ['type'],
+      }).all((sum) => sums.push(sum))
+      expect(
+        sums.find((b: any) => b.type === "issue").amount
+      ).to.equal(12)
+      expect(
+        sums.find((b: any) => b.type === "transfer").amount
+      ).to.equal(5)
+    })
+  })
+
   // This just tests that the callbacks are engaged correctly.
   describe('Callback support', () => {
     it('list query', done => {
-      client.actions.list({}, done)
+      client.actions.list({}).page({}, done)
     })
 
     it('sum query', done => {
-      client.actions.sum({}, done)
+      client.actions.sum({}).page({}, done)
     })
   })
 })

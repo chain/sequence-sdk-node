@@ -14,12 +14,26 @@ export type ObjectCallback = (
   object: object | null
 ) => void
 
+export type PageParams = { size: number, cursor: undefined } | { cursor: string, size: undefined }
+
+function isPageParams(obj?: PageParams | {}): obj is PageParams {
+  if (obj === undefined) {
+    return false
+  } else if (
+    (obj as PageParams).size === undefined &&
+    (obj as PageParams).cursor === undefined
+  ) {
+    return false
+  } else {
+    return true
+  }
+}
+
 export type PageCallback = (error: Error | null, page: Page | null) => void
 
 export interface QueryParams {
   filter?: string
   filterParams?: Array<string | number>
-  pageSize?: number
 }
 
 /**
@@ -62,11 +76,22 @@ export const sharedAPI = {
     method: string,
     path: string,
     params = {},
-    opts: { cb?: any } = {}
+    opts: { cb?: any } = {},
+    pageParams?: PageParams | {}
   ) => {
+    const body: { [s: string]: any } = Object.assign({}, params)
+    if (isPageParams(pageParams)) {
+      const cursor = pageParams.cursor
+      const size = pageParams.size
+      if (cursor) {
+        body.cursor = cursor
+      } else if (pageParams.size) {
+        body.size = pageParams.size
+      }
+    }
     return tryCallback(
       client
-        .request(path, params)
+        .request(path, body)
         .then((data: object) => new Page(data, client, memberPath, method)),
       opts.cb
     )
@@ -90,7 +115,12 @@ export const sharedAPI = {
         }
       }
 
-      let page = await getApi(client, memberPath).queryPage(params)
+      let page
+      if (memberPath.split(".")[0] === "actions") {
+        page = await getApi(client, memberPath)(params).page()
+      } else {
+        page = await getApi(client, memberPath).queryPage(params)
+      }
       while (!over) {
         for (const item of page.items) {
           // Pass the item to the processor.

@@ -47,7 +47,7 @@ describe('Page', () => {
     })
 
     it('returns two pages of results for actions', async () => {
-      const page = await client.actions.list({})
+      const page = await client.actions.list({}).page()
       expect(page.items.length).to.eq(100)
       expect(page.lastPage).to.eq(false)
       const nextPage = await page.nextPage()

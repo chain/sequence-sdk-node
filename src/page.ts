@@ -73,12 +73,17 @@ export class Page {
    */
   public nextPage(cb?: ObjectCallback) {
     let queryOwner = this.client
-    this.memberPath.split('.').forEach(member => {
+    const memberPath = this.memberPath.split('.')
+    memberPath.forEach(member => {
       queryOwner = queryOwner[member]
     })
 
     if (typeof queryOwner[this.method] === 'function') {
-      return queryOwner[this.method](this.next, cb)
+      if (memberPath[0] === 'actions') {
+        return queryOwner[this.method](this.next, cb).page()
+      } else {
+        return queryOwner[this.method](this.next, cb)
+      }
     }
     return queryOwner.queryPage(this.next, cb)
   }

@@ -1,5 +1,8 @@
 import { Client } from '../client'
-import { PageCallback, QueryParams, sharedAPI } from '../shared'
+import {
+  Consumer, ObjectCallback, PageCallback, PageParams,
+  QueryParams, sharedAPI
+} from '../shared'
 
 /**
  * Each transaction contains one or more actions. Action queries are designed to provide
@@ -107,9 +110,16 @@ export const actionsAPI = (client: Client) => {
      *   }
      * }
      */
-    list: (params: QueryParams, cb?: PageCallback) =>
-      sharedAPI.queryPage(client, 'actions', 'list', '/list-actions', params, {
-        cb,
+    list: (params: QueryParams) =>
+      ({
+        page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
+          return sharedAPI.queryPage(client, 'actions', 'list', '/list-actions', params, {
+            cb,
+          }, pageParams)
+        },
+        all: (consumer: Consumer, cb?: ObjectCallback) => {
+          return sharedAPI.queryEach(client, 'actions.list', params, consumer, { cb })
+        },
       }),
 
     /**
@@ -123,9 +133,16 @@ export const actionsAPI = (client: Client) => {
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<ActionSum>>} Requested page of results.
      */
-    sum: (params: ActionSumParams, cb?: PageCallback) =>
-      sharedAPI.queryPage(client, 'actions', 'sum', '/sum-actions', params, {
-        cb,
+    sum: (params: ActionSumParams) =>
+      ({
+        page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
+          return sharedAPI.queryPage(client, 'actions', 'sum', '/sum-actions', params, {
+            cb,
+          }, pageParams)
+        },
+        all: (consumer: Consumer, cb?: ObjectCallback) => {
+          return sharedAPI.queryEach(client, 'actions.sum', params, consumer, { cb })
+        },
       }),
   }
 }
