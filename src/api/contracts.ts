@@ -8,6 +8,8 @@ import {
 } from '../shared'
 
 /**
+ * **Deprecated. Use TokenGroup instead.**
+ *
  * Each new transaction in the blockchain consumes some contracts and
  * creates others. A contract is considered unspent when it has not yet been used
  * as an input to a new transaction. All asset units on a blockchain exist in
@@ -62,12 +64,16 @@ export interface ContractQueryParameters extends QueryParams {
 }
 
 /**
+ * **Deprecated. Use TokensApi instead.**
+ *
  * API for interacting with {@link Contract contracts}.
  * @module ContractsApi
  */
 export const contractsAPI = (client: Client) => {
   return {
     /**
+     * **Deprecated. Use `tokens.list().page` instead.**
+     *
      * Get one page of contracts matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
@@ -91,6 +97,8 @@ export const contractsAPI = (client: Client) => {
       ),
 
     /**
+     * **Deprecated. Use `tokens.list().all` instead.**
+     *
      * Iterate over all contracts matching the specified query, calling the
      * supplied consume callback once per item.
      *
@@ -111,6 +119,8 @@ export const contractsAPI = (client: Client) => {
     ) => sharedAPI.queryEach(client, 'contracts', params, consumer, { cb }),
 
     /**
+     * **Deprecated. Use `tokens.list().all` instead.**
+     *
      * Fetch all contracts mathcing the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.

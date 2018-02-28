@@ -8,6 +8,7 @@ import {
 } from '../shared'
 
 /**
+ * **Deprecated. Use TokenSum instead.**
  * Any balance on the blockchain is simply a summation of contracts.
  * Unlike other queries in Sequence, balance queries do not return Sequence
  * objects, only simple sums over the amount fields in a specified list of
@@ -29,6 +30,8 @@ export interface BalanceQueryParams extends QueryParams {
 }
 
 /**
+ * **Deprecated. Use TokensApi instead.**
+ *
  * API for interacting with {@link Balance balances}.
  *
  * More info: {@link https://dashboard.seq.com/docs/queries}
@@ -37,6 +40,8 @@ export interface BalanceQueryParams extends QueryParams {
 export const balancesAPI = (client: Client) => {
   return {
     /**
+     * **Deprecated. Use `tokens.sum().page` instead.**
+     *
      * Get one page of balances matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
@@ -57,6 +62,7 @@ export const balancesAPI = (client: Client) => {
       ),
 
     /**
+     * **Deprecated. Use `tokens.sum().all` instead.**
      * Iterate over all balances matching the specified query, calling the
      * supplied consume callback once per item.
      *
@@ -76,6 +82,7 @@ export const balancesAPI = (client: Client) => {
     ) => sharedAPI.queryEach(client, 'balances', params, consumer, { cb }),
 
     /**
+     * **Deprecated. Use `tokens.sum().all` instead.**
      * Fetch all balances mathcing the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.

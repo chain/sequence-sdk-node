@@ -36,8 +36,9 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * The id of the action's flavor.
  *
  * @property {Hash} snapshot
- *  A copy of the associated tags (flavor, source account, and destination
- *  account) as they existed at the time of the transaction (possibly null).
+ *  A copy of the associated tags (flavor, source account, destination account,
+ *  action, and token) as they existed at the time of the transaction
+ *  (possibly null).
  *
  * @property {String} assetId
  * **Deprecated. Use flavorId instead.**
