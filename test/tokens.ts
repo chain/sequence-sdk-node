@@ -58,10 +58,10 @@ describe('Token queries', () => {
 
   describe('Listing tokens', () => {
     it('should list all tokens for an account', async () => {
-      const page = await client.tokens.list.page({
+      const page = await client.tokens.list({
         filter: 'account_id=$1',
         filterParams: [account2.id],
-      })
+      }).page()
       expect(page.items.length).to.equal(2)
       page.items.forEach((item: any) => {
         expect(item.accountId).to.equal(account2.id)
@@ -69,19 +69,19 @@ describe('Token queries', () => {
     })
 
     it('should filter by token tags', async () => {
-      const page = await client.tokens.list.page({
+      const page = await client.tokens.list({
         filter: 'tags.test=$1',
         filterParams: [tokenTags['test']],
-      })
+      }).page()
       expect(page.items.length).to.equal(3)
     })
   })
 
   describe('Summing tokens', () => {
     it('should have two items with the correct amounts', async () => {
-      const page = await client.tokens.sum.page({
+      const page = await client.tokens.sum({
         groupBy: ['account_id'],
-      })
+      }).page()
       expect(
         page.items.find((token: any) => token.accountId === account1.id).amount
       ).to.equal(5)
@@ -94,11 +94,11 @@ describe('Token queries', () => {
   // This just tests that the callbacks are engaged correctly.
   describe('Callback support', () => {
     it('list query', done => {
-      client.tokens.list.page({}, done)
+      client.tokens.list({}).page({}, done)
     })
 
     it('sum query', done => {
-      client.tokens.sum.page({}, done)
+      client.tokens.sum({}).page({}, done)
     })
   })
 })
@@ -152,10 +152,10 @@ describe('Token spending', () => {
       })
     })
 
-    const page = await client.tokens.list.page({
+    const page = await client.tokens.list({
       filter: 'account_id=$1',
       filterParams: [account1.id],
-    })
+    }).page()
     page.items.forEach((item: any) => {
       expect(item.tags.key).not.to.equal('a')
       expect(item.tags.key).to.equal('b')

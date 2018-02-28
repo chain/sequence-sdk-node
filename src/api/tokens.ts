@@ -1,5 +1,5 @@
 import { Client } from '../client'
-import { PageCallback, QueryParams, sharedAPI } from '../shared'
+import { PageCallback, PageParams, QueryParams, sharedAPI } from '../shared'
 
 /**
  * More info: {@link https://dashboard.seq.com/docs/tokens}
@@ -63,7 +63,7 @@ export interface TokenSumParams extends QueryParams {
  */
 export const tokensAPI = (client: Client) => {
   return {
-    list: {
+    list: (params?: QueryParams) => ({
       /**
        * Get one page of token groups matching the specified query.
        *
@@ -74,16 +74,17 @@ export const tokensAPI = (client: Client) => {
        * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
        * @returns {Promise<Page<TokenGroup>>} Requested page of results.
        */
-      page: (params: QueryParams, cb?: PageCallback) =>
-        sharedAPI.queryPage(client, 'tokens', 'list', '/list-tokens', params, {
+      page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
+        return sharedAPI.queryPage(client, 'tokens', 'list', '/list-tokens', params, {
           cb,
-        }),
+        }, pageParams)
+      },
       all: () => {
         throw new Error('Unimplemented')
       },
-    },
+    }),
 
-    sum: {
+    sum: (params?: TokenSumParams) => ({
       /**
        * Get one page of token sums matching the specified query.
        *
@@ -95,13 +96,13 @@ export const tokensAPI = (client: Client) => {
        * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
        * @returns {Promise<Page<TokenSum>>} Requested page of results.
        */
-      page: (params: TokenSumParams, cb?: PageCallback) =>
+      page: (pageParams?: PageParams | {}, cb?: PageCallback) =>
         sharedAPI.queryPage(client, 'tokens', 'sum', '/sum-tokens', params, {
           cb,
         }),
       all: () => {
         throw new Error('Unimplemented')
       },
-    },
+    }),
   }
 }
