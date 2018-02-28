@@ -64,6 +64,13 @@ describe('Action', () => {
       }).page()
       expect(page.items.length).to.equal(3)
     })
+    it('should respect the size argument', async () => {
+      const page = await client.actions.list({
+        filter: 'reference_data.test=$1',
+        filterParams: [refData.test],
+      }).page({ size: 2 })
+      expect(page.items.length).to.equal(2)
+    })
   })
 
   describe('List.all query', () => {
@@ -92,6 +99,14 @@ describe('Action', () => {
       expect(
         page.items.find((b: any) => b.type === 'transfer').amount
       ).to.equal(5)
+    })
+    it('should respect the size argument', async () => {
+      const page = await client.actions.sum({
+        filter: 'reference_data.test=$1',
+        filterParams: [refData.test],
+        groupBy: ['type'],
+      }).page({ size: 1 })
+      expect(page.items.length).to.equal(1)
     })
   })
 

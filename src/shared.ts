@@ -81,12 +81,10 @@ export const sharedAPI = {
   ) => {
     const body: { [s: string]: any } = Object.assign({}, params)
     if (isPageParams(pageParams)) {
-      const cursor = pageParams.cursor
-      const size = pageParams.size
-      if (cursor) {
-        body.cursor = cursor
+      if (pageParams.cursor) {
+        body.cursor = pageParams.cursor
       } else if (pageParams.size) {
-        body.size = pageParams.size
+        body.pageSize = pageParams.size
       }
     }
     return tryCallback(
