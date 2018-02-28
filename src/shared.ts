@@ -14,7 +14,9 @@ export type ObjectCallback = (
   object: object | null
 ) => void
 
-export type PageParams = { size: number, cursor: undefined } | { cursor: string, size: undefined }
+export type PageParams =
+  | { size: number; cursor: undefined }
+  | { cursor: string; size: undefined }
 
 function isPageParams(obj?: PageParams | {}): obj is PageParams {
   if (obj === undefined) {
@@ -116,7 +118,7 @@ export const sharedAPI = {
       }
 
       let page
-      if (memberPath.split(".")[0] === "actions") {
+      if (memberPath.split('.')[0] === 'actions') {
         page = await getApi(client, memberPath)(params).page()
       } else {
         page = await getApi(client, memberPath).queryPage(params)

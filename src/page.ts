@@ -49,7 +49,7 @@ export class Page {
      *
      * @type {String}
      */
-    this.cursor = ""
+    this.cursor = ''
 
     /**
      * Indicator that there are more results to load if true.
@@ -86,7 +86,7 @@ export class Page {
       queryOwner = queryOwner[member]
     })
 
-    const next = this.cursor !== "" ? { cursor: this.cursor } : this.next
+    const next = this.cursor !== '' ? { cursor: this.cursor } : this.next
 
     if (typeof queryOwner[this.method] === 'function') {
       if (memberPath[0] === 'actions') {

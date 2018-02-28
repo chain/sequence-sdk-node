@@ -1,7 +1,11 @@
 import { Client } from '../client'
 import {
-  Consumer, ObjectCallback, PageCallback, PageParams,
-  QueryParams, sharedAPI
+  Consumer,
+  ObjectCallback,
+  PageCallback,
+  PageParams,
+  QueryParams,
+  sharedAPI,
 } from '../shared'
 
 /**
@@ -110,17 +114,26 @@ export const actionsAPI = (client: Client) => {
      *   }
      * }
      */
-    list: (params: QueryParams) =>
-      ({
-        page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
-          return sharedAPI.queryPage(client, 'actions', 'list', '/list-actions', params, {
+    list: (params: QueryParams) => ({
+      page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
+        return sharedAPI.queryPage(
+          client,
+          'actions',
+          'list',
+          '/list-actions',
+          params,
+          {
             cb,
-          }, pageParams)
-        },
-        all: (consumer: Consumer, cb?: ObjectCallback) => {
-          return sharedAPI.queryEach(client, 'actions.list', params, consumer, { cb })
-        },
-      }),
+          },
+          pageParams
+        )
+      },
+      all: (consumer: Consumer, cb?: ObjectCallback) => {
+        return sharedAPI.queryEach(client, 'actions.list', params, consumer, {
+          cb,
+        })
+      },
+    }),
 
     /**
      * Get one page of action sums matching the specified query.
@@ -133,16 +146,25 @@ export const actionsAPI = (client: Client) => {
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<ActionSum>>} Requested page of results.
      */
-    sum: (params: ActionSumParams) =>
-      ({
-        page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
-          return sharedAPI.queryPage(client, 'actions', 'sum', '/sum-actions', params, {
+    sum: (params: ActionSumParams) => ({
+      page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
+        return sharedAPI.queryPage(
+          client,
+          'actions',
+          'sum',
+          '/sum-actions',
+          params,
+          {
             cb,
-          }, pageParams)
-        },
-        all: (consumer: Consumer, cb?: ObjectCallback) => {
-          return sharedAPI.queryEach(client, 'actions.sum', params, consumer, { cb })
-        },
-      }),
+          },
+          pageParams
+        )
+      },
+      all: (consumer: Consumer, cb?: ObjectCallback) => {
+        return sharedAPI.queryEach(client, 'actions.sum', params, consumer, {
+          cb,
+        })
+      },
+    }),
   }
 }
