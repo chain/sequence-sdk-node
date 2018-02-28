@@ -56,12 +56,14 @@ describe('Token queries', () => {
     })
   })
 
-  describe('Listing tokens', () => {
+  describe('List.page query', () => {
     it('should list all tokens for an account', async () => {
-      const page = await client.tokens.list({
-        filter: 'account_id=$1',
-        filterParams: [account2.id],
-      }).page()
+      const page = await client.tokens
+        .list({
+          filter: 'account_id=$1',
+          filterParams: [account2.id],
+        })
+        .page()
       expect(page.items.length).to.equal(2)
       page.items.forEach((item: any) => {
         expect(item.accountId).to.equal(account2.id)
@@ -69,24 +71,63 @@ describe('Token queries', () => {
     })
 
     it('should filter by token tags', async () => {
-      const page = await client.tokens.list({
-        filter: 'tags.test=$1',
-        filterParams: [tokenTags['test']],
-      }).page()
+      const page = await client.tokens
+        .list({
+          filter: 'tags.test=$1',
+          filterParams: [tokenTags['test']],
+        })
+        .page()
       expect(page.items.length).to.equal(3)
     })
   })
 
-  describe('Summing tokens', () => {
+  describe('List.all query', () => {
+    // TODO(dan) test this more extensively
+    it('should iterate over all tokens', async () => {
+      const items: any[] = []
+      await client.tokens
+        .list({
+          filter: 'account_id=$1',
+          filterParams: [account2.id],
+        })
+        .all(item => items.push(item))
+      expect(items.length).to.equal(2)
+      items.forEach((item: any) => {
+        expect(item.accountId).to.equal(account2.id)
+      })
+    })
+  })
+
+  describe('Sum.page query', () => {
     it('should have two items with the correct amounts', async () => {
-      const page = await client.tokens.sum({
-        groupBy: ['account_id'],
-      }).page()
+      const page = await client.tokens
+        .sum({
+          groupBy: ['account_id'],
+        })
+        .page()
       expect(
         page.items.find((token: any) => token.accountId === account1.id).amount
       ).to.equal(5)
       expect(
         page.items.find((token: any) => token.accountId === account2.id).amount
+      ).to.equal(7)
+    })
+  })
+
+  describe('Sum.all query', () => {
+    it('should iterate over all sums', async () => {
+      const sums: any[] = []
+      await client.tokens
+        .sum({
+          groupBy: ['account_id'],
+        })
+        .all(sum => sums.push(sum))
+      expect(sums.length).to.equal(8)
+      expect(
+        sums.find((sum: any) => sum.accountId === account1.id).amount
+      ).to.equal(5)
+      expect(
+        sums.find((sum: any) => sum.accountId === account2.id).amount
       ).to.equal(7)
     })
   })
@@ -152,10 +193,12 @@ describe('Token spending', () => {
       })
     })
 
-    const page = await client.tokens.list({
-      filter: 'account_id=$1',
-      filterParams: [account1.id],
-    }).page()
+    const page = await client.tokens
+      .list({
+        filter: 'account_id=$1',
+        filterParams: [account1.id],
+      })
+      .page()
     page.items.forEach((item: any) => {
       expect(item.tags.key).not.to.equal('a')
       expect(item.tags.key).to.equal('b')

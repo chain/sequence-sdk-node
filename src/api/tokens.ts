@@ -1,5 +1,12 @@
 import { Client } from '../client'
-import { PageCallback, PageParams, QueryParams, sharedAPI } from '../shared'
+import {
+  Consumer,
+  ObjectCallback,
+  PageCallback,
+  PageParams,
+  QueryParams,
+  sharedAPI,
+} from '../shared'
 
 /**
  * More info: {@link https://dashboard.seq.com/docs/tokens}
@@ -75,12 +82,22 @@ export const tokensAPI = (client: Client) => {
        * @returns {Promise<Page<TokenGroup>>} Requested page of results.
        */
       page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
-        return sharedAPI.queryPage(client, 'tokens', 'list', '/list-tokens', params, {
-          cb,
-        }, pageParams)
+        return sharedAPI.queryPage(
+          client,
+          'tokens',
+          'list',
+          '/list-tokens',
+          params,
+          {
+            cb,
+          },
+          pageParams
+        )
       },
-      all: () => {
-        throw new Error('Unimplemented')
+      all: (consumer: Consumer, cb?: ObjectCallback) => {
+        return sharedAPI.queryEach(client, 'tokens.list', params, consumer, {
+          cb,
+        })
       },
     }),
 
@@ -100,8 +117,10 @@ export const tokensAPI = (client: Client) => {
         sharedAPI.queryPage(client, 'tokens', 'sum', '/sum-tokens', params, {
           cb,
         }),
-      all: () => {
-        throw new Error('Unimplemented')
+      all: (consumer: Consumer, cb?: ObjectCallback) => {
+        return sharedAPI.queryEach(client, 'tokens.sum', params, consumer, {
+          cb,
+        })
       },
     }),
   }
