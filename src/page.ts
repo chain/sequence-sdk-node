@@ -15,6 +15,7 @@ import { ObjectCallback } from './shared'
 export class Page {
   public items: any[]
   public next: {}
+  public cursor: string
   public lastPage: boolean
   public client: any
   public memberPath: string
@@ -44,18 +45,25 @@ export class Page {
     this.items = []
 
     /**
-     * Object representing the query for the immediate next page of results. Can
-     * be passed without modification to the `query` method that generated the
-     * Page object containing it.
-     * @type {Object}
+     * String encoding the query object to request the next page of items.
+     *
+     * @type {String}
      */
-    this.next = {}
+    this.cursor = ""
 
     /**
      * Indicator that there are more results to load if true.
      * @type {Boolean}
      */
     this.lastPage = false
+
+    /**
+     * Object representing the query for the immediate next page of results. Can
+     * be passed without modification to the `query` method that generated the
+     * Page object containing it.
+     * @type {Object}
+     */
+    this.next = {}
 
     Object.assign(this, data)
 
@@ -78,13 +86,15 @@ export class Page {
       queryOwner = queryOwner[member]
     })
 
+    const next = this.cursor !== "" ? { cursor: this.cursor } : this.next
+
     if (typeof queryOwner[this.method] === 'function') {
       if (memberPath[0] === 'actions') {
-        return queryOwner[this.method](this.next, cb).page()
+        return queryOwner[this.method](next, cb).page()
       } else {
-        return queryOwner[this.method](this.next, cb)
+        return queryOwner[this.method](next, cb)
       }
     }
-    return queryOwner.queryPage(this.next, cb)
+    return queryOwner.queryPage(next, cb)
   }
 }

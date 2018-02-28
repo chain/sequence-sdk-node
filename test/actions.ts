@@ -126,15 +126,36 @@ describe('Action', () => {
       ).to.equal(5)
     })
   })
+})
 
-  // This just tests that the callbacks are engaged correctly.
-  describe('Callback support', () => {
-    it('list query', done => {
-      client.actions.list({}).page({}, done)
-    })
+// This just tests that the callbacks are engaged correctly.
+describe('Callback support', () => {
+  it('list query', done => {
+    client.actions.list({}).page({}, done)
+  })
 
-    it('sum query', done => {
-      client.actions.sum({}).page({}, done)
-    })
+  it('sum query', done => {
+    client.actions.sum({}).page({}, done)
+  })
+})
+
+describe('Cursor support for actions', () => {
+  it('should work on list query', async () => {
+    const page = await client.actions.list({}).page({ size: 1 })
+    expect(page.cursor).not.to.equal("")
+    expect(page.items.length).to.equal(1)
+    const secondPage = await client.actions.list({ cursor: page.cursor }).page()
+    expect(secondPage.cursor).not.to.equal("")
+    expect(secondPage.items.length).to.equal(1)
+    expect(page.items[0].amount).not.to.equal(secondPage.items[0].amount)
+  })
+
+  it('should work on sum query', async () => {
+    const page = await client.actions.sum({}).page({ size: 1 })
+    expect(page.cursor).not.to.equal("")
+    expect(page.items.length).to.equal(1)
+    const secondPage = await client.actions.sum({ cursor: page.cursor }).page()
+    expect(secondPage.cursor).not.to.equal("")
+    expect(secondPage.items.length).to.equal(0)
   })
 })

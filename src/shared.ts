@@ -34,6 +34,8 @@ export type PageCallback = (error: Error | null, page: Page | null) => void
 export interface QueryParams {
   filter?: string
   filterParams?: Array<string | number>
+  pageSize?: number
+  cursor?: string
 }
 
 /**
