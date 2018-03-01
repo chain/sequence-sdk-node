@@ -1,3 +1,4 @@
+import { BalanceQueryParams } from './api/balances'
 import { Client } from './client'
 import { Page } from './page'
 
@@ -38,6 +39,10 @@ export interface QueryParams {
   filterParams?: Array<string | number>
   pageSize?: number
   cursor?: string
+}
+
+export interface SumParams extends QueryParams {
+  groupBy?: string[]
 }
 
 /**

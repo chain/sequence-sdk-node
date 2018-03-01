@@ -1,4 +1,5 @@
 import { Client } from '../client'
+import { Query } from '../query'
 import {
   Consumer,
   ObjectCallback,
@@ -70,58 +71,28 @@ export interface TokenSumParams extends QueryParams {
  */
 export const tokensAPI = (client: Client) => {
   return {
-    list: (params?: QueryParams) => ({
-      /**
-       * Get one page of token groups matching the specified query.
-       *
-       * @param {Object} params={} - Filter and pagination information.
-       * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
-       * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-       * @param {Number} params.pageSize - Number of items to return in result set.
-       * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
-       * @returns {Promise<Page<TokenGroup>>} Requested page of results.
-       */
-      page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
-        return sharedAPI.queryPage(
-          client,
-          'tokens',
-          'list',
-          '/list-tokens',
-          params,
-          {
-            cb,
-          },
-          pageParams
-        )
-      },
-      all: (consumer: Consumer, cb?: ObjectCallback) => {
-        return sharedAPI.queryEach(client, 'tokens.list', params, consumer, {
-          cb,
-        })
-      },
-    }),
-
-    sum: (params?: TokenSumParams) => ({
-      /**
-       * Get one page of token sums matching the specified query.
-       *
-       * @param {Object} params={} - Filter and pagination information.
-       * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
-       * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-       * @param {Array<String>} params.groupBy - Fields in Token object to group by.
-       * @param {Number} params.pageSize - Number of items to return in result set.
-       * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
-       * @returns {Promise<Page<TokenSum>>} Requested page of results.
-       */
-      page: (pageParams?: PageParams | {}, cb?: PageCallback) =>
-        sharedAPI.queryPage(client, 'tokens', 'sum', '/sum-tokens', params, {
-          cb,
-        }),
-      all: (consumer: Consumer, cb?: ObjectCallback) => {
-        return sharedAPI.queryEach(client, 'tokens.sum', params, consumer, {
-          cb,
-        })
-      },
-    }),
+    /**
+     * Query a list of tokens matching the specified query.
+     *
+     * @param {Object} params={} - Filter information.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @returns {Query} Query to retrieve results.
+     */
+    list: (params?: QueryParams | {}) =>
+      new Query(client, 'tokens', 'list', params),
+    /**
+     * Query sums of tokens matching the specified query.
+     *
+     * @param {Object} params={} - Filter information.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
+     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
+     * @param {Array<String>} params.groupBy - Fields in Token object to group by.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @returns {Query} Query to retrieve results.
+     */
+    sum: (params?: TokenSumParams | {}) =>
+      new Query(client, 'tokens', 'sum', params),
   }
 }

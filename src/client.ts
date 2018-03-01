@@ -16,6 +16,7 @@ import {
 } from './api/transactions'
 import { Connection } from './connection'
 import { Page } from './page'
+import { Query } from './query'
 import { CreateRequest, QueryParams, UpdateTagsRequest } from './shared'
 
 /**
