@@ -52,9 +52,11 @@ describe('Account', () => {
         id: accountId,
         tags: { x: 1 },
       })
-      const page = await client.accounts.queryPage({
-        filter: `id='${accountId}'`,
-      })
+      const page = await client.accounts
+        .list({
+          filter: `id='${accountId}'`,
+        })
+        .page()
       assert.deepEqual(page.items[0].tags, { x: 1 })
     })
 
@@ -68,7 +70,39 @@ describe('Account', () => {
     })
   })
 
-  describe('queryAll', () => {
+  describe('List.page query', () => {
+    it('should list all accounts', async () => {
+      const page = await client.accounts.list({}).page()
+      expect(page.items.length).to.equal(3)
+    })
+
+    it('should filter on account', async () => {
+      const key = await client.keys.create({ id: uuid.v4() })
+      const account = await client.accounts.create({
+        keys: [key],
+        quorum: 1,
+      })
+      const page = await client.accounts
+        .list({
+          filter: 'id=$1',
+          filterParams: [account.id],
+        })
+        .page()
+      expect(page.items.length).to.equal(1)
+      expect(page.items[0].id).to.equal(account.id)
+    })
+  })
+
+  describe('List.all query', () => {
+    // TODO(dan) test this more extensively
+    it('should iterate over all accounts', async () => {
+      const items: any[] = []
+      await client.accounts.list({}).all(item => items.push(item))
+      expect(items.length).to.equal(4)
+    })
+  })
+
+  describe('queryAll (deprecated)', () => {
     it('success example', async () => {
       const key = await client.keys.create({ id: uuid.v4() })
       const account = await client.accounts.create({

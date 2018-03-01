@@ -1,5 +1,6 @@
 import * as uuid from 'uuid'
 import { Client } from '../client'
+import { Query } from '../query'
 import { Consumer, ObjectCallback, PageCallback, QueryParams } from '../shared'
 import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
 
@@ -102,6 +103,8 @@ export const accountsAPI = (client: Client) => {
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Account>>} Requested page of results.
+     *
+     * @deprecated Use {@link module:AccountsApi~list|list} instead.
      */
     queryPage: (params?: QueryParams, cb?: PageCallback) =>
       sharedAPI.queryPage(
@@ -125,6 +128,8 @@ export const accountsAPI = (client: Client) => {
      * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} A promise resolved upon processing of all items, or
      *                   rejected on error.
+     *
+     * @deprecated Use {@link module:AccountsApi~list|list} instead.
      */
     queryEach: (params: object, consumer: Consumer, cb?: ObjectCallback) =>
       sharedAPI.queryEach(client, 'accounts', params, consumer, { cb }),
@@ -139,8 +144,22 @@ export const accountsAPI = (client: Client) => {
      * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Account[]>} A promise resolved upon processing of all items, or
      *                   rejected on error.
+     *
+     * @deprecated Use {@link module:AccountsApi~list|list} instead.
      */
     queryAll: (params?: QueryParams, cb?: ObjectCallback) =>
       sharedAPI.queryAll(client, 'accounts', params, { cb }),
+
+    /**
+     * Query a list of accounts matching the specified query.
+     *
+     * @param {Object} params={} - Filter information.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
+     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @returns {Query} Query to retrieve results.
+     */
+    list: (params?: QueryParams | {}) =>
+      new Query(client, 'accounts', 'list', params),
   }
 }

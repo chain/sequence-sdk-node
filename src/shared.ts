@@ -123,8 +123,9 @@ export const sharedAPI = {
       }
 
       let page
-      const apiName = memberPath.split('.')[0]
-      if (apiName === 'actions' || apiName === 'tokens') {
+      const splitPath = memberPath.split('.')
+      const method = splitPath[splitPath.length - 1]
+      if (method === 'list' || method === 'sum') {
         page = await getApi(client, memberPath)(params).page()
       } else {
         page = await getApi(client, memberPath).queryPage(params)
