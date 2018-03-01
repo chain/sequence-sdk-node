@@ -1,5 +1,6 @@
 import * as uuid from 'uuid'
 import { Client } from '../client'
+import { Query } from '../query'
 import { Consumer, ObjectCallback, PageCallback, sharedAPI } from '../shared'
 
 /**
@@ -55,6 +56,8 @@ export const keysAPI = (client: Client) => {
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Key>>} Requested page of results.
+     *
+     * @deprecated Use {@link module:KeysApi~list|list} instead.
      */
     queryPage: (
       params: { ids?: string[]; aliases?: string[]; pageSize?: number },
@@ -89,6 +92,8 @@ export const keysAPI = (client: Client) => {
      * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} A promise resolved upon processing of all items, or
      *                   rejected on error.
+     *
+     * @deprecated Use {@link module:KeysApi~list|list} instead.
      */
     queryEach: (
       params: { ids?: string[]; aliases?: string[] },
@@ -108,10 +113,22 @@ export const keysAPI = (client: Client) => {
      * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} A promise resolved upon processing of all items, or
      *                   rejected on error.
+     *
+     * @deprecated Use {@link module:KeysApi~list|list} instead.
      */
     queryAll: (
       params?: { ids?: string[]; aliases?: string[] },
       cb?: ObjectCallback
     ) => sharedAPI.queryAll(client, 'keys', params, { cb }),
+
+    /**
+     * Query a list of keys matching the specified query.
+     *
+     * @param {Object} params={} - Filter information.
+     * @param {Array.<string>} params.ids - List of requested ids, max 200.
+     * @returns {Query} Query to retrieve results.
+     */
+    list: (params?: { ids?: string[] }) =>
+      new Query(client, 'keys', 'list', params),
   }
 }

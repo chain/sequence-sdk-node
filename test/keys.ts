@@ -29,14 +29,33 @@ describe('Key', () => {
     return expect(client.keys.create({ id })).to.be.rejectedWith('SEQ050')
   })
 
-  it('returns key in list after key creation', async () => {
+  it('queryPage should work (deprecated)', async () => {
     const id = uuid.v4()
     const key = await client.keys.create({ id })
     const resp = await client.keys.queryPage({})
     return expect(resp.items.map((item: any) => item.id)).to.contain(id)
   })
 
-  describe('queryAll', () => {
+  describe('List.page query', () => {
+    // TODO(dan) test this more extensively
+    it('should list all keys', async () => {
+      const page = await client.keys.list().page()
+      expect(page.items.length).to.equal(20)
+    })
+  })
+
+  describe('List.all query', () => {
+    // TODO(dan) test this more extensively
+    it('should iterate over all keys', async () => {
+      const id = uuid.v4()
+      await client.keys.create({ id })
+      const items: any[] = []
+      await client.keys.list().all(item => items.push(item))
+      expect(items.map((item: any) => item.id)).to.include(id)
+    })
+  })
+
+  describe('queryAll (deprecated)', () => {
     it('success example', async () => {
       const id = uuid.v4()
       await client.keys.create({ id })
@@ -61,6 +80,14 @@ describe('Key', () => {
 
     it('queryAll', done => {
       client.keys.queryAll({}, done)
+    })
+
+    it('list.page', done => {
+      client.keys.list({}).page({}, done)
+    })
+
+    it('list.all', done => {
+      client.keys.list({}).all(() => undefined, done)
     })
   })
 })
