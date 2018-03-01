@@ -89,8 +89,8 @@ export class Page {
     const next = this.cursor !== '' ? { cursor: this.cursor } : this.next
 
     if (typeof queryOwner[this.method] === 'function') {
-      if (memberPath[0] === 'actions' || memberPath[0] === 'tokens') {
-        return queryOwner[this.method]({}, cb).page(next)
+      if (this.method === 'list' || this.method === 'sum') {
+        return queryOwner[this.method]({}).page(next, cb)
       } else {
         return queryOwner[this.method](next, cb)
       }

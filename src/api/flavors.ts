@@ -1,5 +1,6 @@
 import * as uuid from 'uuid'
 import { Client } from '../client'
+import { Query } from '../query'
 import { Consumer, ObjectCallback, PageCallback, QueryParams } from '../shared'
 import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
 
@@ -82,23 +83,14 @@ export const flavorsAPI = (client: Client) => {
       sharedAPI.tryCallback(client.request('/update-flavor-tags', params), cb),
 
     /**
-     * Get one page of flavors matching the specified query.
+     * Query a list of flavors matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
      * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
-     * @returns {Promise<Page<Flavor>>} Requested page of results.
+     * @returns {Query} Query to retrieve results.
      */
-    list: (params: QueryParams, cb?: PageCallback) =>
-      sharedAPI.queryPage(
-        client,
-        'flavors',
-        'queryPage',
-        '/list-flavors',
-        params,
-        { cb }
-      ),
+    list: (params?: QueryParams | {}) =>
+      new Query(client, 'flavors', 'list', params),
   }
 }

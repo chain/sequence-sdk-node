@@ -89,7 +89,6 @@ export const tokensAPI = (client: Client) => {
      * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Array<String>} params.groupBy - Fields in Token object to group by.
-     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Query} Query to retrieve results.
      */
     sum: (params?: TokenSumParams | {}) =>

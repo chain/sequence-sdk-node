@@ -156,7 +156,6 @@ export const accountsAPI = (client: Client) => {
      * @param {Object} params={} - Filter information.
      * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Query} Query to retrieve results.
      */
     list: (params?: QueryParams | {}) =>

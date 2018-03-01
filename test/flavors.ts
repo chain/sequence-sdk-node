@@ -56,9 +56,11 @@ describe('Flavor', () => {
         id: xFlavorId,
         tags: { x: 1 },
       })
-      const page = await client.flavors.list({
-        filter: `id='${xFlavorId}'`,
-      })
+      const page = await client.flavors
+        .list({
+          filter: `id='${xFlavorId}'`,
+        })
+        .page()
       assert.deepEqual(page.items[0].tags, { x: 1 })
     })
 
@@ -69,6 +71,56 @@ describe('Flavor', () => {
           tags: { x: 1 },
         })
       ).to.be.rejectedWith('SEQ051')
+    })
+  })
+
+  describe('pagination', () => {
+    it('fetches a second page with a cursor', async () => {
+      const filterKey = uuid.v4()
+
+      for (let i = 0; i < 6; i++) {
+        await client.flavors.create({
+          keys: [key],
+          tags: {
+            filter: filterKey,
+          },
+        })
+      }
+
+      const page = await client.flavors
+        .list({
+          filter: 'tags.filter = $1',
+          filterParams: [filterKey],
+        })
+        .page({ size: 5 })
+      assert.equal(page.items.length, 5)
+
+      const page2 = await client.flavors.list().page({ cursor: page.cursor })
+      assert.equal(page2.items.length, 1)
+    })
+
+    it('can process all items', async () => {
+      const filterKey = uuid.v4()
+
+      for (let i = 0; i < 101; i++) {
+        await client.flavors.create({
+          keys: [key],
+          tags: {
+            filter: filterKey,
+          },
+        })
+      }
+
+      const items: any[] = []
+      await client.flavors
+        .list({
+          filter: 'tags.filter = $1',
+          filterParams: [filterKey],
+        })
+        .all(item => {
+          items.push(item)
+        })
+      assert.equal(items.length, 101)
     })
   })
 
@@ -90,7 +142,7 @@ describe('Flavor', () => {
     })
 
     it('query', done => {
-      client.flavors.list({}, done)
+      client.flavors.list().page({}, done)
     })
   })
 })

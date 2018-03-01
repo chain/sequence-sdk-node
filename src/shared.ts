@@ -166,8 +166,8 @@ export const sharedAPI = {
   ) => {
     const items: any = []
 
-    const result = getApi(client, memberPath)
-      .queryEach(params, (item: object) => {
+    const result = sharedAPI
+      .queryEach(client, memberPath, params, (item: object) => {
         items.push(item)
       })
       .then(() => items)
