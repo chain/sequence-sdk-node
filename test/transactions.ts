@@ -64,7 +64,7 @@ describe('Transaction', () => {
     ).to.be.rejectedWith('SEQ706')
   })
 
-  describe('queryAll', () => {
+  describe('queryAll (deprecated)', () => {
     it('success example', async () => {
       const asset = await createAsset()
       const account = await createAccount()
@@ -78,6 +78,23 @@ describe('Transaction', () => {
       const created = tx.id
       const result = await client.transactions.queryAll({})
       expect(result.map((x: any) => x.id)).to.include(created)
+    })
+  })
+
+  describe('List.page query', () => {
+    it('should list all transactions', async () => {
+      // TODO(dan) test this more extensively
+      const page = await client.transactions.list({}).page()
+      expect(page.items.length).to.equal(17)
+    })
+  })
+
+  describe('List.all query', () => {
+    // TODO(dan) test this more extensively
+    it('should iterate over all transactions', async () => {
+      const items: any[] = []
+      await client.transactions.list({}).all(item => items.push(item))
+      expect(items.length).to.equal(17)
     })
   })
 

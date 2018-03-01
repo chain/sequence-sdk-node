@@ -1,4 +1,5 @@
 import { Client } from '../client'
+import { Query } from '../query'
 import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
 
 /**
@@ -282,6 +283,8 @@ export const transactionsAPI = (client: Client) => {
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Transaction>>} Requested page of results.
+     *
+     * @deprecated Use {@link module:TransactionsApi~list|list} instead.
      */
     queryPage: (params: TransactionQueryParameters, cb: any) =>
       sharedAPI.queryPage(
@@ -310,6 +313,8 @@ export const transactionsAPI = (client: Client) => {
      * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} A promise resolved upon processing of all items, or
      *                   rejected on error.
+     *
+     * @deprecated Use {@link module:TransactionsApi~list|list} instead.
      */
     queryEach: (
       params: TransactionQueryParameters,
@@ -332,9 +337,22 @@ export const transactionsAPI = (client: Client) => {
      * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} A promise resolved upon processing of all items, or
      *                   rejected on error.
+     *
+     * @deprecated Use {@link module:TransactionsApi~list|list} instead.
      */
     queryAll: (params: TransactionQueryParameters, cb?: ObjectCallback) =>
       sharedAPI.queryAll(client, 'transactions', params, { cb }),
+
+    /**
+     * Query a list of transactions matching the specified query.
+     *
+     * @param {Object} params={} - Filter information.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
+     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
+     * @returns {Query} Query to retrieve results.
+     */
+    list: (params?: QueryParams | {}) =>
+      new Query(client, 'transactions', 'list', params),
 
     /**
      * Builds, signs, and submits a transaction.
