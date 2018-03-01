@@ -85,7 +85,7 @@ export const flavorsAPI = (client: Client) => {
      * Get one page of flavors matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.

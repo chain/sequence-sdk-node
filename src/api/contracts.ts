@@ -77,7 +77,7 @@ export const contractsAPI = (client: Client) => {
      * Get one page of contracts matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Integer} params.timestamp - A millisecond Unix timestamp. By using this parameter, you can perform queries that reflect the state of the blockchain at different points in time.
      * @param {Number} params.pageSize - Number of items to return in result set.
@@ -103,7 +103,7 @@ export const contractsAPI = (client: Client) => {
      * supplied consume callback once per item.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Integer} params.timestamp - A millisecond Unix timestamp. By using this parameter, you can perform queries that reflect the state of the blockchain at different points in time.
      * @param {Number} params.pageSize - Number of items to return in result set.
@@ -124,7 +124,7 @@ export const contractsAPI = (client: Client) => {
      * Fetch all contracts mathcing the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Integer} params.timestamp - A millisecond Unix timestamp. By using this parameter, you can perform queries that reflect the state of the blockchain at different points in time.
      * @param {Number} params.pageSize - Number of items to return in result set.

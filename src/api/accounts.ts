@@ -98,7 +98,7 @@ export const accountsAPI = (client: Client) => {
      * Get one page of accounts matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
@@ -121,7 +121,7 @@ export const accountsAPI = (client: Client) => {
      * supplied consume callback once per item.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {QueryProcessor<Account>} processor - Processing callback.
@@ -138,7 +138,7 @@ export const accountsAPI = (client: Client) => {
      * Fetch all accounts matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
@@ -154,7 +154,7 @@ export const accountsAPI = (client: Client) => {
      * Query a list of accounts matching the specified query.
      *
      * @param {Object} params={} - Filter information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Query} Query to retrieve results.

@@ -14,7 +14,7 @@ import {
  * objects, only simple sums over the amount fields in a specified list of
  * contract objects
  *
- * More info: {@link https://dashboard.seq.com/docs/queries}
+ * More info: {@link https://dashboard.seq.com/docs/filters}
  * @typedef {Object} Balance
  * @global
  *
@@ -34,7 +34,7 @@ export interface BalanceQueryParams extends QueryParams {
  *
  * API for interacting with {@link Balance balances}.
  *
- * More info: {@link https://dashboard.seq.com/docs/queries}
+ * More info: {@link https://dashboard.seq.com/docs/filters}
  * @module BalancesApi
  */
 export const balancesAPI = (client: Client) => {
@@ -45,7 +45,7 @@ export const balancesAPI = (client: Client) => {
      * Get one page of balances matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
@@ -67,7 +67,7 @@ export const balancesAPI = (client: Client) => {
      * supplied consume callback once per item.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {QueryProcessor<Balance>} processor - Processing callback.
@@ -86,7 +86,7 @@ export const balancesAPI = (client: Client) => {
      * Fetch all balances mathcing the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.

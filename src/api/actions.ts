@@ -23,7 +23,7 @@ export interface PagePromise<T> extends Promise<T> {
  * matching actions, and all other fields represent the parameters by which to group
  * actions.
  *
- * More info: {@link https://dashboard.seq.com/docs/queries}
+ * More info: {@link https://dashboard.seq.com/docs/filters}
  *
  * @typedef {Object} Action/ActionSum
  * @global
@@ -90,7 +90,7 @@ export interface ActionSumParams extends QueryParams {
 /**
  * API for interacting with {@link Action actions}.
  *
- * More info: {@link https://dashboard.seq.com/docs/queries}
+ * More info: {@link https://dashboard.seq.com/docs/filters}
  * @module ActionsApi
  */
 export const actionsAPI = (client: Client) => {
@@ -99,7 +99,7 @@ export const actionsAPI = (client: Client) => {
      * Get one page of actions matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
@@ -159,7 +159,7 @@ export const actionsAPI = (client: Client) => {
      * Get one page of action sums matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Array<String>} params.groupBy - Fields in Action object to group by.
      * @param {Number} params.pageSize - Number of items to return in result set.

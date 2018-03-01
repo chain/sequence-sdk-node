@@ -172,7 +172,7 @@ export class TransactionBuilder {
    *   Asset alias specifying the asset to be retired.
    *   You must specify either an ID or an alias.
    * @param {Number} params.amount - Amount of the flavor to be retired.
-   * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/queries}.
+   * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.referenceData - Reference data to add to the retiring contract.
    * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
@@ -221,7 +221,7 @@ export class TransactionBuilder {
    *   destinationAccountId instead.** Account alias specifying the account
    *   controlling the asset. You must specify a destination account ID or
    *   alias.
-   * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/queries}.
+   * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
@@ -274,7 +274,7 @@ export const transactionsAPI = (client: Client) => {
      * Get one page of transactions matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.startTime -  A Unix timestamp in milliseconds. When specified, only transactions with a block time greater than the start time will be returned.
      * @param {Number} params.endTime - A Unix timestamp in milliseconds. When specified, only transactions with a block time less than the start time will be returned.
@@ -300,7 +300,7 @@ export const transactionsAPI = (client: Client) => {
      * supplied consume callback once per item.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.startTime -  A Unix timestamp in milliseconds. When specified, only transactions with a block time greater than the start time will be returned.
      * @param {Number} params.endTime - A Unix timestamp in milliseconds. When specified, only transactions with a block time less than the start time will be returned.
@@ -322,7 +322,7 @@ export const transactionsAPI = (client: Client) => {
      * supplied processor callback with each item individually.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/queries}.
+     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.startTime -  A Unix timestamp in milliseconds. When specified, only transactions with a block time greater than the start time will be returned.
      * @param {Number} params.endTime - A Unix timestamp in milliseconds. When specified, only transactions with a block time less than the start time will be returned.
