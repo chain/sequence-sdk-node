@@ -118,8 +118,8 @@ export const sharedAPI = {
       }
 
       let page
-      const apiName = memberPath.split(".")[0]
-      if (apiName === "actions" || apiName === "tokens") {
+      const apiName = memberPath.split('.')[0]
+      if (apiName === 'actions' || apiName === 'tokens') {
         page = await getApi(client, memberPath)(params).page()
       } else {
         page = await getApi(client, memberPath).queryPage(params)

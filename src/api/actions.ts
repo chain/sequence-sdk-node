@@ -1,4 +1,5 @@
 import { Client } from '../client'
+import { Page } from '../page'
 import {
   Consumer,
   ObjectCallback,
@@ -8,6 +9,10 @@ import {
   sharedAPI,
 } from '../shared'
 
+export interface PagePromise<T> extends Promise<T> {
+  page: (pageParams?: PageParams | {}, cb2?: PageCallback) => Promise<Page>
+  all: (consumer: Consumer, cb2?: ObjectCallback) => Promise<any>
+}
 /**
  * Each transaction contains one or more actions. Action queries are designed to provide
  * insights into those actions. There are two types of queries you can run against them;
@@ -98,7 +103,7 @@ export const actionsAPI = (client: Client) => {
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
-     * @returns {Promise<Page<Action>>} Requested page of results.
+     * @returns {PagePromise<Page<Action>>} Requested page of results.
      * @example <caption>List all actions after a certain time</caption>
      * ledger.actions.list({
      *   filter: 'timestamp > $1',
@@ -115,26 +120,40 @@ export const actionsAPI = (client: Client) => {
      *   }
      * }
      */
-    list: (params: QueryParams) => ({
-      page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
+    list: (params: QueryParams, cb?: PageCallback) => {
+      const promise = sharedAPI.queryPage(
+        client,
+        'actions',
+        'list',
+        '/list-actions',
+        params,
+        { cb }
+      ) as PagePromise<Page>
+
+      // FIXME: remove the wrapping PagePromise object in 2.0, where
+      // we don't need to maintain both old and new interfaces.
+      const getPage = (pageParams?: PageParams | {}, cb2?: PageCallback) => {
         return sharedAPI.queryPage(
           client,
           'actions',
           'list',
           '/list-actions',
           params,
-          {
-            cb,
-          },
+          { cb: cb2 },
           pageParams
         )
-      },
-      all: (consumer: Consumer, cb?: ObjectCallback) => {
+      }
+
+      const processAll = (consumer: Consumer, cb2?: ObjectCallback) => {
         return sharedAPI.queryEach(client, 'actions.list', params, consumer, {
-          cb,
+          cb: cb2,
         })
-      },
-    }),
+      }
+
+      promise.page = getPage
+      promise.all = processAll
+      return promise
+    },
 
     /**
      * Get one page of action sums matching the specified query.
@@ -145,10 +164,19 @@ export const actionsAPI = (client: Client) => {
      * @param {Array<String>} params.groupBy - Fields in Action object to group by.
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
-     * @returns {Promise<Page<ActionSum>>} Requested page of results.
+     * @returns {PagePromise<Page<ActionSum>>} Requested page of results.
      */
-    sum: (params: ActionSumParams) => ({
-      page: (pageParams?: PageParams | {}, cb?: PageCallback) => {
+    sum: (params: ActionSumParams, cb?: PageCallback) => {
+      const promise = sharedAPI.queryPage(
+        client,
+        'actions',
+        'sum',
+        '/sum-actions',
+        params,
+        { cb }
+      ) as PagePromise<Page>
+
+      const getPage = (pageParams?: PageParams | {}, cb2?: PageCallback) => {
         return sharedAPI.queryPage(
           client,
           'actions',
@@ -156,16 +184,20 @@ export const actionsAPI = (client: Client) => {
           '/sum-actions',
           params,
           {
-            cb,
+            cb: cb2,
           },
           pageParams
         )
-      },
-      all: (consumer: Consumer, cb?: ObjectCallback) => {
+      }
+      const processAll = (consumer: Consumer, cb2?: ObjectCallback) => {
         return sharedAPI.queryEach(client, 'actions.sum', params, consumer, {
-          cb,
+          cb: cb2,
         })
-      },
-    }),
+      }
+
+      promise.page = getPage
+      promise.all = processAll
+      return promise
+    },
   }
 }

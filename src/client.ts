@@ -1,6 +1,6 @@
 import { Agent } from 'https'
 import { accountsAPI } from './api/accounts'
-import { actionsAPI, ActionSumParams } from './api/actions'
+import { actionsAPI, ActionSumParams, PagePromise } from './api/actions'
 import { assetsAPI } from './api/assets'
 import { BalanceQueryParams, balancesAPI } from './api/balances'
 import { ContractQueryParameters, contractsAPI } from './api/contracts'

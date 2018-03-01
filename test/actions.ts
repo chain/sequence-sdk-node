@@ -56,19 +56,41 @@ describe('Action', () => {
     })
   })
 
-  describe('List.page query', () => {
+  describe('List query (deprecated)', () => {
     it('should list three actions', async () => {
       const page = await client.actions.list({
         filter: 'reference_data.test=$1',
         filterParams: [refData.test],
-      }).page()
+      })
       expect(page.items.length).to.equal(3)
     })
     it('should respect the size argument', async () => {
       const page = await client.actions.list({
         filter: 'reference_data.test=$1',
         filterParams: [refData.test],
-      }).page({ size: 2 })
+        pageSize: 2,
+      })
+      expect(page.items.length).to.equal(2)
+    })
+  })
+
+  describe('List.page query', () => {
+    it('should list three actions', async () => {
+      const page = await client.actions
+        .list({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+        })
+        .page()
+      expect(page.items.length).to.equal(3)
+    })
+    it('should respect the size argument', async () => {
+      const page = await client.actions
+        .list({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+        })
+        .page({ size: 2 })
       expect(page.items.length).to.equal(2)
     })
   })
@@ -76,23 +98,25 @@ describe('Action', () => {
   describe('List.all query', () => {
     it('should consume three items', async () => {
       const processed: any[] = []
-      await client.actions.list({
-        filter: 'reference_data.test=$1',
-        filterParams: [refData.test],
-      }).all((action) => {
-        processed.push(action)
-      })
+      await client.actions
+        .list({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+        })
+        .all(action => {
+          processed.push(action)
+        })
       expect(processed.length).to.equal(3)
     })
   })
 
-  describe('Sum.page query with groupBy', () => {
+  describe('Sum query with groupBy (deprecated)', () => {
     it('should have two items', async () => {
       const page = await client.actions.sum({
         filter: 'reference_data.test=$1',
         filterParams: [refData.test],
         groupBy: ['type'],
-      }).page()
+      })
       expect(page.items.find((b: any) => b.type === 'issue').amount).to.equal(
         12
       )
@@ -105,7 +129,36 @@ describe('Action', () => {
         filter: 'reference_data.test=$1',
         filterParams: [refData.test],
         groupBy: ['type'],
-      }).page({ size: 1 })
+        pageSize: 1,
+      })
+      expect(page.items.length).to.equal(1)
+    })
+  })
+
+  describe('Sum.page query with groupBy', () => {
+    it('should have two items', async () => {
+      const page = await client.actions
+        .sum({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+          groupBy: ['type'],
+        })
+        .page()
+      expect(page.items.find((b: any) => b.type === 'issue').amount).to.equal(
+        12
+      )
+      expect(
+        page.items.find((b: any) => b.type === 'transfer').amount
+      ).to.equal(5)
+    })
+    it('should respect the size argument', async () => {
+      const page = await client.actions
+        .sum({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+          groupBy: ['type'],
+        })
+        .page({ size: 1 })
       expect(page.items.length).to.equal(1)
     })
   })
@@ -113,28 +166,31 @@ describe('Action', () => {
   describe('Sum.all query with groupBy', () => {
     it('should have two items', async () => {
       const sums: any[] = []
-      await client.actions.sum({
-        filter: 'reference_data.test=$1',
-        filterParams: [refData.test],
-        groupBy: ['type'],
-      }).all((sum) => sums.push(sum))
-      expect(
-        sums.find((b: any) => b.type === "issue").amount
-      ).to.equal(12)
-      expect(
-        sums.find((b: any) => b.type === "transfer").amount
-      ).to.equal(5)
+      await client.actions
+        .sum({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+          groupBy: ['type'],
+        })
+        .all(sum => sums.push(sum))
+      expect(sums.find((b: any) => b.type === 'issue').amount).to.equal(12)
+      expect(sums.find((b: any) => b.type === 'transfer').amount).to.equal(5)
     })
   })
 })
 
 // This just tests that the callbacks are engaged correctly.
 describe('Callback support', () => {
-  it('list query', done => {
+  it('list query (deprecated)', done => {
+    client.actions.list({}, done)
+  })
+  it('list.page query', done => {
     client.actions.list({}).page({}, done)
   })
-
-  it('sum query', done => {
+  it('sum query (deprecated)', done => {
+    client.actions.sum({}, done)
+  })
+  it('sum.page query', done => {
     client.actions.sum({}).page({}, done)
   })
 })
@@ -142,20 +198,20 @@ describe('Callback support', () => {
 describe('Cursor support for actions', () => {
   it('should work on list query', async () => {
     const page = await client.actions.list({}).page({ size: 1 })
-    expect(page.cursor).not.to.equal("")
+    expect(page.cursor).not.to.equal('')
     expect(page.items.length).to.equal(1)
     const secondPage = await client.actions.list({ cursor: page.cursor }).page()
-    expect(secondPage.cursor).not.to.equal("")
+    expect(secondPage.cursor).not.to.equal('')
     expect(secondPage.items.length).to.equal(1)
     expect(page.items[0].amount).not.to.equal(secondPage.items[0].amount)
   })
 
   it('should work on sum query', async () => {
     const page = await client.actions.sum({}).page({ size: 1 })
-    expect(page.cursor).not.to.equal("")
+    expect(page.cursor).not.to.equal('')
     expect(page.items.length).to.equal(1)
     const secondPage = await client.actions.sum({ cursor: page.cursor }).page()
-    expect(secondPage.cursor).not.to.equal("")
+    expect(secondPage.cursor).not.to.equal('')
     expect(secondPage.items.length).to.equal(0)
   })
 })
