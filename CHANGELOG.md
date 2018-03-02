@@ -1,5 +1,24 @@
 # Sequence Node SDK changelog
 
+## 1.3.0 (20180302)
+
+For full details on the 1.3 release and how to migrate your code,
+[visit the Sequence changelog](https://dashboard.seq.com/docs/changelog#release-v1-3).
+
+* Added `Token`s. [More info](https://dashboard.seq.com/docs/changelog#release-v1-3)
+* Added `tokenTags` on `Transaction` builder's `issue`/`transfer` actions.
+* Added `filter` and `filterParams` on `Transaction` builder's
+  `transfer`/`retire` actions.
+* Updated pagination interfaces:
+  `.[list|sum]().page(size: size)` to retrieve one page.
+  `.[list|sum]().page(cursor: cursor)` to retrieve another page.
+  `.[list|sum]().all` to iterate over all items.
+  `pageSize` has been deprecated; you can now use `.page(size: size)`.
+* Querying balances has been deprecated; you can now use `tokens.sum` to
+  query balances in an account.
+* Querying contracts has been deprecated; you can now use `tokens.list` to
+  list tokens in an account.
+
 ## 1.2.0 (20180216)
 
 For full details on the 1.2 release and how to migrate your code,
