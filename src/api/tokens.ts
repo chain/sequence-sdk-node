@@ -72,24 +72,74 @@ export interface TokenSumParams extends QueryParams {
 export const tokensAPI = (client: Client) => {
   return {
     /**
-     * Query a list of tokens matching the specified query.
+     * Get tokens matching the specified query.
      *
      * @param {Object} params={} - Filter information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @param {String} params.filter - Filter string,
+     *   see {@link https://dashboard.seq.com/docs/filters}.
+     * @param {Array<String|Number>} params.filterParams - Parameter values for
+     *   filter string (if needed).
      * @returns {Query} Query to retrieve results.
+     * @example <caption>List all tokens after a certain time</caption>
+     * async () => {
+     *   await ledger.tokens
+     *     .list({
+     *       filter: 'timestamp > $1',
+     *       filterParams: ['1985-10-26T01:21:00Z']
+     *     })
+     *     .all(token => {
+     *       console.log(token)
+     *     })
+     * }
+     * @example <caption>Paginate tokens</caption>
+     * async () => {
+     *   const page1 = await ledger.tokens
+     *     .list({})
+     *     .page({ size: 1 })
+     *   const token = page1.items[0];
+     *   console.log(token)
+     * const page2 = await ledger.tokens
+     *     .list({})
+     *     .page({ cursor: page.cursor })
+     * }
      */
     list: (params?: QueryParams | {}) =>
       new Query(client, 'tokens', 'list', params),
     /**
-     * Query sums of tokens matching the specified query.
+     * Get sums of tokens matching the specified query.
      *
      * @param {Object} params={} - Filter information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Array<String>} params.groupBy - Fields in Token object to group by.
+     * @param {String} params.filter - Filter string,
+     *   see {@link https://dashboard.seq.com/docs/filters}.
+     * @param {Array<String|Number>} params.filterParams - Parameter values for
+     *   filter string (if needed).
+     * @param {Array<String>} params.groupBy - Token object fields to group by.
      * @returns {Query} Query to retrieve results.
+     * @example <caption>Sum all tokens after a certain time grouped by flavor ID</caption>
+     * async () => {
+     *   await ledger.tokens
+     *     .sum({
+     *       filter: 'timestamp > $1',
+     *       filterParams: ['1985-10-26T01:21:00Z'],
+     *       groupBy: ['flavorId']
+     *     })
+     *     .all(sum => {
+     *       console.log(sum)
+     *     })
+     * }
+     * @example <caption>Paginate sums of tokens grouped by flavor ID</caption>
+     * async () => {
+     *   const page1 = await ledger.tokens
+     *     .sum({
+     *       groupBy: ['flavorId']
+     *     })
+     *     .page({ size: 1 })
+     *   const sum = page1.items[0];
+     *   console.log(sum)
+     *   const page2 = await ledger.tokens
+     *     .sum({})
+     *     .page({ cursor: page.cursor })
+     * }
      */
     sum: (params?: TokenSumParams | {}) =>
       new Query(client, 'tokens', 'sum', params),

@@ -96,28 +96,39 @@ export interface ActionSumParams extends QueryParams {
 export const actionsAPI = (client: Client) => {
   return {
     /**
-     * Get one page of actions matching the specified query.
+     * Get actions matching the specified query.
      *
-     * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
-     * @returns {PagePromise<Page<Action>>} Requested page of results.
-     * @example <caption>List all actions after a certain time</caption>
-     * ledger.actions.list({
-     *   filter: 'timestamp > $1',
-     *   filterParams: ['1985-10-26T01:21:00Z']
-     * }).then(handlePage)
-     * function handlePage(page) {
-     *   for (let i in page.items) {
-     *     const action = page.items[i];
-     *     console.log('timestamp: ' + action.timestamp)
-     *     console.log('amount: ' + action.amount)
-     *   }
-     *   if (!page.lastPage) {
-     *     page.nextPage().then(handlePage)
-     *   }
+     * @param {Object} params={} - Filter information.
+     * @param {String} params.filter - Filter string,
+     *   see {@link https://dashboard.seq.com/docs/filters}.
+     * @param {Array<String|Number>} params.filterParams - Parameter values for
+     *   filter string (if needed).
+     * @param {Number} params.pageSize - **Deprecated. Use
+     *   list.page({ size: 1 }) instead.** Number of items to return.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of
+     *   Promise return value as desired.
+     * @returns {PagePromise<Page<Action>>} A promise of results.
+     * @example <caption>List all actions for a source account</caption>
+     * async () => {
+     *   await ledger.actions
+     *     .list({
+     *       filter: 'sourceAccountId = $1',
+     *       filterParams: [account.id]
+     *     })
+     *     .all(action => {
+     *       console.log(action)
+     *     })
+     * }
+     * @example <caption>Paginate actions</caption>
+     * async () => {
+     *   const page1 = await ledger.actions
+     *     .list({})
+     *     .page({ size: 1 })
+     *   const action = page1.items[0];
+     *   console.log(action)
+     *   const page2 = await ledger.actions
+     *     .list({})
+     *     .page({ cursor: page.cursor })
      * }
      */
     list: (params: QueryParams, cb?: PageCallback) => {
@@ -156,15 +167,44 @@ export const actionsAPI = (client: Client) => {
     },
 
     /**
-     * Get one page of action sums matching the specified query.
+     * Get sums of actions matching the specified query.
      *
      * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Array<String>} params.groupBy - Fields in Action object to group by.
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
-     * @returns {PagePromise<Page<ActionSum>>} Requested page of results.
+     * @param {String} params.filter - Filter string,
+     *   see {@link https://dashboard.seq.com/docs/filters}.
+     * @param {Array<String|Number>} params.filterParams - Parameter values for
+     *   filter string (if needed).
+     * @param {Array<String>} params.groupBy - Action object fields to group by.
+     * @param {Number} params.pageSize - **Deprecated. Use sum.page({ size: 1 })
+     *   instead.** Number of items to return.
+     * @param {PageCallback} [callback] - Optional callback. Use instead of
+     *   Promise return value as desired.
+     * @returns {PagePromise<Page<ActionSum>>} A promise of results.
+     * @example <caption>Sum actions for an account grouped by type</caption>
+     * async () => {
+     *   await ledger.actions
+     *     .sum({
+     *       filter: 'destinationAccountId = $2',
+     *       filterParams: [account.id],
+     *       groupBy: ['type']
+     *     })
+     *     .all(sum => {
+     *       console.log(sum)
+     *     })
+     * }
+     * @example <caption>Paginate sums of actions grouped by type</caption>
+     * async () => {
+     *   const page1 = await ledger.actions
+     *     .sum({
+     *       groupBy: ['type']
+     *     })
+     *     .page({ size: 1 })
+     *   const sum = page1.items[0];
+     *   console.log(sum)
+     *   const page2 = await ledger.actions
+     *     .sum({})
+     *     .page({ cursor: page.cursor })
+     * }
      */
     sum: (params: ActionSumParams, cb?: PageCallback) => {
       const promise = sharedAPI.queryPage(

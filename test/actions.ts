@@ -200,7 +200,9 @@ describe('Cursor support for actions', () => {
     const page = await client.actions.list({}).page({ size: 1 })
     expect(page.cursor).not.to.equal('')
     expect(page.items.length).to.equal(1)
-    const secondPage = await client.actions.list({ cursor: page.cursor }).page()
+    const secondPage = await client.actions
+      .list({})
+      .page({ cursor: page.cursor })
     expect(secondPage.cursor).not.to.equal('')
     expect(secondPage.items.length).to.equal(1)
     expect(page.items[0].amount).not.to.equal(secondPage.items[0].amount)
@@ -210,7 +212,9 @@ describe('Cursor support for actions', () => {
     const page = await client.actions.sum({}).page({ size: 1 })
     expect(page.cursor).not.to.equal('')
     expect(page.items.length).to.equal(1)
-    const secondPage = await client.actions.sum({ cursor: page.cursor }).page()
+    const secondPage = await client.actions
+      .sum({})
+      .page({ cursor: page.cursor })
     expect(secondPage.cursor).not.to.equal('')
     expect(secondPage.items.length).to.equal(0)
   })
