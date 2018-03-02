@@ -176,7 +176,8 @@ export class TransactionBuilder {
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.referenceData - Reference data to add to the retiring contract.
-   * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
+   * @param {Object} params.changeReferenceData - **Deprecated. This happens automatically when using token tags.**
+   *   Reference data to add to the change contract, if it is necessary.
    */
   public retire(params: {
     sourceAccountId?: string
@@ -226,7 +227,8 @@ export class TransactionBuilder {
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.referenceData - Reference data to add to the receiving contract.
-   * @param {Object} params.changeReferenceData - Reference data to add to the change contract, if it is necessary.
+   * @param {Object} params.changeReferenceData - **Deprecated. This happens automatically when using token tags.**
+   *   Reference data to add to the change contract, if it is necessary.
    */
   public transfer(params: {
     sourceAccountId?: string
