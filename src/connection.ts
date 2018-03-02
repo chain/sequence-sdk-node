@@ -14,12 +14,17 @@ export interface SessionToken {
 }
 
 const blacklistAttributes = [
+  'account_tags',
+  'action_tags',
   'after',
   'asset_tags',
-  'account_tags',
+  'destination_account_tags',
+  'flavor_tags',
   'next',
   'reference_data',
+  'source_account_tags',
   'tags',
+  'token_tags',
 ]
 
 export interface ApiObject {
