@@ -390,11 +390,7 @@ export const transactionsAPI = (client: Client) => {
       }
 
       const makePromise = async () => {
-        const tpl = await client.request('/build-transaction', builder)
-        const signed = await client.request('/sign-transaction', {
-          transaction: tpl,
-        })
-        return client.request('/submit-transaction', { transaction: signed })
+        return client.request('/transact', builder)
       }
       return sharedAPI.tryCallback(makePromise(), cb)
     },
