@@ -31,11 +31,11 @@ const constructClient = () => {
 
 const client = constructClient()
 
-const balanceByAssetAlias = async (balances: any) => {
-  const res: { [assetAlias: string]: number } = {}
+const balanceByFlavorId = async (balances: any) => {
+  const res: { [flavorId: string]: number } = {}
   const balance = await balances
   balance.items.forEach((item: any) => {
-    res[item.sumBy.assetAlias] = item.amount
+    res[item.flavorId] = item.amount
   })
   return res
 }
@@ -81,7 +81,7 @@ const transact = (
 }
 
 export const testHelpers = {
-  balanceByAssetAlias,
+  balanceByFlavorId,
   client,
   constructClient,
   createAccount,

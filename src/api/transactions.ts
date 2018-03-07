@@ -85,7 +85,11 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * @property {Object} tokenTags
  * User specified, unstructured data embedded within a token (possibly null).
  *
+ * @property {Object} actionTags
+ * User specified, unstructured data embedded within an action (possibly null).
+ *
  * @property {Object} referenceData
+ * **Deprecated. Use actionTags or tokenTags instead.**
  * User specified, unstructured data embedded within an action (possibly null).
  */
 
@@ -118,7 +122,7 @@ export class TransactionBuilder {
   }
 
   /**
-   * Add an action that issues flavors.
+   * Add an action that issues tokens.
    *
    * @param {Object} params - Action parameters.
    * @param {String} params.flavorId - ID of flavor to be issued.
@@ -137,7 +141,9 @@ export class TransactionBuilder {
    *   controlling the asset. You must specify a destination account ID or
    *   alias.
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
-   * @param {Object} params.referenceData - Reference data to add to the receiving contract.
+   * @param {Object} params.actionTags - Tags to add to the action.
+   * @param {Object} params.referenceData - **Deprecated. Use actionTags or
+   * tokenTags instead.** Reference data to add to the receiving contract.
    */
   public issue(params: {
     flavorId?: string
@@ -147,13 +153,14 @@ export class TransactionBuilder {
     destinationAccountId?: string
     destinationAccountAlias?: string
     tokenTags?: object
+    actionTags?: object
     referenceData?: object
   }) {
     this.actions.push(Object.assign({}, params, { type: 'issue' }))
   }
 
   /**
-   * Add an action that retires units of a flavor.
+   * Add an action that retires tokens.
    *
    * @param {Object} params - Action parameters.
    * @param {String} params.sourceAccountId - Account ID specifying the account
@@ -175,7 +182,9 @@ export class TransactionBuilder {
    * @param {Number} params.amount - Amount of the flavor to be retired.
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-   * @param {Object} params.referenceData - Reference data to add to the retiring contract.
+   * @param {Object} params.actionTags - Tags to add to the action.
+   * @param {Object} params.referenceData - **Deprecated. Use actionTags or
+   * tokenTags instead.** Reference data to add to the receiving contract.
    * @param {Object} params.changeReferenceData - **Deprecated. This happens automatically when using token tags.**
    *   Reference data to add to the change contract, if it is necessary.
    */
@@ -189,6 +198,7 @@ export class TransactionBuilder {
     amount: number
     filter?: string
     filterParams?: object
+    actionTags?: object
     referenceData?: object
     changeReferenceData?: object
   }) {
@@ -196,8 +206,8 @@ export class TransactionBuilder {
   }
 
   /**
-   * Moves flavors from a source (an account or contract) to a destination
-   * account.
+   * Add an action that moves tokens from a source (an account or contract) to
+   * a destination account.
    *
    * @param {Object} params Action parameters
    * @param {String} params.sourceAccountId - Account ID specifying the account
@@ -226,7 +236,9 @@ export class TransactionBuilder {
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
-   * @param {Object} params.referenceData - Reference data to add to the receiving contract.
+   * @param {Object} params.actionTags - Tags to add to the action.
+   * @param {Object} params.referenceData - **Deprecated. Use actionTags or
+   *   tokenTags instead.** Reference data to add to the receiving contract.
    * @param {Object} params.changeReferenceData - **Deprecated. This happens automatically when using token tags.**
    *   Reference data to add to the change contract, if it is necessary.
    */
@@ -243,6 +255,7 @@ export class TransactionBuilder {
     filter?: string
     filterParams?: object
     tokenTags?: object
+    actionTags?: object
     referenceData?: object
     changeReferenceData?: object
   }) {

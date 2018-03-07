@@ -79,7 +79,11 @@ export interface PagePromise<T> extends Promise<T> {
  * **Deprecated. Use snapshot instead.**
  * The tags associated with the destination account (possibly null).
  *
+ * @property {Object} tags
+ * User specified, unstructured data embedded within an action (possibly null).
+ *
  * @property {Object} referenceData
+ * **Deprecated. Use tags instead.**
  * User specified, unstructured data embedded within an action (possibly null).
  */
 
