@@ -1,6 +1,6 @@
 # Sequence Node SDK changelog
 
-## 1.4.0 (20180306)
+## 1.4.0 (20180308)
 
 For full details on the 1.4 release and how to migrate your code,
 [visit the Sequence changelog](https://dashboard.seq.com/docs/changelog#release-v1-4).
