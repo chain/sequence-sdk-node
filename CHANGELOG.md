@@ -1,5 +1,10 @@
 # Sequence Node SDK changelog
 
+## 1.5.0 (2018????)
+
+* Transaction reference data has been deprecated; you can now use action tags
+  instead.
+
 ## 1.4.0 (20180308)
 
 For full details on the 1.4 release and how to migrate your code,

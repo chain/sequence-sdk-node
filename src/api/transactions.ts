@@ -20,6 +20,7 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * Sequence number of the transaction.
  *
  * @property {Object} referenceData
+ * **Deprecated. Use action tags instead.**
  * User specified, unstructured data embedded within a transaction.
  *
  * @property {Action[]} actions
@@ -49,6 +50,7 @@ export class TransactionBuilder {
      * Reference data for the transaction. You can specify reference data at
      * both the transaction level and for each action.
      * @name TransactionBuilder#referenceData
+     * @deprecated Use action tags instead.
      * @type Object
      */
     this.referenceData = null
