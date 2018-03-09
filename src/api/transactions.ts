@@ -22,75 +22,8 @@ import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
  * @property {Object} referenceData
  * User specified, unstructured data embedded within a transaction.
  *
- * @property {TransactionAction[]} actions
+ * @property {Action[]} actions
  * List of specified actions for a transaction.
- */
-
-/**
- * @typedef {Object} TransactionAction
- * @global
- *
- * @property {String} type
- * The type of the action. Possible values are "issue", "transfer", and "retire".
- *
- * @property {String} flavorId
- * The id of the action's flavor.
- *
- * @property {Hash} snapshot
- *  A copy of the associated tags (flavor, source account, destination account,
- *  action, and token) as they existed at the time of the transaction
- *  (possibly null).
- *
- * @property {String} assetId
- * **Deprecated. Use flavorId instead.**
- * The id of the action's asset.
- *
- * @property {String} assetAlias
- * **Deprecated. Use flavorId instead.**
- * The alias of the action's asset (possibly null).
- *
- * @property {Hash} assetTags
- * **Deprecated. Use snapshot instead.**
- * The tags of the action's asset (possibly null).
- *
- * @property {Integer} amount
- * The number of units of the action's flavor.
- *
- * @property {String} sourceAccountId
- * The id of the account transferring the flavor (possibly null if the
- * action is an issuance).
- *
- * @property {String} sourceAccountAlias
- * **Deprecated. Use sourceAccountId instead.**
- * The alias of the account transferring the flavor (possibly null if the
- * action is an issuance).
- *
- * @property {String} sourceAccountTags
- * **Deprecated. Use snapshot instead.**
- * The tags associated with the source account (possibly null).
- *
- * @property {String} destinationAccountId
- * The id of the account receiving the flavor (possibly null if the
- * action is a retirement).
- *
- * @property {String} destinationAccountAlias
- * **Deprecated. Use destinationAccountId instead.**
- * The alias of the account receiving the flavor (possibly null if the
- * action is a retirement).
- *
- * @property {String} destinationAccountTags
- * **Deprecated. Use snapshot instead.**
- * The tags associated with the destination account (possibly null).
- *
- * @property {Object} tokenTags
- * User specified, unstructured data embedded within a token (possibly null).
- *
- * @property {Object} actionTags
- * User specified, unstructured data embedded within an action (possibly null).
- *
- * @property {Object} referenceData
- * **Deprecated. Use actionTags or tokenTags instead.**
- * User specified, unstructured data embedded within an action (possibly null).
  */
 
 /**
