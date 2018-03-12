@@ -34,7 +34,7 @@ describe('Flavor', () => {
   })
 
   describe('Single flavor creation', async () => {
-    it('successful', async () => {
+    it('with keys is successful', async () => {
       const resp = await client.flavors.create({
         id: `flavor-${uuid.v4()}`,
         keys: [key],
@@ -43,7 +43,17 @@ describe('Flavor', () => {
       return expect(resp.id).not.to.be.empty
     })
 
-    it('rejected due to missing key fields', () => {
+    it('with key IDs is successful', async () => {
+      const resp = await client.flavors.create({
+        id: `flavor-${uuid.v4()}`,
+        keyIds: [key.id],
+        quorum: 1,
+      })
+      expect(resp.keyIds[0]).to.equal(key.id)
+      return expect(resp.id).not.to.be.empty
+    })
+
+    it('with missing keys is rejected', () => {
       return expect(
         client.flavors.create({ id: 'flavor' } as any)
       ).to.be.rejectedWith('SEQ202')

@@ -16,7 +16,11 @@ import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
  * @property {String} id
  * Unique identifier of the flavor.
  *
+ * @property {String[]} keyIds
+ * The list of key IDs used to issue units of the flavor.
+ *
  * @property {Key[]} keys
+ * **Deprecated. Use keyIds instead.**
  * The list of keys used to issue units of the flavor.
  *
  * @property {Number} quorum
@@ -39,7 +43,11 @@ export const flavorsAPI = (client: Client) => {
    * @property {String} [id]
    * Unique identifier. Will be auto-generated if not provided.
    *
+   * @property {String[]} keyIds
+   * The list of key IDs used to create the issuance program for the flavor.
+   *
    * @property {Key[]} keys
+   * **Deprecated. Use keyIds instead.**
    * The list of keys used to create the issuance program for the flavor. Keys
    * are objects with an `id` field.
    *

@@ -40,7 +40,7 @@ describe('Key', () => {
     // TODO(dan) test this more extensively
     it('should list all keys', async () => {
       const page = await client.keys.list().page()
-      expect(page.items.length).to.equal(20)
+      expect(page.items.length).to.equal(21)
     })
   })
 

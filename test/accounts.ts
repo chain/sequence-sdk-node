@@ -14,7 +14,7 @@ const client = testHelpers.client
 
 describe('Account', () => {
   describe('Single account creation', () => {
-    it('successful', async () => {
+    it('with keys is successful', async () => {
       const key = await client.keys.create({ id: uuid.v4() })
       const accountId = uuid.v4()
       const resp = await client.accounts.create({
@@ -22,13 +22,26 @@ describe('Account', () => {
         keys: [key],
         quorum: 1,
       })
-      return expect(resp.id).to.equal(accountId)
+      expect(resp.id).to.equal(accountId)
     })
 
-    it('rejected due to missing key fields', () => {
-      return expect(
-        client.accounts.create({ id: 'david' } as any)
-      ).to.be.rejectedWith('SEQ202')
+    it('with key IDs is successful', async () => {
+      const id = uuid.v4()
+      await client.keys.create({ id })
+      const accountId = uuid.v4()
+      const resp = await client.accounts.create({
+        id: accountId,
+        keyIds: [id],
+        quorum: 1,
+      })
+      expect(resp.id).to.equal(accountId)
+      expect(resp.keyIds[0]).to.equal(id)
+    })
+
+    it('with missing keys is rejected', () => {
+      expect(client.accounts.create({ id: 'david' } as any)).to.be.rejectedWith(
+        'SEQ202'
+      )
     })
   })
 
@@ -73,7 +86,7 @@ describe('Account', () => {
   describe('List.page query', () => {
     it('should list all accounts', async () => {
       const page = await client.accounts.list({}).page()
-      expect(page.items.length).to.equal(3)
+      expect(page.items.length).to.equal(4)
     })
 
     it('should filter on account', async () => {
@@ -98,7 +111,7 @@ describe('Account', () => {
     it('should iterate over all accounts', async () => {
       const items: any[] = []
       await client.accounts.list({}).all(item => items.push(item))
-      expect(items.length).to.equal(4)
+      expect(items.length).to.equal(5)
     })
   })
 

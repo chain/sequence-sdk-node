@@ -19,7 +19,13 @@ import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
  * **Deprecated. Use id instead.**
  * User specified, unique identifier.
  *
+ * @property {String[]} keyIds
+ * The list of key IDs used to create control programs under the account.
+ * Signatures from these keys are required for spending funds held in the
+ * account.
+ *
  * @property {Key[]} keys
+ * **Deprecated. Use keyIds instead.**
  * The list of keys used to create control programs under the account.
  * Signatures from these keys are required for spending funds held in the account.
  *
@@ -47,7 +53,11 @@ export const accountsAPI = (client: Client) => {
    * **Deprecated. Use id instead.**
    * User specified, unique identifier.
    *
+   * @property {String[]} keyIds
+   * The list of key IDs used to create control programs under the account.
+   *
    * @property {Key[]} keys
+   * **Deprecated. Use keyIds instead.**
    * The list of keys used to create control programs under the account. Keys
    * are objects with either an `id` or `alias` field.
    *

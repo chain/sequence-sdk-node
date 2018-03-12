@@ -181,7 +181,8 @@ export const sharedAPI = {
 export interface CreateRequest {
   alias?: string
   id?: string
-  keys: Key[]
+  keyIds?: string[]
+  keys?: Key[]
   quorum?: number
   tags?: { [s: string]: any }
 }

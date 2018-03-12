@@ -18,9 +18,9 @@ const bob = `bob-${uuid}`
 
 async function main() {
   const key = await ledger.keys.create()
-  await ledger.assets.create({ alias: usd, keys: [key] })
-  await ledger.accounts.create({ id: alice, keys: [key] })
-  await ledger.accounts.create({ id: bob, keys: [key] })
+  await ledger.assets.create({ alias: usd, keyIds: [key.id] })
+  await ledger.accounts.create({ id: alice, keyIds: [key.id] })
+  await ledger.accounts.create({ id: bob, keyIds: [key.id] })
 
   await ledger.transactions.transact(builder => {
     builder.issue({

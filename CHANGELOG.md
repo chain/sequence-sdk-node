@@ -2,6 +2,8 @@
 
 ## 1.5.0 (2018????)
 
+* The `keys` field on `Account` and `Flavor` has been deprecated; the new field
+  is `keyIds`, containing key ID strings.
 * Transaction reference data has been deprecated; you can now use action tags
   instead.
 * Added support for camel-case identifiers in filter queries. Identifiers in
