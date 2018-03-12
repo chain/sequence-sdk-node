@@ -4,6 +4,9 @@
 
 * Transaction reference data has been deprecated; you can now use action tags
   instead.
+* Added support for camel-case identifiers in filter queries. Identifiers in
+  query strings are now consistent with identifiers in Node source code.
+  Snake-case names in query strings are deprecated.
 
 ## 1.4.0 (20180308)
 

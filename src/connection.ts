@@ -145,6 +145,7 @@ export class Connection {
         Macaroon: this.credential,
         'Discharge-Macaroon': this.sessTok.secret,
         'Idempotency-Key': uuid.v4(),
+        'Name-Set': 'camel|snake',
       })
     )
   }

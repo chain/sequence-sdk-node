@@ -11,7 +11,14 @@ const expect = chai.expect
 
 import { testHelpers } from './testHelpers'
 
-const { balanceByFlavorId, client, createAccount, createAsset, createRefData } = testHelpers
+const {
+  balanceByFlavorId,
+  client,
+  createAccount,
+  createAsset,
+  createFlavor,
+  createRefData,
+} = testHelpers
 
 describe('Transaction', () => {
   describe('Issuance', () => {
@@ -180,18 +187,64 @@ describe('Transaction', () => {
 
   describe('List.page query', () => {
     it('should list all transactions', async () => {
-      // TODO(dan) test this more extensively
+      // TODO(chris) at the moment, 19 is a magic number that we modify as we
+      // add more transactions to this test file. Look to move away from this in
+      // a test suite cleanup at a later date.
       const page = await client.transactions.list({}).page()
       expect(page.items.length).to.equal(19)
     })
   })
 
   describe('List.all query', () => {
+    let goldId: string
+    let aliceId: string
+    let bobId: string
+
+    before(async () => {
+      goldId = (await createFlavor('gold')).id
+      aliceId = (await createAccount('alice')).id
+      bobId = (await createAccount('bob')).id
+
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: goldId,
+          amount: 200,
+          destinationAccountId: aliceId,
+        })
+      })
+
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: goldId,
+          amount: 200,
+          destinationAccountId: bobId,
+        })
+      })
+    })
+
     // TODO(dan) test this more extensively
     it('should iterate over all transactions', async () => {
       const items: any[] = []
       await client.transactions.list({}).all(item => items.push(item))
-      expect(items.length).to.equal(19)
+      expect(items.length).to.equal(21)
+    })
+
+    it('should list transactions based on filter using camelCase', async () => {
+      const items: any[] = []
+      await client.transactions.list({
+        filter: 'actions(destinationAccountId=$1)',
+        filterParams: [aliceId],
+      }).all(item => items.push(item))
+      expect(items.length).to.equal(1)
+    })
+
+    it('should list transactions based on filter using snake_case (deprecated)', async () => {
+      const items: any[] = []
+      await client.transactions.list({
+        filter: 'actions(destination_account_id=$1)',
+        filterParams: [aliceId],
+      }).all(item => items.push(item))
+      expect(items.length).to.equal(1)
     })
   })
 
