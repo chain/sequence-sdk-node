@@ -5,6 +5,7 @@ import { assetsAPI } from './api/assets'
 import { BalanceQueryParams, balancesAPI } from './api/balances'
 import { ContractQueryParameters, contractsAPI } from './api/contracts'
 import { devUtilsAPI } from './api/devUtils'
+import { FeedCreateParameters, feedsAPI } from './api/feeds'
 import { flavorsAPI } from './api/flavors'
 import { keysAPI } from './api/keys'
 import { statsAPI } from './api/stats'
@@ -57,6 +58,12 @@ export class Client {
    * @type {module:DevUtilsApi}
    */
   public devUtils = devUtilsAPI(this)
+
+  /**
+   * API actions for feeds.
+   * @type {module:FeedsApi}
+   */
+  public feeds = feedsAPI(this)
 
   /**
    * API actions for flavors.
