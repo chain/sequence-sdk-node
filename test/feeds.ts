@@ -18,7 +18,7 @@ describe('Feed', () => {
     const feed = await client.feeds.create(
       {
         type: 'action',
-        id: 'actionFeed',
+        id: `actionFeed-${uuid.v4()}`,
         filter: "tags.type=$1",
         filterParams: ["test"],
       }
@@ -30,10 +30,44 @@ describe('Feed', () => {
     const feed = await client.feeds.create(
       {
         type: 'transaction',
-        id: 'transactionFeed',
+        id: `transactionFeed-${uuid.v4()}`,
         filter: "actions(type='issue')",
       }
     )
     expect(feed.type).to.equal('transaction')
+  })
+
+  it('retrieves feed by id', async () => {
+    const feedId = `actionFeed-${uuid.v4()}`
+    await client.feeds.create(
+      {
+        type: 'action',
+        id: feedId,
+        filter: "tags.type=$1",
+        filterParams: ["test"],
+      }
+    )
+
+    const feed = await client.feeds.get({id: feedId})
+    expect(feed.type).to.equal('action')
+    expect(feed.id).to.equal(feedId)
+  })
+
+  it('deletes feed by id', async () => {
+    const feedId = `actionFeed-${uuid.v4()}`
+    await client.feeds.create(
+      {
+        type: 'action',
+        id: feedId,
+        filter: "tags.type=$1",
+        filterParams: ["test"],
+      }
+    )
+
+    const resp = await client.feeds.delete({id: feedId})
+    expect(resp.message).to.equal("ok")
+    expect(client.feeds.get({ id: feedId } as any)).to.be.rejectedWith(
+      'SEQ002'
+    )
   })
 })

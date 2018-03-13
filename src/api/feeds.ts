@@ -53,6 +53,20 @@ export const feedsAPI = (client: Client) => {
    * A list of values that will be interpolated into the filter expression.
    */
 
+  /**
+   * @typedef {Object} deleteRequest
+   *
+   * @property {String} id
+   * Unique identifier of the feed.
+   */
+
+  /**
+   * @typedef {Object} getRequest
+   *
+   * @property {String} id
+   * Unique identifier of the feed.
+   */
+
   return {
     /**
      * Create a new feed.
@@ -63,5 +77,25 @@ export const feedsAPI = (client: Client) => {
      */
     create: (params: FeedCreateParameters, cb?: ObjectCallback) =>
       sharedAPI.tryCallback(client.request('/create-feed', params), cb),
+
+    /**
+     * Deletes a feed.
+     *
+     * @param {module:FeedsApi~deleteRequest} params - Parameters for feed deletion.
+     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @returns {Promise} Promise resolved on success.
+     */
+    delete: (params: { id: string }, cb?: ObjectCallback) =>
+      sharedAPI.tryCallback(client.request('/delete-feed', params), cb),
+
+    /**
+     * Retrieves a single feed.
+     *
+     * @param {module:FeedsApi~getRequest} params - Parameters for feed retrieval.
+     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
+     * @returns {Promise<Feed>} Requested feed.
+     */
+    get: (params: { id: string }, cb?: ObjectCallback) =>
+      sharedAPI.tryCallback(client.request('/get-feed', params), cb),
   }
 }

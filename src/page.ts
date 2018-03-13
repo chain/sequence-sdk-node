@@ -61,9 +61,9 @@ export class Page {
      * Object representing the query for the immediate next page of results. Can
      * be passed without modification to the `query` method that generated the
      * Page object containing it.
-     * 
+     *
      * @deprecated Use {@link Page#nextPage} or {@link Page#cursor} instead.
-     * 
+     *
      * @type {Object}
      */
     this.next = {}
