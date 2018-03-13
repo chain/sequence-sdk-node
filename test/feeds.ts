@@ -70,4 +70,24 @@ describe('Feed', () => {
       'SEQ002'
     )
   })
+
+  it('lists feeds', async () => {
+    const actionFeed = await client.feeds.create(
+      {
+        type: 'action',
+        id: `actionFeed-${uuid.v4()}`,
+      }
+    )
+
+    const transactionFeed = await client.feeds.create(
+      {
+        type: 'transaction',
+        id: `transactionFeed-${uuid.v4()}`,
+      }
+    )
+
+    const items: any[] = []
+    await client.feeds.list().all(item => items.push(item))
+    expect(items).to.include(actionFeed, transactionFeed)
+  })
 })

@@ -97,5 +97,12 @@ export const feedsAPI = (client: Client) => {
      */
     get: (params: { id: string }, cb?: ObjectCallback) =>
       sharedAPI.tryCallback(client.request('/get-feed', params), cb),
+
+    /**
+     * Query a list of feeds.
+     *
+     * @returns {Query} Query to retrieve results.
+     */
+    list: () => new Query(client, 'feeds', 'list'),
   }
 }
