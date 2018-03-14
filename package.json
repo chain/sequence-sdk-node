@@ -16,7 +16,7 @@
     "lint": "tslint \"src/**\"",
     "format": "prettier --write src/*/*.ts && prettier --write src/*.ts",
     "pretest": "npm run build",
-    "test": "mocha test/*.ts --compilers ts:./node_modules/ts-node/register",
+    "test": "mocha test/*$MATCH*.ts --compilers ts:./node_modules/ts-node/register",
     "build": "tsc",
     "prepublish": "npm run lint && npm run format && npm run build"
   },
