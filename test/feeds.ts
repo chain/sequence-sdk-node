@@ -11,7 +11,11 @@ const expect = chai.expect
 
 import { testHelpers } from './testHelpers'
 
-const { client } = testHelpers
+const {
+  client,
+  createAccount,
+  createFlavor,
+} = testHelpers
 
 describe('Feed', () => {
   it('creates action feed', async () => {
@@ -87,7 +91,66 @@ describe('Feed', () => {
     )
 
     const items: any[] = []
-    await client.feeds.list().all(item => items.push(item))
-    expect(items).to.include(actionFeed, transactionFeed)
+    await client.feeds.list().all(item => items.push(item.id))
+    expect(items).to.include(actionFeed.id, transactionFeed.id)
+  })
+
+  it('consumes an action/transaction feed', async () => {
+    const goldId: any = (await createFlavor('gold')).id
+    const bobId: any = (await createAccount('bob')).id
+    const tag: string = uuid.v4()
+
+    const actionFeed = await client.feeds.create(
+      {
+        type: 'action',
+        id: `actionFeed-${uuid.v4()}`,
+        filter: 'tags.type=$1',
+        filterParams: [tag],
+      }
+    )
+
+    const transactionFeed = await client.feeds.create(
+      {
+        type: 'transaction',
+        id: `transactionFeed-${uuid.v4()}`,
+        filter: 'actions(tags.type=$1)',
+        filterParams: [tag],
+      }
+    )
+
+    const actionFeedItems: any[] = []
+    const actionResp = actionFeed.consume((action: any, next: any, stop: any) => {
+      actionFeedItems.push(action.id)
+      actionFeedItems.length === 2 ? stop(true) : next(true)
+    })
+
+    const transactionFeedItems: any[] = []
+    const transactionResp = transactionFeed.consume((transaction: any, next: any, stop: any) => {
+      transactionFeedItems.push(transaction.id)
+      transactionFeedItems.length === 2 ? stop(true) : next(true)
+    })
+
+    const tx1 = await client.transactions.transact(builder => {
+      builder.issue({
+        flavorId: goldId,
+        amount: 400,
+        destinationAccountId: bobId,
+        actionTags: { type: tag },
+      })
+    })
+
+    const tx2 = await client.transactions.transact(builder => {
+      builder.issue({
+        flavorId: goldId,
+        amount: 100,
+        destinationAccountId: bobId,
+        actionTags: { type: tag },
+      })
+    })
+
+    await actionResp
+    await transactionResp
+    expect(actionFeedItems).to.deep.equal([tx1.actions[0].id, tx2.actions[0].id])
+    expect(transactionFeedItems).to.deep.equal([tx1.id, tx2.id])
   })
 })
