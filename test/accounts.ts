@@ -84,34 +84,73 @@ describe('Account', () => {
   })
 
   describe('List.page query', () => {
-    it('should list all accounts', async () => {
-      const page = await client.accounts.list({}).page()
-      expect(page.items.length).to.equal(4)
+    it('fetches a second page with a cursor', async () => {
+      const key = await client.keys.create({ id: uuid.v4() })
+      const filterKey = uuid.v4()
+      for (let i = 0; i < 3; i++) {
+        await client.accounts.create({
+          keyIds: [key.id],
+          tags: {
+            filter: filterKey,
+          },
+        })
+      }
+
+      const page = await client.accounts
+        .list({
+          filter: 'tags.filter = $1',
+          filterParams: [filterKey],
+        })
+        .page({ size: 1 })
+      assert.equal(page.items.length, 1)
+
+      const page2 = await client.accounts.list().page({ cursor: page.cursor })
+      assert.equal(page2.items.length, 1)
     })
 
-    it('should filter on account', async () => {
+    it('accepts account filters, defaults to 100 items per page', async () => {
       const key = await client.keys.create({ id: uuid.v4() })
       const account = await client.accounts.create({
-        keys: [key],
+        keyIds: [key.id],
         quorum: 1,
       })
+
       const page = await client.accounts
         .list({
           filter: 'id=$1',
           filterParams: [account.id],
         })
         .page()
+
       expect(page.items.length).to.equal(1)
       expect(page.items[0].id).to.equal(account.id)
     })
   })
 
   describe('List.all query', () => {
-    // TODO(dan) test this more extensively
-    it('should iterate over all accounts', async () => {
+    it('accepts tag filters, processes all matches', async () => {
+      const key = await client.keys.create({ id: uuid.v4() })
+      const filterKey = uuid.v4()
+      for (let i = 0; i < 2; i++) {
+        await client.accounts.create({
+          keyIds: [key.id],
+          tags: {
+            filter: filterKey,
+          },
+        })
+      }
       const items: any[] = []
-      await client.accounts.list({}).all(item => items.push(item))
-      expect(items.length).to.equal(5)
+
+      await client.accounts
+        .list({
+          filter: 'tags.filter = $1',
+          filterParams: [filterKey],
+        })
+        .all(item => {
+          items.push(item)
+        })
+
+      assert.equal(items.length, 2)
     })
   })
 

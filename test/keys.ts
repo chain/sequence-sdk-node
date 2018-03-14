@@ -1,3 +1,4 @@
+import * as assert from 'assert'
 import * as chai from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
 import 'mocha'
@@ -37,21 +38,34 @@ describe('Key', () => {
   })
 
   describe('List.page query', () => {
-    // TODO(dan) test this more extensively
-    it('should list all keys', async () => {
-      const page = await client.keys.list().page()
-      expect(page.items.length).to.equal(21)
+    it('fetches a second page with a cursor', async () => {
+      await client.devUtils.reset()
+      for (let i = 0; i < 3; i++) {
+        await client.keys.create()
+      }
+
+      const page = await client.keys.list().page({ size: 1 })
+      assert.equal(page.items.length, 1)
+
+      const page2 = await client.keys.list().page({ cursor: page.cursor })
+      assert.equal(page2.items.length, 1)
+      assert.equal(page2.lastPage, false)
     })
   })
 
   describe('List.all query', () => {
-    // TODO(dan) test this more extensively
-    it('should iterate over all keys', async () => {
-      const id = uuid.v4()
-      await client.keys.create({ id })
+    it('processes all items', async () => {
+      await client.devUtils.reset()
+      for (let i = 0; i < 2; i++) {
+        await client.keys.create()
+      }
       const items: any[] = []
-      await client.keys.list().all(item => items.push(item))
-      expect(items.map((item: any) => item.id)).to.include(id)
+
+      await client.keys.list().all(item => {
+        items.push(item)
+      })
+
+      assert.equal(items.length, 2)
     })
   })
 
