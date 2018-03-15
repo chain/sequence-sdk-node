@@ -1,3 +1,4 @@
+(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator")
 import { BalanceQueryParams } from './api/balances'
 import { Client } from './client'
 import { Page } from './page'
@@ -78,6 +79,23 @@ const getApi = (client: any, memberPath: string) => {
   return queryOwner
 }
 
+async function* queryIterator(
+  client: Client,
+  memberPath: string,
+  params = {},
+) {
+  let page = await getApi(client, memberPath)(params).page()
+  for (const item of page.items) {
+    yield item
+  }
+  while (!page.lastPage) {
+    page = await page.nextPage()
+    for (const item of page.items) {
+      yield item
+    }
+  }
+}
+
 export const sharedAPI = {
   queryPage: (
     client: Client,
@@ -104,7 +122,21 @@ export const sharedAPI = {
     )
   },
 
-  queryEach: async (
+  queryEach: (
+    client: Client,
+    memberPath: string,
+    params = {},
+    consumer?: Consumer,
+    opts: { cb?: any } = {}
+  ): any => {
+    if (!consumer) {
+      return queryIterator(client, memberPath, params)
+    } else {
+      return sharedAPI.queryEachAsync(client, memberPath, params, consumer, opts)
+    }
+  },
+
+  queryEachAsync: async (
     client: Client,
     memberPath: string,
     params = {},

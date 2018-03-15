@@ -68,11 +68,9 @@ describe('Transaction', () => {
         })
       })
 
-      const items: any[] = []
-      await client.actions
+      const items = await testHelpers.asyncAll(client.actions
         .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
-        .all(item => items.push(item))
-
+        .all())
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'issue')
     })
@@ -127,10 +125,9 @@ describe('Transaction', () => {
         })
       })
 
-      const items: any[] = []
-      await client.actions
+      const items = await testHelpers.asyncAll(client.actions
         .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
-        .all(item => items.push(item))
+        .all())
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'transfer')
     })
@@ -181,10 +178,9 @@ describe('Transaction', () => {
         })
       })
 
-      const items: any[] = []
-      await client.actions
+      const items = await testHelpers.asyncAll(client.actions
         .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
-        .all(item => items.push(item))
+        .all())
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'retire')
     })
@@ -258,11 +254,8 @@ describe('Transaction', () => {
           })
         })
       }
-      const items: any[] = []
 
-      await client.transactions.list().all(item => {
-        items.push(item)
-      })
+      const items = await testHelpers.asyncAll(client.transactions.list().all())
 
       assert.equal(items.length, 2)
     })
@@ -285,14 +278,13 @@ describe('Transaction', () => {
           destinationAccountId: bob.id,
         })
       })
-      const items: any[] = []
 
-      await client.transactions
+      const items = await testHelpers.asyncAll(client.transactions
         .list({
           filter: 'actions(destinationAccountId=$1)',
           filterParams: [alice.id],
         })
-        .all(item => items.push(item))
+        .all())
 
       expect(items.length).to.equal(1)
     })
@@ -315,14 +307,13 @@ describe('Transaction', () => {
           destinationAccountId: bob.id,
         })
       })
-      const items: any[] = []
 
-      await client.transactions
+      const items = await testHelpers.asyncAll(client.transactions
         .list({
           filter: 'actions(destination_account_id=$1)',
           filterParams: [alice.id],
         })
-        .all(item => items.push(item))
+        .all())
 
       expect(items.length).to.equal(1)
     })

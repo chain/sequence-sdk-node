@@ -11,7 +11,7 @@ import {
 
 export interface PagePromise<T> extends Promise<T> {
   page: (pageParams?: PageParams | {}, cb2?: PageCallback) => Promise<Page>
-  all: (consumer: Consumer, cb2?: ObjectCallback) => Promise<any>
+  all: (consumer?: Consumer, cb2?: ObjectCallback) => Promise<any>
 }
 
 export interface ActionSumParams extends QueryParams {
@@ -86,7 +86,7 @@ export const actionsAPI = (client: Client) => {
         )
       }
 
-      const processAll = (consumer: Consumer, cb2?: ObjectCallback) => {
+      const processAll = (consumer?: Consumer, cb2?: ObjectCallback) => {
         return sharedAPI.queryEach(client, 'actions.list', params, consumer, {
           cb: cb2,
         })
@@ -160,7 +160,7 @@ export const actionsAPI = (client: Client) => {
           pageParams
         )
       }
-      const processAll = (consumer: Consumer, cb2?: ObjectCallback) => {
+      const processAll = (consumer?: Consumer, cb2?: ObjectCallback) => {
         return sharedAPI.queryEach(client, 'actions.sum', params, consumer, {
           cb: cb2,
         })

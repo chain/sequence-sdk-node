@@ -114,16 +114,13 @@ describe('Token queries', () => {
           })
         })
       }
-      const items: any[] = []
 
-      await client.tokens
+      const items = await testHelpers.asyncAll(client.tokens
         .list({
           filter: 'tags.test=$1',
           filterParams: [tokenTags.test],
         })
-        .all(item => {
-          items.push(item)
-        })
+        .all())
 
       assert.equal(items.length, 2)
       expect(items[0].amount).to.equal(30)
@@ -186,17 +183,14 @@ describe('Token queries', () => {
           })
         })
       }
-      const sums: any[] = []
 
-      await client.tokens
+      const sums = await testHelpers.asyncAll(client.tokens
         .sum({
           filter: 'tags.test=$1',
           filterParams: [tokenTags.test],
           groupBy: ['account_id'],
         })
-        .all(sum => {
-          sums.push(sum)
-        })
+        .all())
 
       assert.equal(sums.length, 1)
       expect(sums[0].amount).to.equal(30)

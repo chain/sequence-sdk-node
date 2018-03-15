@@ -80,6 +80,18 @@ const transact = (
   return c.transactions.transact(buildFunc)
 }
 
+// asyncAll is sort of like Promise.all but it takes
+// an async iterator instead of a regular iterator.
+// (However, unlike Promise.all, it accumulates
+// items one at a time, not in parallel.)
+const asyncAll = async (iter: any) => {
+  const items = []
+  for await (const v of iter) {
+    items.push(v)
+  }
+  return items
+}
+
 export const testHelpers = {
   balanceByFlavorId,
   client,
@@ -89,4 +101,5 @@ export const testHelpers = {
   createFlavor,
   createRefData,
   transact,
+  asyncAll,
 }

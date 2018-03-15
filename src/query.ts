@@ -46,13 +46,22 @@ export class Query<QueryParamType> {
   }
 
   /**
-   * Process all query results, passing each of them into a user-provided function.
+   * Iterate over all query results.
+   * Returns an async iterator over the query results.
    *
-   * @param {QueryProcessor} processor - Processing callback.
+   * @example <caption>Example usage.</caption>
+   * for async (const key of ledger.keys.list().all()) {
+   *   console.log("key id: " + key.id)
+   * }
+   *
+   * See {@link https://github.com/tc39/proposal-async-iteration} for more
+   * information about async iterators.
+   *
+   * @param {QueryProcessor} processor - **Deprecated. Use all().next() instead.** Processing callback.
    * @param {ObjectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
-   * @returns {Page} Requested page of results.
+   * @returns {AsyncIterableIterator} an async iterator over the query results.
    */
-  public all(consumer: Consumer, cb?: ObjectCallback) {
+  public all(consumer?: Consumer, cb?: ObjectCallback) {
     return sharedAPI.queryEach(
       this.client,
       `${this.itemName}.${this.method}`,

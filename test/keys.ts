@@ -59,11 +59,8 @@ describe('Key', () => {
       for (let i = 0; i < 2; i++) {
         await client.keys.create()
       }
-      const items: any[] = []
 
-      await client.keys.list().all(item => {
-        items.push(item)
-      })
+      const items = await testHelpers.asyncAll(client.keys.list().all())
 
       assert.equal(items.length, 2)
     })

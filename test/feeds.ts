@@ -72,9 +72,9 @@ describe('Feed', () => {
       id: `transactionFeed-${uuid.v4()}`,
     })
 
-    const items: any[] = []
-    await client.feeds.list().all(item => items.push(item.id))
-    expect(items).to.include(actionFeed.id, transactionFeed.id)
+    const items = await testHelpers.asyncAll(client.feeds.list().all())
+    const ids = items.map(item => item.id)
+    expect(ids).to.include(actionFeed.id, transactionFeed.id)
   })
 
   it('consumes an action/transaction feed', async () => {

@@ -97,6 +97,18 @@ describe('Action', () => {
 
   describe('List.all query', () => {
     it('should consume three items', async () => {
+      const processed = await testHelpers.asyncAll(client.actions
+        .list({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+        })
+        .all())
+      expect(processed.length).to.equal(3)
+    })
+  })
+
+  describe('List.all legacy query', () => {
+    it('should consume three items', async () => {
       const processed: any[] = []
       await client.actions
         .list({
@@ -164,6 +176,20 @@ describe('Action', () => {
   })
 
   describe('Sum.all query with groupBy', () => {
+    it('should have two items', async () => {
+      const sums = await testHelpers.asyncAll(client.actions
+        .sum({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+          groupBy: ['type'],
+        })
+        .all())
+      expect(sums.find((b: any) => b.type === 'issue').amount).to.equal(12)
+      expect(sums.find((b: any) => b.type === 'transfer').amount).to.equal(5)
+    })
+  })
+
+  describe('Sum.all legacy query with groupBy', () => {
     it('should have two items', async () => {
       const sums: any[] = []
       await client.actions

@@ -139,16 +139,13 @@ describe('Account', () => {
           },
         })
       }
-      const items: any[] = []
 
-      await client.accounts
+      const items = await testHelpers.asyncAll(client.accounts
         .list({
           filter: 'tags.filter = $1',
           filterParams: [filterKey],
         })
-        .all(item => {
-          items.push(item)
-        })
+        .all())
 
       assert.equal(items.length, 2)
     })

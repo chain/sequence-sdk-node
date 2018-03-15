@@ -121,15 +121,10 @@ describe('Flavor', () => {
         })
       }
 
-      const items: any[] = []
-      await client.flavors
-        .list({
-          filter: 'tags.filter = $1',
-          filterParams: [filterKey],
-        })
-        .all(item => {
-          items.push(item)
-        })
+      const items = await testHelpers.asyncAll(client.flavors.list({
+        filter: 'tags.filter = $1',
+        filterParams: [filterKey],
+      }).all())
       assert.equal(items.length, 101)
     })
   })
