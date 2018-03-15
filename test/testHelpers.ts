@@ -41,9 +41,9 @@ const balanceByFlavorId = async (balances: any) => {
 }
 
 const createAccount = async (account = 'account') => {
-  const key = await client.keys.create({ alias: uuid.v4() })
+  const key = await client.keys.create({ id: uuid.v4() })
   return await client.accounts.create({
-    alias: `${account}-${uuid.v4()}`,
+    id: `${account}-${uuid.v4()}`,
     keys: [key],
     quorum: 1,
   })
@@ -59,7 +59,7 @@ const createAsset = async (asset = 'asset') => {
 }
 
 const createFlavor = async (flavor = 'flavor') => {
-  const key = await client.keys.create({ alias: uuid.v4() })
+  const key = await client.keys.create({ id: uuid.v4() })
   return await client.flavors.create({
     id: `${flavor}-${uuid.v4()}`,
     keys: [key],

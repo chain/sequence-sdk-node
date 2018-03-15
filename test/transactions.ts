@@ -15,98 +15,118 @@ const {
   balanceByFlavorId,
   client,
   createAccount,
-  createAsset,
   createFlavor,
   createRefData,
 } = testHelpers
 
 describe('Transaction', () => {
   describe('Issuance', () => {
-    let goldAlias: string
-    let silverAlias: string
-    let aliceAlias: string
-    let bobAlias: string
-    let actionTags: any
+    it('issues tokens to accounts', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const silver = await createFlavor('silver')
+      const bob = await createAccount('bob')
 
-    before(async () => {
-      goldAlias = (await createAsset('gold')).alias
-      silverAlias = (await createAsset('silver')).alias
-      aliceAlias = (await createAccount('alice')).alias
-      bobAlias = (await createAccount('bob')).alias
-      actionTags = { actingAccount: uuid.v4().toString() }
       await client.transactions.transact(builder => {
         builder.issue({
-          assetAlias: goldAlias,
+          flavorId: gold.id,
           amount: 100,
-          destinationAccountAlias: aliceAlias,
-          actionTags,
+          destinationAccountId: alice.id,
         })
         builder.issue({
-          assetAlias: silverAlias,
+          flavorId: silver.id,
           amount: 200,
-          destinationAccountAlias: bobAlias,
+          destinationAccountId: bob.id,
         })
       })
-    })
 
-    it('issues 100 units of gold to alice', async () => {
-      const balance = await balanceByFlavorId(
+      let balance = await balanceByFlavorId(
         client.tokens
-          .sum({ filter: `account_id='${aliceAlias}'`, groupBy: ['flavor_id'] })
+          .sum({ filter: `account_id='${alice.id}'`, groupBy: ['flavor_id'] })
           .page()
       )
-      assert.deepEqual(balance, { [goldAlias]: 100 })
+      assert.deepEqual(balance, { [gold.id]: 100 })
+      balance = await balanceByFlavorId(
+        client.tokens
+          .sum({ filter: `account_id='${bob.id}'`, groupBy: ['flavor_id'] })
+          .page()
+      )
+      assert.deepEqual(balance, { [silver.id]: 200 })
     })
 
     it('adds tags to issue action', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const actionTags = { actingAccount: uuid.v4().toString() }
+
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 100,
+          destinationAccountId: alice.id,
+          actionTags,
+        })
+      })
+
       const items: any[] = []
       await client.actions
         .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
         .all(item => items.push(item))
+
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'issue')
-    })
-
-    it('issues 200 units of silver to bob', async () => {
-      const balance = await balanceByFlavorId(
-        client.tokens
-          .sum({ filter: `account_id='${bobAlias}'`, groupBy: ['flavor_id'] })
-          .page()
-      )
-      assert.deepEqual(balance, { [silverAlias]: 200 })
     })
   })
 
   describe('Transfer', () => {
-    let goldAlias: string
-    let silverAlias: string
-    let aliceAlias: string
-    let bobAlias: string
-    let actionTags: any
+    it('transfers tokens to account', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const bob = await createAccount('bob')
 
-    before(async () => {
-      goldAlias = (await createAsset('gold')).alias
-      silverAlias = (await createAsset('silver')).alias
-      aliceAlias = (await createAccount('alice')).alias
-      bobAlias = (await createAccount('bob')).alias
-      actionTags = { actingAccount: uuid.v4().toString() }
       await client.transactions.transact(builder => {
         builder.issue({
-          assetAlias: goldAlias,
+          flavorId: gold.id,
           amount: 200,
-          destinationAccountAlias: aliceAlias,
+          destinationAccountId: alice.id,
         })
         builder.transfer({
-          assetAlias: goldAlias,
+          flavorId: gold.id,
           amount: 100,
-          sourceAccountId: aliceAlias,
-          destinationAccountAlias: bobAlias,
-          actionTags,
+          sourceAccountId: alice.id,
+          destinationAccountId: bob.id,
         })
       })
+
+      const balance = await balanceByFlavorId(
+        client.tokens
+          .sum({ filter: `account_id='${bob.id}'`, groupBy: ['flavor_id'] })
+          .page()
+      )
+      assert.deepEqual(balance, { [gold.id]: 100 })
     })
 
     it('adds tags to transfer action', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const bob = await createAccount('bob')
+      const actionTags = { actingAccount: uuid.v4().toString() }
+
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 200,
+          destinationAccountId: alice.id,
+        })
+        builder.transfer({
+          flavorId: gold.id,
+          amount: 100,
+          sourceAccountId: alice.id,
+          destinationAccountId: bob.id,
+          actionTags,
+        })
+      })
+
       const items: any[] = []
       await client.actions
         .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
@@ -114,57 +134,59 @@ describe('Transaction', () => {
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'transfer')
     })
-
-    it('transfers 100 units of gold to bob', async () => {
-      const balance = await balanceByFlavorId(
-        client.tokens
-          .sum({ filter: `account_id='${bobAlias}'`, groupBy: ['flavor_id'] })
-          .page()
-      )
-      assert.deepEqual(balance, { [goldAlias]: 100 })
-    })
   })
 
   describe('Retire', () => {
-    let goldAlias: string
-    let aliceAlias: string
-    let actionTags: any
+    it('retires tokens from account', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
 
-    before(async () => {
-      goldAlias = (await createAsset('gold')).alias
-      aliceAlias = (await createAccount('alice')).alias
-      actionTags = { actingAccount: uuid.v4().toString() }
       await client.transactions.transact(builder => {
         builder.issue({
-          assetAlias: goldAlias,
+          flavorId: gold.id,
           amount: 200,
-          destinationAccountAlias: aliceAlias,
+          destinationAccountId: alice.id,
         })
         builder.retire({
-          assetAlias: goldAlias,
+          flavorId: gold.id,
           amount: 100,
-          sourceAccountId: aliceAlias,
-          actionTags,
+          sourceAccountId: alice.id,
         })
       })
+
+      const balance = await balanceByFlavorId(
+        client.tokens
+          .sum({ filter: `account_id='${alice.id}'`, groupBy: ['flavor_id'] })
+          .page()
+      )
+      assert.deepEqual(balance, { [gold.id]: 100 })
     })
 
     it('adds tags to retire action', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const actionTags = { actingAccount: uuid.v4().toString() }
+
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 200,
+          destinationAccountId: alice.id,
+        })
+        builder.retire({
+          flavorId: gold.id,
+          amount: 100,
+          sourceAccountId: alice.id,
+          actionTags,
+        })
+      })
+
       const items: any[] = []
       await client.actions
         .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
         .all(item => items.push(item))
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'retire')
-    })
-
-    it('retires 100 units of gold from alice', async () => {
-      const balance = await balanceByFlavorId(
-        client.tokens
-          .sum({ filter: `account_id='${aliceAlias}'`, groupBy: ['flavor_id'] })
-          .page()
-      )
-      assert.deepEqual(balance, { [goldAlias]: 100 })
     })
   })
 
@@ -181,11 +203,11 @@ describe('Transaction', () => {
 
   describe('queryAll (deprecated)', () => {
     it('success example', async () => {
-      const asset = await createAsset()
+      const flavor = await createFlavor()
       const account = await createAccount()
       const tx = await client.transactions.transact(builder => {
         builder.issue({
-          assetAlias: asset.alias,
+          flavorId: flavor.id,
           amount: 1,
           destinationAccountAlias: account.alias,
         })
@@ -197,66 +219,111 @@ describe('Transaction', () => {
   })
 
   describe('List.page query', () => {
-    it('should list all transactions', async () => {
-      const page = await client.transactions.list({}).page()
-      // TODO: magic number
-      expect(page.items.length).to.equal(24)
+    it('fetches a second page with a cursor', async () => {
+      await client.devUtils.reset()
+      const flavor = await createFlavor()
+      const account = await createAccount()
+      for (let i = 0; i < 3; i++) {
+        await client.transactions.transact(b => {
+          b.issue({
+            flavorId: flavor.id,
+            amount: 10,
+            destinationAccountId: account.id,
+          })
+        })
+      }
+
+      const page = await client.transactions.list({}).page({ size: 1 })
+      assert.equal(page.items.length, 1)
+
+      const page2 = await client.transactions
+        .list()
+        .page({ cursor: page.cursor })
+      assert.equal(page2.items.length, 1)
+      assert.equal(page2.lastPage, false)
     })
   })
 
   describe('List.all query', () => {
-    let goldId: string
-    let aliceId: string
-    let bobId: string
-
-    before(async () => {
-      goldId = (await createFlavor('gold')).id
-      aliceId = (await createAccount('alice')).id
-      bobId = (await createAccount('bob')).id
-
-      await client.transactions.transact(builder => {
-        builder.issue({
-          flavorId: goldId,
-          amount: 200,
-          destinationAccountId: aliceId,
+    it('processes all items', async () => {
+      await client.devUtils.reset()
+      const flavor = await createFlavor()
+      const account = await createAccount()
+      for (let i = 0; i < 2; i++) {
+        await client.transactions.transact(b => {
+          b.issue({
+            flavorId: flavor.id,
+            amount: 10,
+            destinationAccountId: account.id,
+          })
         })
-      })
-
-      await client.transactions.transact(builder => {
-        builder.issue({
-          flavorId: goldId,
-          amount: 200,
-          destinationAccountId: bobId,
-        })
-      })
-    })
-
-    it('should iterate over all transactions', async () => {
+      }
       const items: any[] = []
-      await client.transactions.list({}).all(item => items.push(item))
-      // TODO: magic number
-      expect(items.length).to.equal(26)
+
+      await client.transactions.list().all(item => {
+        items.push(item)
+      })
+
+      assert.equal(items.length, 2)
     })
 
     it('should list transactions based on filter using camelCase', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const bob = await createAccount('bob')
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 200,
+          destinationAccountId: alice.id,
+        })
+      })
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 200,
+          destinationAccountId: bob.id,
+        })
+      })
       const items: any[] = []
+
       await client.transactions
         .list({
           filter: 'actions(destinationAccountId=$1)',
-          filterParams: [aliceId],
+          filterParams: [alice.id],
         })
         .all(item => items.push(item))
+
       expect(items.length).to.equal(1)
     })
 
-    it('should list transactions based on filter using snake_case (deprecated)', async () => {
+    it('filters transactions in snake_case (deprecated)', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const bob = await createAccount('bob')
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 200,
+          destinationAccountId: alice.id,
+        })
+      })
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 200,
+          destinationAccountId: bob.id,
+        })
+      })
       const items: any[] = []
+
       await client.transactions
         .list({
           filter: 'actions(destination_account_id=$1)',
-          filterParams: [aliceId],
+          filterParams: [alice.id],
         })
         .all(item => items.push(item))
+
       expect(items.length).to.equal(1)
     })
   })
