@@ -1,7 +1,8 @@
 # Sequence Node SDK changelog
 
-## 1.5.0 (2018????)
+## 1.5.0 (20180316)
 
+* Added `Feed`s. [More info](https://dashboard.seq.com/docs/feeds)
 * The `keys` field on `Account` and `Flavor` has been deprecated; the new field
   is `keyIds`, containing key ID strings.
 * Transaction reference data has been deprecated; you can now use action tags
