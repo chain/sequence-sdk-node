@@ -2,6 +2,9 @@
 
 ## 1.5.0 (20180316)
 
+For full details on the 1.5 release and how to migrate your code,
+[visit the Sequence changelog](https://dashboard.seq.com/docs/changelog#release-v1-5).
+
 * Added `Feed`s. [More info](https://dashboard.seq.com/docs/feeds)
 * The `keys` field on `Account` and `Flavor` has been deprecated; the new field
   is `keyIds`, containing key ID strings.
