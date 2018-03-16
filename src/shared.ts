@@ -1,4 +1,8 @@
-(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator")
+if (typeof (Symbol as any).asyncIterator === 'undefined') {
+  // prettier-ignore
+  (Symbol as any).asyncIterator =
+    Symbol.asyncIterator || Symbol('asyncIterator')
+}
 import { BalanceQueryParams } from './api/balances'
 import { Client } from './client'
 import { Page } from './page'
@@ -79,11 +83,7 @@ const getApi = (client: any, memberPath: string) => {
   return queryOwner
 }
 
-async function* queryIterator(
-  client: Client,
-  memberPath: string,
-  params = {},
-) {
+async function* queryIterator(client: Client, memberPath: string, params = {}) {
   let page = await getApi(client, memberPath)(params).page()
   for (const item of page.items) {
     yield item
@@ -132,7 +132,13 @@ export const sharedAPI = {
     if (!consumer) {
       return queryIterator(client, memberPath, params)
     } else {
-      return sharedAPI.queryEachAsync(client, memberPath, params, consumer, opts)
+      return sharedAPI.queryEachAsync(
+        client,
+        memberPath,
+        params,
+        consumer,
+        opts
+      )
     }
   },
 
