@@ -94,18 +94,6 @@ describe('Feed', () => {
       filterParams: [tag],
     })
 
-    const actionFeedItems: any[] = []
-    actionFeed.consume((action: any, next: any, stop: any) => {
-      actionFeedItems.push(action.id)
-      actionFeedItems.length === 2 ? stop(true) : next(true)
-    })
-
-    const transactionFeedItems: any[] = []
-    transactionFeed.consume((transaction: any, next: any, stop: any) => {
-      transactionFeedItems.push(transaction.id)
-      transactionFeedItems.length === 2 ? stop(true) : next(true)
-    })
-
     const tx1 = await client.transactions.transact(builder => {
       builder.issue({
         flavorId: goldId,
@@ -123,13 +111,18 @@ describe('Feed', () => {
       })
     })
 
-    // TODO we can't await a Promise returned by consume,
-    // but would like to
-    while (actionFeedItems.length <= 2) {
-      return true
+    const actionFeedItems: any[] = []
+    const transactionFeedItems: any[] = []
+
+    for await (const action of actionFeed) {
+      actionFeedItems.push(action.id)
+      await actionFeed.ack()
+      if (actionFeedItems.length === 2) { break }
     }
-    while (transactionFeedItems.length <= 2) {
-      return true
+    for await (const transaction of transactionFeed) {
+      transactionFeedItems.push(transaction.id)
+      await transactionFeed.ack()
+      if (transactionFeedItems.length === 2) { break }
     }
 
     expect(actionFeedItems).to.deep.equal([

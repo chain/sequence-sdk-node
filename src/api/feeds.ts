@@ -25,38 +25,20 @@ export interface FeedCreateParameters extends QueryParams {
  *
  * @property {Array<string | number>} filterParams
  * A list of values that will be interpolated into the filter expression.
- *
- * @property {String} cursor
- * The position where the next call to consume should begin.
  */
 export class Feed {
   public id: string
   public type: string
   public filter: string
   public filterParams: any[]
-  public cursor: string
-  public client: Client
-  public nextCursor: any
 
-  /**
-   * Called once for every item received via the feed.
-   *
-   * @callback FeedProcessor
-   * @param {Object} item - Item to process.
-   * @param {function(Boolean)} next - Continue to the next item when it becomes
-   *                                   available. Passing true to this callback
-   *                                   will update the feed to acknowledge that
-   *                                   the current item was consumed.
-   * @param {function(Boolean)} stop - Terminate the processing loop. Passing
-   *                                   true to this callback will update the
-   *                                   feed to acknowledge that the current item
-   *                                   was consumed.
-   * @param {function(Error)} fail - Terminate the processing loop due to an
-   *                                 application-level error. This callback
-   *                                 accepts an optional error argument. The
-   *                                 feed will not be updated, and the current
-   *                                 item will not be acknowledged.
-   */
+  private client: Client
+  private prevCursor: string
+  private cursor: string // (cursor === prevCursor) means ack'd
+  private page: {
+    items: any[]
+    cursors: string[]
+  }
 
   /**
    * Creates a new feed consumer.
@@ -67,103 +49,56 @@ export class Feed {
   constructor(data: object, client: Client) {
     Object.assign(this, data)
     this.client = client
+    this.prevCursor = this.cursor
+    this.page = { items: [], cursors: [] }
   }
 
   /**
    * Ack ("acknowledge") saves a feed's position so that a future
-   * call to consume picks up where the last one left off. Without
+   * call to next picks up where the last one left off. Without
    * ack, some of the same items may be redelivered by
-   * consume. Consume does its own internal acks from time to time.
+   * the feed. The feed does its own internal acks from time to time.
    */
-  public ack() {
-    if (this.nextCursor) {
-      return this.client
-        .request('/ack-feed', {
-          id: this.id,
-          cursor: this.nextCursor,
-          previousCursor: this.cursor,
-        })
-        .then(() => {
-          this.cursor = this.nextCursor
-          this.nextCursor = null
-        })
+  public async ack() {
+    if (this.cursor === this.prevCursor) {
+      return
     }
+    await this.client.request('/ack-feed', {
+      id: this.id,
+      cursor: this.cursor,
+      previousCursor: this.prevCursor,
+    })
+    this.prevCursor = this.cursor
+  }
+
+  // Advertise that 'this' follows the async iterator protocol.
+  public [Symbol.asyncIterator]() {
+    return this
   }
 
   /**
-   * Process items returned from a feed in real-time.
+   * Retrieve the next feed result, if available.
+   * This method satisfies the async iterator interface.
    *
-   * @param {FeedProcessor} consumer - Called once with each item to do any
-   *                                   desired processing. The callback can
-   *                                   optionally choose to terminate the loop.
+   * @example <caption>Example usage.</caption>
+   * const feed = await ledger.feeds.get(id: 'my-feed')
+   * for await (const action of feed) {
+   *   console.log("action id: " + action.id)
+   * }
+   *
+   * See {@link https://github.com/tc39/proposal-async-iteration} for more
+   * information about async iterators.
+   *
+   * @return a { value, done } tuple.
    */
-  public consume(consumer: any) {
-    const promise = new Promise((resolve, reject) => {
-      const nextPage = () => {
-        this.client
-          .request('/stream-feed-items', {
-            id: this.id,
-          })
-          .then(page => {
-            let index = 0
-            let prevItem: object
-
-            const stop = (shouldAck?: boolean) => {
-              let position: any
-              if (shouldAck) {
-                position = this.ack()
-              } else {
-                position = Promise.resolve()
-              }
-              position.then(resolve).catch(reject)
-            }
-
-            const next = (shouldAck?: boolean) => {
-              let position: any
-              if (shouldAck && prevItem) {
-                position = this.ack()
-              } else {
-                position = Promise.resolve()
-              }
-
-              position
-                .then(() => {
-                  if (index >= page.items.length) {
-                    nextPage()
-                    return
-                  }
-
-                  prevItem = page.items[index]
-                  this.nextCursor = page.cursors[index]
-                  index++
-
-                  // Pass the next item to the consumer, as well as three loop
-                  // operations:
-                  //
-                  // - next(shouldAck): maybe ack, then continue/long-poll to next item.
-                  // - stop(shouldAck): maybe ack, then terminate the loop by fulfilling the outer promise.
-                  // - fail(err): terminate the loop by rejecting the outer promise.
-                  //              Use this if you want to bubble an async error up to
-                  //              the outer promise catch function.
-                  //
-                  // The consumer can also terminate the loop by returning a promise
-                  // that will reject.
-
-                  const res = consumer(prevItem, next, stop, reject)
-                  if (res && typeof res.catch === 'function') {
-                    res.catch(reject)
-                  }
-                })
-                .catch(reject) // fail consume loop on ack failure, or on thrown exceptions from "then" function
-            }
-
-            next()
-          })
-          .catch(reject) // fail consume loop on query failure
-      }
-
-      nextPage()
-    })
+  public async next() {
+    while (this.page.items.length === 0) {
+      const req = { id: this.id }
+      this.page = await this.client.request('/stream-feed-items', req)
+    }
+    const v = this.page.items.shift()
+    this.cursor = this.page.cursors.shift() as string
+    return { value: v }
   }
 }
 
