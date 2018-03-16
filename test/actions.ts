@@ -107,6 +107,26 @@ describe('Action', () => {
     })
   })
 
+  describe('List.all no-sugar query', () => {
+    it('should consume three items', async () => {
+      const all = client.actions
+        .list({
+          filter: 'reference_data.test=$1',
+          filterParams: [refData.test],
+        })
+        .all() as AsyncIterator<any>
+      // NOTE(kr): the type assertion above can go away
+      // when we remove the old stuff for v2.
+      const processed: any[] = []
+      while (true) {
+        const { value, done } = await all.next()
+        if (done) { break }
+        processed.push(value)
+      }
+      expect(processed.length).to.equal(3)
+    })
+  })
+
   describe('List.all legacy query', () => {
     it('should consume three items', async () => {
       const processed: any[] = []

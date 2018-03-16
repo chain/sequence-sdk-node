@@ -131,4 +131,61 @@ describe('Feed', () => {
     ])
     expect(transactionFeedItems).to.deep.equal([tx1.id, tx2.id])
   })
+
+  it('consumes an action/transaction feed', async () => {
+    const goldId: any = (await createFlavor('gold')).id
+    const bobId: any = (await createAccount('bob')).id
+    const tag: string = uuid.v4()
+    const actionFeed = await client.feeds.create({
+      type: 'action',
+      id: `actionFeed-${uuid.v4()}`,
+      filter: 'tags.type=$1',
+      filterParams: [tag],
+    })
+    const transactionFeed = await client.feeds.create({
+      type: 'transaction',
+      id: `transactionFeed-${uuid.v4()}`,
+      filter: 'actions(tags.type=$1)',
+      filterParams: [tag],
+    })
+
+    const tx1 = await client.transactions.transact(builder => {
+      builder.issue({
+        flavorId: goldId,
+        amount: 400,
+        destinationAccountId: bobId,
+        actionTags: { type: tag },
+      })
+    })
+    const tx2 = await client.transactions.transact(builder => {
+      builder.issue({
+        flavorId: goldId,
+        amount: 100,
+        destinationAccountId: bobId,
+        actionTags: { type: tag },
+      })
+    })
+
+    const actionFeedItems: any[] = []
+    const transactionFeedItems: any[] = []
+
+    while (true) {
+      const { value: action } = await actionFeed.next()
+      actionFeedItems.push(action.id)
+      await actionFeed.ack()
+      if (actionFeedItems.length === 2) { break }
+    }
+    while (true) {
+      const { value: transaction } = await transactionFeed.next()
+      transactionFeedItems.push(transaction.id)
+      await transactionFeed.ack()
+      if (transactionFeedItems.length === 2) { break }
+    }
+
+    expect(actionFeedItems).to.deep.equal([
+      tx1.actions[0].id,
+      tx2.actions[0].id,
+    ])
+    expect(transactionFeedItems).to.deep.equal([tx1.id, tx2.id])
+  })
 })

@@ -11,7 +11,10 @@ import {
 
 export interface PagePromise<T> extends Promise<T> {
   page: (pageParams?: PageParams | {}, cb2?: PageCallback) => Promise<Page>
-  all: (consumer?: Consumer, cb2?: ObjectCallback) => Promise<any>
+  all: (
+    consumer?: Consumer,
+    cb2?: ObjectCallback
+  ) => AsyncIterator<any> | Promise<any>
 }
 
 export interface ActionSumParams extends QueryParams {

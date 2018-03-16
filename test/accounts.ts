@@ -151,6 +151,36 @@ describe('Account', () => {
     })
   })
 
+  describe('List.all no-sugar query', () => {
+    it('accepts tag filters, processes all matches', async () => {
+      const key = await client.keys.create({ id: uuid.v4() })
+      const filterKey = uuid.v4()
+      for (let i = 0; i < 2; i++) {
+        await client.accounts.create({
+          keyIds: [key.id],
+          tags: {
+            filter: filterKey,
+          },
+        })
+      }
+
+      const all = client.accounts
+        .list({
+          filter: 'tags.filter = $1',
+          filterParams: [filterKey],
+        })
+        .all()
+      const items: any[] = []
+      while (true) {
+        const { value, done } = await all.next()
+        if (done) { break }
+        items.push(value)
+      }
+
+      assert.equal(items.length, 2)
+    })
+  })
+
   describe('queryAll (deprecated)', () => {
     it('success example', async () => {
       const key = await client.keys.create({ id: uuid.v4() })
