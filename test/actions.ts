@@ -11,27 +11,27 @@ import { testHelpers } from './testHelpers'
 const {
   client,
   createAccount,
-  createAsset,
+  createFlavor,
   createRefData,
   transact,
 } = testHelpers
 
 describe('Action', () => {
-  let asset1: { id: string; alias: string }
-  let asset2: { id: string; alias: string }
+  let flavor1: { id: string }
+  let flavor2: { id: string }
   let account1: { id: string; alias: string }
   let account2: { id: string; alias: string }
   let refData: { [key: string]: string }
 
   before(async () => {
-    asset1 = await createAsset()
-    asset2 = await createAsset()
+    flavor1 = await createFlavor()
+    flavor2 = await createFlavor()
     account1 = await createAccount()
     account2 = await createAccount()
     refData = await createRefData()
     await transact((b: TransactionBuilder) => {
       b.issue({
-        assetId: asset1.id,
+        flavorId: flavor1.id,
         amount: 10,
         destinationAccountId: account1.id,
         referenceData: refData,
@@ -39,7 +39,7 @@ describe('Action', () => {
     })
     await transact((b: TransactionBuilder) => {
       b.issue({
-        assetId: asset2.id,
+        flavorId: flavor2.id,
         amount: 2,
         destinationAccountId: account2.id,
         referenceData: refData,
@@ -47,7 +47,7 @@ describe('Action', () => {
     })
     await transact((b: TransactionBuilder) => {
       b.transfer({
-        assetId: asset1.id,
+        flavorId: flavor1.id,
         amount: 5,
         sourceAccountId: account1.id,
         destinationAccountId: account2.id,

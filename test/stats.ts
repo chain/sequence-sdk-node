@@ -12,16 +12,16 @@ describe('Stats', () => {
   let initial: any
   let key: any
   let account: any
-  let asset: any
+  let flavor: any
 
   before(async () => {
     initial = await client.stats.get()
     key = await client.keys.create({ alias: uuid.v4() })
     account = await client.accounts.create({ keys: [key], quorum: 1 })
-    asset = await client.assets.create({ keys: [key], quorum: 1 })
+    flavor = await client.flavors.create({ keys: [key], quorum: 1 })
     await client.transactions.transact(b =>
       b.issue({
-        assetId: asset.id,
+        flavorId: flavor.id,
         amount: 1,
         destinationAccountId: account.id,
       })
@@ -30,7 +30,7 @@ describe('Stats', () => {
 
   it('basic usage', async () => {
     const got = await client.stats.get()
-    expect(got.assetCount).to.equal(initial.assetCount + 1)
+    expect(got.flavorCount).to.equal(initial.flavorCount + 1)
     expect(got.accountCount).to.equal(initial.accountCount + 1)
     expect(got.txCount).to.equal(initial.txCount + 1)
   })

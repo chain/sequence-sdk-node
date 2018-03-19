@@ -28,24 +28,12 @@
  * action, and token) as they existed at the time of the transaction (possibly
  * null).
  *
- * @property {String} assetId
- * **Deprecated. Use flavorId instead.**
- * The id of the action's asset.
- *
- * @property {String} assetAlias
- * **Deprecated. Use flavorId instead.**
- * The alias of the action's asset (possibly null).
- *
- * @property {Hash} assetTags
- * **Deprecated. Use snapshot instead.**
- * The tags of the action's asset (possibly null).
- *
  * @property {String} sourceAccountId
- * The id of the account transferring the asset (possibly null if the
+ * The id of the account transferring the tokens (possibly null if the
  * action is an issuance).
  *
  * @property {String} sourceAccountAlias
- * The alias of the account transferring the asset (possibly null if the
+ * The alias of the account transferring the tokens (possibly null if the
  * action is an issuance).
  *
  * @property {String} sourceAccountTags
@@ -53,11 +41,11 @@
  * The tags associated with the source account (possibly null).
  *
  * @property {String} destinationAccountId
- * The id of the account receiving the asset (possibly null if the
+ * The id of the account receiving the tokens (possibly null if the
  * action is a retirement).
  *
  * @property {String} destinationAccountAlias
- * The alias of the account receiving the asset (possibly null if the
+ * The alias of the account receiving the tokens (possibly null if the
  * action is a retirement).
  *
  * @property {String} destinationAccountTags

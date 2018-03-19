@@ -17,7 +17,6 @@ const blacklistAttributes = [
   'account_tags',
   'action_tags',
   'after',
-  'asset_tags',
   'destination_account_tags',
   'flavor_tags',
   'next',

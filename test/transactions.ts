@@ -186,11 +186,11 @@ describe('Transaction', () => {
     })
   })
 
-  it('fails to build transactions for non-existent assets', () => {
+  it('fails to build transactions for non-existent flavors', () => {
     return expect(
       client.transactions.transact(builder => {
         builder.issue({
-          assetAlias: 'unobtanium',
+          flavorId: 'unobtanium',
           amount: 100,
         })
       })

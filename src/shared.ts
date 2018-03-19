@@ -3,7 +3,6 @@ if (typeof (Symbol as any).asyncIterator === 'undefined') {
   (Symbol as any).asyncIterator =
     Symbol.asyncIterator || Symbol('asyncIterator')
 }
-import { BalanceQueryParams } from './api/balances'
 import { Client } from './client'
 import { Page } from './page'
 

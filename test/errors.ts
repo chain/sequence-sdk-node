@@ -181,13 +181,13 @@ describe('Errors', () => {
     })
 
     it('has action specific error data within failing transaction', async () => {
-      const goldAlias = (await testHelpers.createAsset('gold')).alias
+      const gold = await testHelpers.createFlavor('gold')
       const aliceAlias = (await testHelpers.createAccount('alice')).alias
       const bobAlias = (await testHelpers.createAccount('bob')).alias
 
       await client.transactions.transact(builder => {
         builder.issue({
-          assetAlias: goldAlias,
+          flavorId: gold.id,
           amount: 100,
           destinationAccountAlias: aliceAlias,
         })
@@ -196,25 +196,25 @@ describe('Errors', () => {
       try {
         await client.transactions.transact(builder => {
           builder.transfer({
-            assetAlias: goldAlias,
+            flavorId: gold.id,
             amount: 50,
             sourceAccountId: 'unobtanium',
             destinationAccountId: bobAlias,
           }) // failure: not found sourceAccountId
           builder.transfer({
-            assetAlias: goldAlias,
+            flavorId: gold.id,
             amount: 50,
             sourceAccountId: aliceAlias,
             destinationAccountId: bobAlias,
           }) // success
           builder.transfer({
-            assetAlias: goldAlias,
+            flavorId: gold.id,
             amount: 100,
             sourceAccountId: aliceAlias,
             destinationAccountId: bobAlias,
           }) // failure: reserved outputs
           builder.transfer({
-            assetAlias: goldAlias,
+            flavorId: gold.id,
             amount: 200,
             sourceAccountId: aliceAlias,
             destinationAccountId: bobAlias,

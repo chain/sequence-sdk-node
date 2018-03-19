@@ -6,10 +6,20 @@ import { ObjectCallback, sharedAPI } from '../shared'
  *
  * @typedef {Object} Stats
  *
- * @property {Number} assetCount
+ * @property {Number} flavorCount
  * @property {Number} accountCount
  * @property {Number} txCount
  */
+
+// TODO(kr): remove this once backend sends flavor_count
+const fixFlavor = async (p: Promise<any>) => {
+  const stats = await p
+  if (!stats.flavorCount) {
+    stats.flavorCount = stats.assetCount
+    delete stats.assetCount
+  }
+  return stats
+}
 
 /**
  * API for interacting with {@link Stats stats}
@@ -24,6 +34,6 @@ export const statsAPI = (client: Client) => {
      * @returns {Promise<Stats>} Ledger summary information.
      */
     get: (cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(client.request('/stats'), cb),
+      sharedAPI.tryCallback(fixFlavor(client.request('/stats')), cb),
   }
 }

@@ -61,19 +61,13 @@ export class TransactionBuilder {
    *
    * @param {Object} params - Action parameters.
    * @param {String} params.flavorId - ID of flavor to be issued.
-   * @param {String} params.assetId - **Deprecated. Use flavorId instead.**
-   *   Asset ID specifying the asset to be issued.
-   *   You must specify either an ID or an alias.
-   * @param {String} params.assetAlias - **Deprecated. Use flavorId instead.**
-   *   Asset alias specifying the asset to be issued.
-   *   You must specify either an ID or an alias.
    * @param {String} params.amount - Amount of the flavor to be issued.
    * @param {String} params.destinationAccountId - Account ID specifying the
    *   account controlling the flavor.
    *   You must specify a destination account ID or alias.
    * @param {String} params.destinationAccountAlias - **Deprecated. Use
    *   destinationAccountId instead.** Account alias specifying the account
-   *   controlling the asset. You must specify a destination account ID or
+   *   controlling the tokens. You must specify a destination account ID or
    *   alias.
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.actionTags - Tags to add to the action.
@@ -82,8 +76,6 @@ export class TransactionBuilder {
    */
   public issue(params: {
     flavorId?: string
-    assetId?: string
-    assetAlias?: string
     amount: number
     destinationAccountId?: string
     destinationAccountAlias?: string
@@ -99,21 +91,13 @@ export class TransactionBuilder {
    *
    * @param {Object} params - Action parameters.
    * @param {String} params.sourceAccountId - Account ID specifying the account
-   *   controlling the flavor. You must specify a source account ID, account
-   *   alias, or contract ID.
+   *   controlling the flavor. You must specify a source account ID or account
+   *   alias.
    * @param {String} params.sourceAccountAlias - **Deprecated. Use
    *   sourceAccountId instead.** Account alias specifying the account
-   *   controlling the asset. You must specify a source account ID, account
-   *   alias, or contract ID.
-   * @param {String} params.sourceContractId - Contract holding the flavor.
-   *   You must specify a source account ID, account alias, or contract ID.
+   *   controlling the tokens. You must specify a source account ID or account
+   *   alias.
    * @param {String} params.flavorId - ID of flavor to be retired.
-   * @param {String} params.assetId - **Deprecated. Use flavorId instead.**
-   *   Asset ID specifying the asset to be retired.
-   *   You must specify either an ID or an alias.
-   * @param {String} params.assetAlias - **Deprecated. Use flavorId instead.**
-   *   Asset alias specifying the asset to be retired.
-   *   You must specify either an ID or an alias.
    * @param {Number} params.amount - Amount of the flavor to be retired.
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
@@ -126,10 +110,7 @@ export class TransactionBuilder {
   public retire(params: {
     sourceAccountId?: string
     sourceAccountAlias?: string
-    sourceContractId?: string
     flavorId?: string
-    assetId?: string
-    assetAlias?: string
     amount: number
     filter?: string
     filterParams?: object
@@ -141,32 +122,24 @@ export class TransactionBuilder {
   }
 
   /**
-   * Add an action that moves tokens from a source (an account or contract) to
+   * Add an action that moves tokens from a source account to
    * a destination account.
    *
    * @param {Object} params Action parameters
    * @param {String} params.sourceAccountId - Account ID specifying the account
-   *   controlling the flavor. You must specify a source account ID, account
-   *   alias, or contract ID.
+   *   controlling the flavor. You must specify a source account ID or account
+   *   alias.
    * @param {String} params.sourceAccountAlias - **Deprecated. Use
    *   sourceAccountId instead.** Account alias specifying the account
-   *   controlling the asset. You must specify a source account ID, account
-   *   alias, or contract ID.
-   * @param {String} params.sourceContractId - Contract holding the flavor.
-   *   You must specify a source account ID, account alias, or contract ID.
-   * @param {String} params.assetId - **Deprecated. Use flavorId instead.**
-   *   Asset ID specifying the asset to be transferred.
-   *   You must specify either an ID or an alias.
-   * @param {String} params.assetAlias -  **Deprecated. Use flavorId instead.**
-   *   Asset alias specifying the asset to be transferred.
-   *   You must specify either an ID or an alias.
+   *   controlling the tokens. You must specify a source account ID or account
+   *   alias.
    * @param {Integer} params.amount - Amount of the flavor to be transferred.
    * @param {String} params.destinationAccountId - Account ID specifying the
    *   account controlling the flavor. You must specify a destination account ID
    *   or alias.
    * @param {String} params.destinationAccountAlias - **Deprecated. Use
    *   destinationAccountId instead.** Account alias specifying the account
-   *   controlling the asset. You must specify a destination account ID or
+   *   controlling the tokens. You must specify a destination account ID or
    *   alias.
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
@@ -180,10 +153,7 @@ export class TransactionBuilder {
   public transfer(params: {
     sourceAccountId?: string
     sourceAccountAlias?: string
-    sourceContractId?: string
     flavorId?: string
-    assetId?: string
-    assetAlias?: string
     amount: number
     destinationAccountId?: string
     destinationAccountAlias?: string

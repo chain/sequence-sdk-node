@@ -49,19 +49,10 @@ const createAccount = async (account = 'account') => {
   })
 }
 
-const createAsset = async (asset = 'asset') => {
-  const key = await client.keys.create({ alias: uuid.v4() })
-  return await client.assets.create({
-    alias: `${asset}-${uuid.v4()}`,
-    keys: [key],
-    quorum: 1,
-  })
-}
-
-const createFlavor = async (flavor = 'flavor') => {
-  const key = await client.keys.create({ id: uuid.v4() })
+const createFlavor = async (id?: string) => {
+  const key = await client.keys.create()
   return await client.flavors.create({
-    id: `${flavor}-${uuid.v4()}`,
+    id: id ? id + '-' + uuid.v4() : id,
     keys: [key],
     quorum: 1,
   })
@@ -97,7 +88,6 @@ export const testHelpers = {
   client,
   constructClient,
   createAccount,
-  createAsset,
   createFlavor,
   createRefData,
   transact,

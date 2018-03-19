@@ -1,9 +1,6 @@
 import { Agent } from 'https'
 import { accountsAPI } from './api/accounts'
 import { actionsAPI, ActionSumParams, PagePromise } from './api/actions'
-import { assetsAPI } from './api/assets'
-import { BalanceQueryParams, balancesAPI } from './api/balances'
-import { ContractQueryParameters, contractsAPI } from './api/contracts'
 import { devUtilsAPI } from './api/devUtils'
 import { FeedCreateParameters, feedsAPI } from './api/feeds'
 import { flavorsAPI } from './api/flavors'
@@ -40,18 +37,6 @@ export class Client {
    * @type {module:ActionsApi}
    */
   public actions = actionsAPI(this)
-
-  /**
-   * API actions for assets.
-   * @type {module:AssetsApi}
-   */
-  public assets = assetsAPI(this)
-
-  /**
-   * API actions for balances.
-   * @type {module:BalancesApi}
-   */
-  public balances = balancesAPI(this)
 
   /**
    * Development-only API actions.
@@ -94,12 +79,6 @@ export class Client {
    * @type {module:TransactionsApi}
    */
   public transactions = transactionsAPI(this)
-
-  /**
-   * API actions for contracts.
-   * @type {module:ContractsApi}
-   */
-  public contracts = contractsAPI(this)
 
   /**
    * constructor - create a new Chain client object capable of interacting with

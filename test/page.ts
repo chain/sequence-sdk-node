@@ -6,19 +6,19 @@ import 'mocha'
 import * as uuid from 'uuid'
 
 import { testHelpers } from './testHelpers'
-const { client, createAccount, createAsset } = testHelpers
+const { client, createAccount, createFlavor } = testHelpers
 
 chai.use(chaiAsPromised)
 
 const expect = chai.expect
 
 describe('Page', () => {
-  let goldAlias: string
+  let gold: any
   let aliceAlias: string
 
   before(async () => {
     const allKeys = await client.keys.queryAll()
-    goldAlias = (await createAsset('gold')).alias
+    gold = await createFlavor('gold')
     aliceAlias = (await createAccount('alice')).alias
 
     const creationPromises: any[] = []
@@ -29,7 +29,7 @@ describe('Page', () => {
     await client.transactions.transact(builder => {
       for (let i = 0; i < 101; i++) {
         builder.issue({
-          assetAlias: goldAlias,
+          flavorId: gold.id,
           amount: 100,
           destinationAccountAlias: aliceAlias,
         })

@@ -1,5 +1,9 @@
 # Sequence Node SDK changelog
 
+## 2.0.0-rc (2018????)
+
+* Removed assets, balances, and contracts.
+
 ## 1.5.0 (20180316)
 
 For full details on the 1.5 release and how to migrate your code,

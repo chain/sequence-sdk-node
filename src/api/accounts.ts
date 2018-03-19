@@ -5,7 +5,7 @@ import { Consumer, ObjectCallback, PageCallback, QueryParams } from '../shared'
 import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
 
 /**
- * An account is an object in Sequence that tracks ownership of assets on a
+ * An account is an object in Sequence that tracks ownership of tokens on a
  * blockchain by creating and tracking control programs.
  *
  * More info: {@link https://dashboard.seq.com/docs/accounts}
