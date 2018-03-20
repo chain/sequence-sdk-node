@@ -1,8 +1,8 @@
 import * as uuid from 'uuid'
 import { Client } from '../client'
 import { Query } from '../query'
-import { Consumer, ObjectCallback, PageCallback, QueryParams } from '../shared'
-import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
+import { QueryParams } from '../shared'
+import { CreateRequest, UpdateTagsRequest } from '../shared'
 
 /**
  * A flavor is a type of value that can be issued on a blockchain. All units of
@@ -74,21 +74,18 @@ export const flavorsAPI = (client: Client) => {
      * Create a new flavor.
      *
      * @param {module:FlavorsApi~createRequest} params - Parameters for flavor creation.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Flavor>} Newly created flavor.
      */
-    create: (params: CreateRequest, cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(client.request('/create-flavor', params), cb),
+    create: (params: CreateRequest) => client.request('/create-flavor', params),
 
     /**
      * Update flavor tags.
      *
      * @param {module:FlavorsApi~updateTagsRequest} params - Parameters for updating flavor tags.
-     * @param {objectCallback} [cb] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Object>} Success message.
      */
-    updateTags: (params: UpdateTagsRequest, cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(client.request('/update-flavor-tags', params), cb),
+    updateTags: (params: UpdateTagsRequest) =>
+      client.request('/update-flavor-tags', params),
 
     /**
      * Query a list of flavors matching the specified query.

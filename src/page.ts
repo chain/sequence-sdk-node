@@ -1,8 +1,6 @@
 import { Client } from './client'
-import { ObjectCallback } from './shared'
 
 /**
- * @callback PageCallback
  * @param {error} error
  * @param {Page} page - Requested page of results.
  */
@@ -78,11 +76,10 @@ export class Page {
   /**
    * Fetch the next page of data for the query specified in this object.
    *
-   * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
    * @returns {Promise<Page>} A promise resolving to a Page object containing
    *                         the requested results.
    */
-  public nextPage(cb?: ObjectCallback) {
+  public nextPage() {
     let queryOwner = this.client
     const memberPath = this.memberPath.split('.')
     memberPath.forEach(member => {
@@ -93,11 +90,11 @@ export class Page {
 
     if (typeof queryOwner[this.method] === 'function') {
       if (this.method === 'list' || this.method === 'sum') {
-        return queryOwner[this.method]({}).page(next, cb)
+        return queryOwner[this.method]({}).page(next)
       } else {
-        return queryOwner[this.method](next, cb)
+        return queryOwner[this.method](next)
       }
     }
-    return queryOwner.queryPage(next, cb)
+    return queryOwner.queryPage(next)
   }
 }

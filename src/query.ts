@@ -1,13 +1,6 @@
 import { Client } from './client'
 import { Page } from './page'
-import {
-  Consumer,
-  ObjectCallback,
-  PageCallback,
-  PageParams,
-  sharedAPI,
-  SumParams,
-} from './shared'
+import { Consumer, PageParams, sharedAPI } from './shared'
 
 /**
  * A query for Sequence items.
@@ -30,17 +23,16 @@ export class Query<QueryParamType> {
    * @param {Object} params={} - Filter and pagination information.
    * @param {String} params.cursor - Cursor for retrieving additional items from a previous call to the query.
    * @param {Number} params.size - Number of items to return in result set.
-   * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
    * @returns {Page} Requested page of results.
    */
-  public page(pageParams?: PageParams | {}, cb?: PageCallback): Promise<Page> {
+  public page(pageParams?: PageParams | {}): Promise<Page> {
     return sharedAPI.queryPage(
       this.client,
       this.itemName,
       this.method,
       `/${this.method}-${this.itemName}`,
       this.queryParams,
-      { cb },
+      {},
       pageParams
     )
   }
@@ -58,18 +50,15 @@ export class Query<QueryParamType> {
    * information about async iterators.
    *
    * @param {QueryProcessor} processor - **Deprecated. Use all().next() instead.** Processing callback.
-   * @param {ObjectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
    * @returns {AsyncIterableIterator} an async iterator over the query results.
    */
-  public all(consumer?: Consumer, cb?: ObjectCallback) {
+  public all(consumer?: Consumer) {
     return sharedAPI.queryEach(
       this.client,
       `${this.itemName}.${this.method}`,
       this.queryParams,
       consumer,
-      {
-        cb,
-      }
+      {}
     )
   }
 }

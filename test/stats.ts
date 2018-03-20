@@ -34,8 +34,4 @@ describe('Stats', () => {
     expect(got.accountCount).to.equal(initial.accountCount + 1)
     expect(got.txCount).to.equal(initial.txCount + 1)
   })
-
-  it('callback support', done => {
-    client.stats.get(done)
-  })
 })

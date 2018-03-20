@@ -74,31 +74,4 @@ describe('Key', () => {
       expect(res.map((r: any) => r.id)).to.include(id)
     })
   })
-
-  // These just test that the callback is engaged correctly. Behavior is
-  // tested in the promises test.
-  describe('Callback style', () => {
-    it('create', done => {
-      client.keys.create(
-        {}, // intentionally blank
-        () => done() // intentionally ignore errors
-      )
-    })
-
-    it('query', done => {
-      client.keys.queryPage({}, done)
-    })
-
-    it('queryAll', done => {
-      client.keys.queryAll({}, done)
-    })
-
-    it('list.page', done => {
-      client.keys.list({}).page({}, done)
-    })
-
-    it('list.all', done => {
-      client.keys.list({}).all(() => undefined, done)
-    })
-  })
 })

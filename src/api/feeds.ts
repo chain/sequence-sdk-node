@@ -1,7 +1,7 @@
 import * as uuid from 'uuid'
 import { Client } from '../client'
 import { Query } from '../query'
-import { ObjectCallback, QueryParams } from '../shared'
+import { QueryParams } from '../shared'
 import { CreateRequest, sharedAPI } from '../shared'
 
 export interface FeedCreateParameters extends QueryParams {
@@ -147,41 +147,29 @@ export const feedsAPI = (client: Client) => {
      * Create a new feed.
      *
      * @param {module:FeedsApi~createRequest} params - Parameters for feed creation.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Feed>} Newly created feed.
      */
-    create: (params: FeedCreateParameters, cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(
-        client
-          .request('/create-feed', params)
-          .then(data => new Feed(data, client)),
-        cb
-      ),
+    create: (params: FeedCreateParameters) =>
+      client
+        .request('/create-feed', params)
+        .then(data => new Feed(data, client)),
 
     /**
      * Deletes a feed.
      *
      * @param {module:FeedsApi~deleteRequest} params - Parameters for feed deletion.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} Promise resolved on success.
      */
-    delete: (params: { id: string }, cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(client.request('/delete-feed', params), cb),
+    delete: (params: { id: string }) => client.request('/delete-feed', params),
 
     /**
      * Retrieves a single feed.
      *
      * @param {module:FeedsApi~getRequest} params - Parameters for feed retrieval.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Feed>} Requested feed.
      */
-    get: (params: { id: string }, cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(
-        client
-          .request('/get-feed', params)
-          .then(data => new Feed(data, client)),
-        cb
-      ),
+    get: (params: { id: string }) =>
+      client.request('/get-feed', params).then(data => new Feed(data, client)),
 
     /**
      * Query a list of feeds.

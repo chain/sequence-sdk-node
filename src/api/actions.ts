@@ -1,20 +1,10 @@
 import { Client } from '../client'
 import { Page } from '../page'
-import {
-  Consumer,
-  ObjectCallback,
-  PageCallback,
-  PageParams,
-  QueryParams,
-  sharedAPI,
-} from '../shared'
+import { Consumer, PageParams, QueryParams, sharedAPI } from '../shared'
 
 export interface PagePromise<T> extends Promise<T> {
-  page: (pageParams?: PageParams | {}, cb2?: PageCallback) => Promise<Page>
-  all: (
-    consumer?: Consumer,
-    cb2?: ObjectCallback
-  ) => AsyncIterator<any> | Promise<any>
+  page: (pageParams?: PageParams | {}) => Promise<Page>
+  all: (consumer?: Consumer) => AsyncIterator<any> | Promise<any>
 }
 
 export interface ActionSumParams extends QueryParams {
@@ -39,8 +29,6 @@ export const actionsAPI = (client: Client) => {
      *   filter string (if needed).
      * @param {Number} params.pageSize - **Deprecated. Use
      *   list.page({ size: 1 }) instead.** Number of items to return.
-     * @param {PageCallback} [callback] - Optional callback. Use instead of
-     *   Promise return value as desired.
      * @returns {PagePromise<Page<Action>>} A promise of results.
      * @example <caption>List all actions for a source account</caption>
      * async () => {
@@ -65,34 +53,31 @@ export const actionsAPI = (client: Client) => {
      *     .page({ cursor: page.cursor })
      * }
      */
-    list: (params: QueryParams, cb?: PageCallback) => {
+    list: (params: QueryParams) => {
       const promise = sharedAPI.queryPage(
         client,
         'actions',
         'list',
         '/list-actions',
-        params,
-        { cb }
+        params
       ) as PagePromise<Page>
 
       // FIXME: remove the wrapping PagePromise object in 2.0, where
       // we don't need to maintain both old and new interfaces.
-      const getPage = (pageParams?: PageParams | {}, cb2?: PageCallback) => {
+      const getPage = (pageParams?: PageParams | {}) => {
         return sharedAPI.queryPage(
           client,
           'actions',
           'list',
           '/list-actions',
           params,
-          { cb: cb2 },
+          {},
           pageParams
         )
       }
 
-      const processAll = (consumer?: Consumer, cb2?: ObjectCallback) => {
-        return sharedAPI.queryEach(client, 'actions.list', params, consumer, {
-          cb: cb2,
-        })
+      const processAll = (consumer?: Consumer) => {
+        return sharedAPI.queryEach(client, 'actions.list', params, consumer)
       }
 
       promise.page = getPage
@@ -111,8 +96,6 @@ export const actionsAPI = (client: Client) => {
      * @param {Array<String>} params.groupBy - Action object fields to group by.
      * @param {Number} params.pageSize - **Deprecated. Use sum.page({ size: 1 })
      *   instead.** Number of items to return.
-     * @param {PageCallback} [callback] - Optional callback. Use instead of
-     *   Promise return value as desired.
      * @returns {PagePromise<Page<ActionSum>>} A promise of results.
      * @example <caption>Sum actions for an account grouped by type</caption>
      * async () => {
@@ -140,33 +123,29 @@ export const actionsAPI = (client: Client) => {
      *     .page({ cursor: page.cursor })
      * }
      */
-    sum: (params: ActionSumParams, cb?: PageCallback) => {
+    sum: (params: ActionSumParams) => {
       const promise = sharedAPI.queryPage(
         client,
         'actions',
         'sum',
         '/sum-actions',
         params,
-        { cb }
+        {}
       ) as PagePromise<Page>
 
-      const getPage = (pageParams?: PageParams | {}, cb2?: PageCallback) => {
+      const getPage = (pageParams?: PageParams | {}) => {
         return sharedAPI.queryPage(
           client,
           'actions',
           'sum',
           '/sum-actions',
           params,
-          {
-            cb: cb2,
-          },
+          {},
           pageParams
         )
       }
-      const processAll = (consumer?: Consumer, cb2?: ObjectCallback) => {
-        return sharedAPI.queryEach(client, 'actions.sum', params, consumer, {
-          cb: cb2,
-        })
+      const processAll = (consumer?: Consumer) => {
+        return sharedAPI.queryEach(client, 'actions.sum', params, consumer, {})
       }
 
       promise.page = getPage

@@ -128,26 +128,4 @@ describe('Flavor', () => {
       assert.equal(items.length, 101)
     })
   })
-
-  // These just test that the callback is engaged correctly. Behavior is
-  // tested in the promises test.
-  describe('Callback support', () => {
-    it('create', done => {
-      client.flavors.create(
-        {} as any, // intentionally blank
-        () => done() // intentionally ignore errors
-      )
-    })
-
-    it('updateTags', done => {
-      client.flavors.updateTags(
-        {} as any, // intentionally blank
-        () => done() // intentionally ignore errors
-      )
-    })
-
-    it('query', done => {
-      client.flavors.list().page({}, done)
-    })
-  })
 })

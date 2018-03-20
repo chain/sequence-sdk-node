@@ -1,6 +1,7 @@
 import { Client } from '../client'
+import { Page } from '../page'
 import { Query } from '../query'
-import { Consumer, ObjectCallback, QueryParams, sharedAPI } from '../shared'
+import { Consumer, QueryParams, sharedAPI } from '../shared'
 
 /**
  * A blockchain consists of an immutable set of cryptographically linked
@@ -177,21 +178,17 @@ export const transactionsAPI = (client: Client) => {
      * @param {Number} params.endTime - A Unix timestamp in milliseconds. When specified, only transactions with a block time less than the start time will be returned.
      * @param {Number} params.timeout - A time in milliseconds after which a server timeout should occur. Defaults to 1000 (1 second).
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Transaction>>} Requested page of results.
      *
      * @deprecated Use {@link module:TransactionsApi~list|list} instead.
      */
-    queryPage: (params: TransactionQueryParameters, cb: any) =>
+    queryPage: (params: TransactionQueryParameters) =>
       sharedAPI.queryPage(
         client,
         'transactions',
         'queryPage',
         '/list-transactions',
-        params,
-        {
-          cb,
-        }
+        params
       ),
 
     /**
@@ -206,17 +203,13 @@ export const transactionsAPI = (client: Client) => {
      * @param {Number} params.timeout - A time in milliseconds after which a server timeout should occur. Defaults to 1000 (1 second).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {QueryProcessor<Transaction>} processor - Processing callback.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} A promise resolved upon processing of all items, or
      *                   rejected on error.
      *
      * @deprecated Use {@link module:TransactionsApi~list|list} instead.
      */
-    queryEach: (
-      params: TransactionQueryParameters,
-      consumer: Consumer,
-      cb?: ObjectCallback
-    ) => sharedAPI.queryEach(client, 'transactions', params, consumer, { cb }),
+    queryEach: (params: TransactionQueryParameters, consumer: Consumer) =>
+      sharedAPI.queryEach(client, 'transactions', params, consumer),
 
     /**
      * Request all transactions matching the specified query, calling the
@@ -230,14 +223,13 @@ export const transactionsAPI = (client: Client) => {
      * @param {Number} params.timeout - A time in milliseconds after which a server timeout should occur. Defaults to 1000 (1 second).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {QueryProcessor<Transaction>} processor - Processing callback.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} A promise resolved upon processing of all items, or
      *                   rejected on error.
      *
      * @deprecated Use {@link module:TransactionsApi~list|list} instead.
      */
-    queryAll: (params: TransactionQueryParameters, cb?: ObjectCallback) =>
-      sharedAPI.queryAll(client, 'transactions', params, { cb }),
+    queryAll: (params: TransactionQueryParameters) =>
+      sharedAPI.queryAll(client, 'transactions', params),
 
     /**
      * Query a list of transactions matching the specified query.
@@ -255,13 +247,9 @@ export const transactionsAPI = (client: Client) => {
      *
      * @param {module:TransactionsApi~builderCallback} builderBlock - Function that adds desired actions
      *                                         to a given builder object.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Transaction>} Transaction object, or error.
      */
-    transact: (
-      builderBlock: ((builder: TransactionBuilder) => void),
-      cb?: ObjectCallback
-    ) => {
+    transact: (builderBlock: ((builder: TransactionBuilder) => void)) => {
       const builder = new TransactionBuilder()
 
       try {
@@ -273,7 +261,7 @@ export const transactionsAPI = (client: Client) => {
       const makePromise = async () => {
         return client.request('/transact', builder)
       }
-      return sharedAPI.tryCallback(makePromise(), cb)
+      return makePromise()
     },
   }
 }

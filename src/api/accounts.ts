@@ -1,7 +1,8 @@
 import * as uuid from 'uuid'
 import { Client } from '../client'
+import { Page } from '../page'
 import { Query } from '../query'
-import { Consumer, ObjectCallback, PageCallback, QueryParams } from '../shared'
+import { Consumer, QueryParams } from '../shared'
 import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
 
 /**
@@ -51,7 +52,7 @@ export const accountsAPI = (client: Client) => {
    * @property {Key[]} keys
    * **Deprecated. Use keyIds instead.**
    * The list of keys used to create control programs under the account. Keys
-   * are objects with either an `id` or `alias` field.
+   * are objects with an `id` field.
    *
    * @property {Number} [quorum]
    * The number of keys required to sign transactions for the account. Defaults
@@ -76,21 +77,19 @@ export const accountsAPI = (client: Client) => {
      * Create a new account.
      *
      * @param {module:AccountsApi~createRequest} params - Parameters for account creation.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Account>} Newly created account.
      */
-    create: (params: CreateRequest, cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(client.request('/create-account', params), cb),
+    create: (params: CreateRequest) =>
+      client.request('/create-account', params),
 
     /**
      * Update account tags.
      *
      * @param {module:AccountsApi~updateTagsRequest} params - Parameters for updating account tags.
-     * @param {objectCallback} [cb] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Object>} Success message.
      */
-    updateTags: (params: UpdateTagsRequest, cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(client.request('/update-account-tags', params), cb),
+    updateTags: (params: UpdateTagsRequest) =>
+      client.request('/update-account-tags', params),
 
     /**
      * Get one page of accounts matching the specified query.
@@ -99,19 +98,17 @@ export const accountsAPI = (client: Client) => {
      * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {PageCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Page<Account>>} Requested page of results.
      *
      * @deprecated Use {@link module:AccountsApi~list|list} instead.
      */
-    queryPage: (params?: QueryParams, cb?: PageCallback) =>
+    queryPage: (params?: QueryParams) =>
       sharedAPI.queryPage(
         client,
         'accounts',
         'queryPage',
         '/list-accounts',
-        params,
-        { cb }
+        params
       ),
 
     /**
@@ -123,14 +120,13 @@ export const accountsAPI = (client: Client) => {
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
      * @param {QueryProcessor<Account>} processor - Processing callback.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise} A promise resolved upon processing of all items, or
      *                   rejected on error.
      *
      * @deprecated Use {@link module:AccountsApi~list|list} instead.
      */
-    queryEach: (params: object, consumer: Consumer, cb?: ObjectCallback) =>
-      sharedAPI.queryEach(client, 'accounts', params, consumer, { cb }),
+    queryEach: (params: object, consumer: Consumer) =>
+      sharedAPI.queryEach(client, 'accounts', params, consumer),
 
     /**
      * Fetch all accounts matching the specified query.
@@ -139,14 +135,13 @@ export const accountsAPI = (client: Client) => {
      * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
      * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Account[]>} A promise resolved upon processing of all items, or
      *                   rejected on error.
      *
      * @deprecated Use {@link module:AccountsApi~list|list} instead.
      */
-    queryAll: (params?: QueryParams, cb?: ObjectCallback) =>
-      sharedAPI.queryAll(client, 'accounts', params, { cb }),
+    queryAll: (params?: QueryParams) =>
+      sharedAPI.queryAll(client, 'accounts', params),
 
     /**
      * Query a list of accounts matching the specified query.

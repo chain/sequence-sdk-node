@@ -12,7 +12,7 @@ const constructClient = () => {
   const ca = process.env.ROOT_CA_CERTS
 
   const constructingClient = new sequence.Client({
-    ledgerName: ledgerName,
+    ledgerName,
     credential: macaroon,
     agent: new https.Agent({ ca }),
   })

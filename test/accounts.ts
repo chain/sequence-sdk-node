@@ -192,30 +192,4 @@ describe('Account', () => {
       expect(result.map((x: any) => x.id)).to.include(account.id)
     })
   })
-
-  // These just test that the callback is engaged correctly. Behavior is
-  // tested in the promises test.
-  describe('Callback support', () => {
-    it('create', done => {
-      client.accounts.create(
-        {} as any, // intentionally blank
-        () => done() // intentionally ignore errors
-      )
-    })
-
-    it('updateTags', done => {
-      client.accounts.updateTags(
-        {} as any, // intentionally blank
-        () => done() // intentionally ignore errors
-      )
-    })
-
-    it('query', done => {
-      client.accounts.queryPage({}, done)
-    })
-
-    it('', done => {
-      client.accounts.queryAll({}, done)
-    })
-  })
 })

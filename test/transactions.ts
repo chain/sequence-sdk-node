@@ -328,25 +328,4 @@ describe('Transaction', () => {
         })
       ).to.be.rejectedWith('test error'))
   })
-
-  // These just test that the callback is engaged correctly. Behavior is
-  // tested in the promises test.
-  describe('Callback support', () => {
-    it('transact', done => {
-      client.transactions.transact(
-        () => {
-          return
-        }, // intentionally blank
-        () => done() // intentionally ignore errors
-      )
-    })
-
-    it('query', done => {
-      client.transactions.queryPage({}, done)
-    })
-
-    it('queryAll', done => {
-      client.transactions.queryAll({}, done)
-    })
-  })
 })

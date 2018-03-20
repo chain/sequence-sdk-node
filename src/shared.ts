@@ -60,19 +60,6 @@ export interface SumParams extends QueryParams {
  *                               callback depending on async calling style.
  */
 
-const tryCallback = async (promise: Promise<any>, cb?: ObjectCallback) => {
-  if (typeof cb !== 'function') {
-    return await promise
-  }
-
-  try {
-    const value = await promise
-    setTimeout(() => cb(null, value), 0)
-  } catch (error) {
-    setTimeout(() => cb(error, null), 0)
-  }
-}
-
 const getApi = (client: any, memberPath: string) => {
   let queryOwner = client
   memberPath.split('.').forEach(member => {
@@ -102,7 +89,7 @@ export const sharedAPI = {
     method: string,
     path: string,
     params = {},
-    opts: { cb?: any } = {},
+    opts: {} = {},
     pageParams?: PageParams | {}
   ) => {
     const body: { [s: string]: any } = Object.assign({}, params)
@@ -113,12 +100,9 @@ export const sharedAPI = {
         body.pageSize = pageParams.size
       }
     }
-    return tryCallback(
-      client
-        .request(path, body)
-        .then((data: object) => new Page(data, client, memberPath, method)),
-      opts.cb
-    )
+    return client
+      .request(path, body)
+      .then((data: object) => new Page(data, client, memberPath, method))
   },
 
   queryEach: (
@@ -126,7 +110,7 @@ export const sharedAPI = {
     memberPath: string,
     params = {},
     consumer?: Consumer,
-    opts: { cb?: any } = {}
+    opts: {} = {}
   ): any => {
     if (!consumer) {
       return queryIterator(client, memberPath, params)
@@ -146,7 +130,7 @@ export const sharedAPI = {
     memberPath: string,
     params = {},
     consumer: Consumer,
-    opts: { cb?: any } = {}
+    opts: {} = {}
   ) => {
     const processPages = async () => {
       let over = false
@@ -192,14 +176,14 @@ export const sharedAPI = {
       }
     }
 
-    return tryCallback(processPages(), opts.cb)
+    return processPages()
   },
 
   queryAll: (
     client: Client,
     memberPath: string,
     params = {},
-    opts: { cb?: any } = {}
+    opts: {} = {}
   ) => {
     const items: any = []
 
@@ -209,10 +193,8 @@ export const sharedAPI = {
       })
       .then(() => items)
 
-    return tryCallback(result, opts.cb)
+    return result
   },
-
-  tryCallback,
 }
 
 export interface CreateRequest {

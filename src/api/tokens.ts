@@ -1,13 +1,6 @@
 import { Client } from '../client'
 import { Query } from '../query'
-import {
-  Consumer,
-  ObjectCallback,
-  PageCallback,
-  PageParams,
-  QueryParams,
-  sharedAPI,
-} from '../shared'
+import { QueryParams } from '../shared'
 
 /**
  * More info: {@link https://dashboard.seq.com/docs/tokens}

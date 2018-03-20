@@ -1,5 +1,4 @@
 import { Client } from '../client'
-import { ObjectCallback, sharedAPI } from '../shared'
 
 /**
  * Summary information about a ledger.
@@ -20,10 +19,8 @@ export const statsAPI = (client: Client) => {
     /**
      * Retrieves summary information from the ledger.
      *
-     * @param {objectCallback} [callback] - Optional callback. Use instead of Promise return value as desired.
      * @returns {Promise<Stats>} Ledger summary information.
      */
-    get: (cb?: ObjectCallback) =>
-      sharedAPI.tryCallback(client.request('/stats'), cb),
+    get: () => client.request('/stats'),
   }
 }

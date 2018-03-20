@@ -196,17 +196,6 @@ describe('Token queries', () => {
       expect(sums[0].amount).to.equal(30)
     })
   })
-
-  // This just tests that the callbacks are engaged correctly.
-  describe('Callback support', () => {
-    it('list query', done => {
-      client.tokens.list({}).page({}, done)
-    })
-
-    it('sum query', done => {
-      client.tokens.sum({}).page({}, done)
-    })
-  })
 })
 
 describe('Token spending', () => {

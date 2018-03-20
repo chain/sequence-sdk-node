@@ -225,22 +225,6 @@ describe('Action', () => {
   })
 })
 
-// This just tests that the callbacks are engaged correctly.
-describe('Callback support', () => {
-  it('list query (deprecated)', done => {
-    client.actions.list({}, done)
-  })
-  it('list.page query', done => {
-    client.actions.list({}).page({}, done)
-  })
-  it('sum query (deprecated)', done => {
-    client.actions.sum({}, done)
-  })
-  it('sum.page query', done => {
-    client.actions.sum({}).page({}, done)
-  })
-})
-
 describe('Cursor support for actions', () => {
   it('should work on list query', async () => {
     const page = await client.actions.list({}).page({ size: 1 })
