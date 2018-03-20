@@ -2,8 +2,6 @@
 // npm install && npm run build
 // ./node_modules/ts-node/dist/bin.js examples/fiveMinuteGuide.ts
 
-import fs from 'fs'
-import https from 'https'
 import sequence from '..'
 import { TransactionBuilder } from '../dist/api/transactions'
 

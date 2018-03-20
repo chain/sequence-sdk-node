@@ -3,8 +3,6 @@
 // node examples/fiveMinuteGuide.js
 
 const sequence = require('..').default
-const fs = require('fs')
-const https = require('https')
 
 const ledger = new sequence.Client({
   ledgerName: 'CHANGEME',
