@@ -41,10 +41,10 @@ const balanceByFlavorId = async (balances: any) => {
 }
 
 const createAccount = async (account = 'account') => {
-  const key = await client.keys.create({ id: uuid.v4() })
+  const key = await client.keys.create()
   return await client.accounts.create({
     id: `${account}-${uuid.v4()}`,
-    keys: [key],
+    keyIds: [key.id],
     quorum: 1,
   })
 }
@@ -53,7 +53,7 @@ const createFlavor = async (id?: string) => {
   const key = await client.keys.create()
   return await client.flavors.create({
     id: id ? id + '-' + uuid.v4() : id,
-    keys: [key],
+    keyIds: [key.id],
     quorum: 1,
   })
 }

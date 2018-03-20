@@ -17,8 +17,8 @@ describe('Stats', () => {
   before(async () => {
     initial = await client.stats.get()
     key = await client.keys.create()
-    account = await client.accounts.create({ keys: [key], quorum: 1 })
-    flavor = await client.flavors.create({ keys: [key], quorum: 1 })
+    account = await client.accounts.create({ keyIds: [key.id], quorum: 1 })
+    flavor = await client.flavors.create({ keyIds: [key.id], quorum: 1 })
     await client.transactions.transact(b =>
       b.issue({
         flavorId: flavor.id,

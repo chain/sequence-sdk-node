@@ -18,31 +18,22 @@ let key: any
 describe('Flavor', () => {
   before('set up API objects', async () => {
     // Key and flavor creation
-    key = await client.keys.create({ id: uuid.v4() })
+    key = await client.keys.create()
     await client.flavors.create({
       id: xFlavorId,
-      keys: [key],
+      keyIds: [key.id],
       quorum: 1,
       tags: { x: 0 },
     })
     await client.flavors.create({
       id: yFlavorId,
-      keys: [key],
+      keyIds: [key.id],
       quorum: 1,
       tags: { y: 0 },
     })
   })
 
   describe('Single flavor creation', async () => {
-    it('with keys is successful', async () => {
-      const resp = await client.flavors.create({
-        id: `flavor-${uuid.v4()}`,
-        keys: [key],
-        quorum: 1,
-      })
-      return expect(resp.id).not.to.be.empty
-    })
-
     it('with key IDs is successful', async () => {
       const resp = await client.flavors.create({
         id: `flavor-${uuid.v4()}`,
@@ -90,7 +81,7 @@ describe('Flavor', () => {
 
       for (let i = 0; i < 6; i++) {
         await client.flavors.create({
-          keys: [key],
+          keyIds: [key.id],
           tags: {
             filter: filterKey,
           },
@@ -114,7 +105,7 @@ describe('Flavor', () => {
 
       for (let i = 0; i < 101; i++) {
         await client.flavors.create({
-          keys: [key],
+          keyIds: [key.id],
           tags: {
             filter: filterKey,
           },

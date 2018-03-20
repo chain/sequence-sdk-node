@@ -21,11 +21,6 @@ import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
  * Signatures from these keys are required for spending funds held in the
  * account.
  *
- * @property {Key[]} keys
- * **Deprecated. Use keyIds instead.**
- * The list of keys used to create control programs under the account.
- * Signatures from these keys are required for spending funds held in the account.
- *
  * @property {Number} quorum
  * The number of keys required to sign transactions for the account.
  *
@@ -48,11 +43,6 @@ export const accountsAPI = (client: Client) => {
    *
    * @property {String[]} keyIds
    * The list of key IDs used to create control programs under the account.
-   *
-   * @property {Key[]} keys
-   * **Deprecated. Use keyIds instead.**
-   * The list of keys used to create control programs under the account. Keys
-   * are objects with an `id` field.
    *
    * @property {Number} [quorum]
    * The number of keys required to sign transactions for the account. Defaults

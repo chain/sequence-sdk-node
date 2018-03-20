@@ -14,17 +14,6 @@ const client = testHelpers.client
 
 describe('Account', () => {
   describe('Single account creation', () => {
-    it('with keys is successful', async () => {
-      const key = await client.keys.create({ id: uuid.v4() })
-      const accountId = uuid.v4()
-      const resp = await client.accounts.create({
-        id: accountId,
-        keys: [key],
-        quorum: 1,
-      })
-      expect(resp.id).to.equal(accountId)
-    })
-
     it('with key IDs is successful', async () => {
       const id = uuid.v4()
       await client.keys.create({ id })
@@ -47,17 +36,17 @@ describe('Account', () => {
 
   describe('Single account tags update', () => {
     it('successful', async () => {
-      const key = await client.keys.create({ id: uuid.v4() })
+      const key = await client.keys.create()
       const accountId = uuid.v4()
       const account = await client.accounts.create({
         id: accountId,
-        keys: [key],
+        keyIds: [key.id],
         quorum: 1,
         tags: { x: 0 },
       })
       const account2 = await client.accounts.create({
         id: uuid.v4(),
-        keys: [key],
+        keyIds: [key.id],
         quorum: 1,
         tags: { y: 0 },
       })
@@ -85,7 +74,7 @@ describe('Account', () => {
 
   describe('List.page query', () => {
     it('fetches a second page with a cursor', async () => {
-      const key = await client.keys.create({ id: uuid.v4() })
+      const key = await client.keys.create()
       const filterKey = uuid.v4()
       for (let i = 0; i < 3; i++) {
         await client.accounts.create({
@@ -109,7 +98,7 @@ describe('Account', () => {
     })
 
     it('accepts account filters, defaults to 100 items per page', async () => {
-      const key = await client.keys.create({ id: uuid.v4() })
+      const key = await client.keys.create()
       const account = await client.accounts.create({
         keyIds: [key.id],
         quorum: 1,
@@ -129,7 +118,7 @@ describe('Account', () => {
 
   describe('List.all query', () => {
     it('accepts tag filters, processes all matches', async () => {
-      const key = await client.keys.create({ id: uuid.v4() })
+      const key = await client.keys.create()
       const filterKey = uuid.v4()
       for (let i = 0; i < 2; i++) {
         await client.accounts.create({
@@ -153,7 +142,7 @@ describe('Account', () => {
 
   describe('List.all no-sugar query', () => {
     it('accepts tag filters, processes all matches', async () => {
-      const key = await client.keys.create({ id: uuid.v4() })
+      const key = await client.keys.create()
       const filterKey = uuid.v4()
       for (let i = 0; i < 2; i++) {
         await client.accounts.create({
@@ -183,9 +172,9 @@ describe('Account', () => {
 
   describe('queryAll (deprecated)', () => {
     it('success example', async () => {
-      const key = await client.keys.create({ id: uuid.v4() })
+      const key = await client.keys.create()
       const account = await client.accounts.create({
-        keys: [key],
+        keyIds: [key.id],
         quorum: 1,
       })
       const result = await client.accounts.queryAll()

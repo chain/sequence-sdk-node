@@ -19,10 +19,6 @@ import { CreateRequest, UpdateTagsRequest } from '../shared'
  * @property {String[]} keyIds
  * The list of key IDs used to issue units of the flavor.
  *
- * @property {Key[]} keys
- * **Deprecated. Use keyIds instead.**
- * The list of keys used to issue units of the flavor.
- *
  * @property {Number} quorum
  * The number of signatures required to issue new units of the flavor.
  *
@@ -45,11 +41,6 @@ export const flavorsAPI = (client: Client) => {
    *
    * @property {String[]} keyIds
    * The list of key IDs used to create the issuance program for the flavor.
-   *
-   * @property {Key[]} keys
-   * **Deprecated. Use keyIds instead.**
-   * The list of keys used to create the issuance program for the flavor. Keys
-   * are objects with an `id` field.
    *
    * @property {Number} [quorum]
    * The number of keys required to issue units of the flavor. Defaults to the
