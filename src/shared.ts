@@ -8,17 +8,6 @@ import { Page } from './page'
 
 export type Consumer = (item: any, done: () => void) => any
 
-/**
- * @callback objectCallback
- * @param {error} error
- * @param {Object} object - Object response from API.
- */
-
-export type ObjectCallback = (
-  error: Error | null,
-  object: object | null
-) => void
-
 export type PageParams =
   | { size: number; cursor: undefined }
   | { cursor: string; size: undefined }
@@ -35,8 +24,6 @@ function isPageParams(obj?: PageParams | {}): obj is PageParams {
     return true
   }
 }
-
-export type PageCallback = (error: Error | null, page: Page | null) => void
 
 export interface QueryParams {
   filter?: string
