@@ -216,7 +216,6 @@ export const sharedAPI = {
 }
 
 export interface CreateRequest {
-  alias?: string
   id?: string
   keyIds?: string[]
   keys?: Key[]
@@ -225,12 +224,10 @@ export interface CreateRequest {
 }
 
 export interface UpdateTagsRequest {
-  id?: string
-  alias?: string
+  id: string
   tags?: { [s: string]: any }
 }
 
 export interface Key {
-  id?: string
-  alias?: string
+  id: string
 }

@@ -64,21 +64,15 @@ export class TransactionBuilder {
    * @param {String} params.amount - Amount of the flavor to be issued.
    * @param {String} params.destinationAccountId - Account ID specifying the
    *   account controlling the flavor.
-   *   You must specify a destination account ID or alias.
-   * @param {String} params.destinationAccountAlias - **Deprecated. Use
-   *   destinationAccountId instead.** Account alias specifying the account
-   *   controlling the tokens. You must specify a destination account ID or
-   *   alias.
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.actionTags - Tags to add to the action.
    * @param {Object} params.referenceData - **Deprecated. Use actionTags or
    * tokenTags instead.** Reference data to add to the receiving contract.
    */
   public issue(params: {
-    flavorId?: string
+    flavorId: string
     amount: number
-    destinationAccountId?: string
-    destinationAccountAlias?: string
+    destinationAccountId: string
     tokenTags?: object
     actionTags?: object
     referenceData?: object
@@ -91,12 +85,7 @@ export class TransactionBuilder {
    *
    * @param {Object} params - Action parameters.
    * @param {String} params.sourceAccountId - Account ID specifying the account
-   *   controlling the flavor. You must specify a source account ID or account
-   *   alias.
-   * @param {String} params.sourceAccountAlias - **Deprecated. Use
-   *   sourceAccountId instead.** Account alias specifying the account
-   *   controlling the tokens. You must specify a source account ID or account
-   *   alias.
+   *   controlling the flavor.
    * @param {String} params.flavorId - ID of flavor to be retired.
    * @param {Number} params.amount - Amount of the flavor to be retired.
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
@@ -108,9 +97,8 @@ export class TransactionBuilder {
    *   Reference data to add to the change contract, if it is necessary.
    */
   public retire(params: {
-    sourceAccountId?: string
-    sourceAccountAlias?: string
-    flavorId?: string
+    sourceAccountId: string
+    flavorId: string
     amount: number
     filter?: string
     filterParams?: object
@@ -127,20 +115,10 @@ export class TransactionBuilder {
    *
    * @param {Object} params Action parameters
    * @param {String} params.sourceAccountId - Account ID specifying the account
-   *   controlling the flavor. You must specify a source account ID or account
-   *   alias.
-   * @param {String} params.sourceAccountAlias - **Deprecated. Use
-   *   sourceAccountId instead.** Account alias specifying the account
-   *   controlling the tokens. You must specify a source account ID or account
-   *   alias.
+   *   controlling the flavor.
    * @param {Integer} params.amount - Amount of the flavor to be transferred.
    * @param {String} params.destinationAccountId - Account ID specifying the
-   *   account controlling the flavor. You must specify a destination account ID
-   *   or alias.
-   * @param {String} params.destinationAccountAlias - **Deprecated. Use
-   *   destinationAccountId instead.** Account alias specifying the account
-   *   controlling the tokens. You must specify a destination account ID or
-   *   alias.
+   *   account controlling the flavor.
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
@@ -151,12 +129,10 @@ export class TransactionBuilder {
    *   Reference data to add to the change contract, if it is necessary.
    */
   public transfer(params: {
-    sourceAccountId?: string
-    sourceAccountAlias?: string
-    flavorId?: string
+    sourceAccountId: string
+    flavorId: string
     amount: number
-    destinationAccountId?: string
-    destinationAccountAlias?: string
+    destinationAccountId: string
     filter?: string
     filterParams?: object
     tokenTags?: object

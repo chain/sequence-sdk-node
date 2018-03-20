@@ -14,12 +14,12 @@ const expect = chai.expect
 
 describe('Page', () => {
   let gold: any
-  let aliceAlias: string
+  let aliceId: string
 
   before(async () => {
     const allKeys = await client.keys.queryAll()
     gold = await createFlavor('gold')
-    aliceAlias = (await createAccount('alice')).alias
+    aliceId = (await createAccount('alice')).id
 
     const creationPromises: any[] = []
     for (let i = 0; i < 101 - allKeys.length; i++) {
@@ -31,7 +31,7 @@ describe('Page', () => {
         builder.issue({
           flavorId: gold.id,
           amount: 100,
-          destinationAccountAlias: aliceAlias,
+          destinationAccountId: aliceId,
         })
       }
     })

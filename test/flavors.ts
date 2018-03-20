@@ -79,7 +79,7 @@ describe('Flavor', () => {
         client.flavors.updateTags({
           // ID intentionally omitted
           tags: { x: 1 },
-        })
+        } as any)
       ).to.be.rejectedWith('SEQ051')
     })
   })

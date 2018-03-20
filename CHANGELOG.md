@@ -3,6 +3,9 @@
 ## 2.0.0-rc (2018????)
 
 * Removed assets, balances, and contracts.
+* The `alias` field on key and account objects has been removed.
+* The `sourceAccountAlias` and `destinationAccountAlias` field on transactions
+  has been removed.
 
 ## 1.5.0 (20180316)
 
@@ -17,9 +20,8 @@ For full details on the 1.5 release and how to migrate your code,
 * Added support for camel-case identifiers in filter queries. Identifiers in
   query strings are now consistent with identifiers in Node source code.
   Snake-case names in query strings are deprecated.
-* Changed method `all` to return a standard async iterator.
-  The previous callback-based interface still works
-  but is deprecated.
+* Changed method `all` to return a standard async iterator. The previous
+  callback-based interface still works but is deprecated.
 
 ## 1.4.0 (20180308)
 

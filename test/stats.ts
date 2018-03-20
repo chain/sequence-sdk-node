@@ -16,7 +16,7 @@ describe('Stats', () => {
 
   before(async () => {
     initial = await client.stats.get()
-    key = await client.keys.create({ alias: uuid.v4() })
+    key = await client.keys.create()
     account = await client.accounts.create({ keys: [key], quorum: 1 })
     flavor = await client.flavors.create({ keys: [key], quorum: 1 })
     await client.transactions.transact(b =>

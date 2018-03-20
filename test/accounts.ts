@@ -73,12 +73,12 @@ describe('Account', () => {
       assert.deepEqual(page.items[0].tags, { x: 1 })
     })
 
-    it('rejected due to missing ID/Alias', () => {
+    it('rejected due to missing ID', () => {
       return expect(
         client.accounts.updateTags({
-          // ID/Alias intentionally omitted
+          // ID intentionally omitted
           tags: { x: 1 },
-        })
+        } as any)
       ).to.be.rejectedWith('SEQ051')
     })
   })
@@ -205,7 +205,7 @@ describe('Account', () => {
 
     it('updateTags', done => {
       client.accounts.updateTags(
-        {}, // intentionally blank
+        {} as any, // intentionally blank
         () => done() // intentionally ignore errors
       )
     })

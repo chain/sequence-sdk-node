@@ -182,14 +182,14 @@ describe('Errors', () => {
 
     it('has action specific error data within failing transaction', async () => {
       const gold = await testHelpers.createFlavor('gold')
-      const aliceAlias = (await testHelpers.createAccount('alice')).alias
-      const bobAlias = (await testHelpers.createAccount('bob')).alias
+      const aliceId = (await testHelpers.createAccount('alice')).id
+      const bobId = (await testHelpers.createAccount('bob')).id
 
       await client.transactions.transact(builder => {
         builder.issue({
           flavorId: gold.id,
           amount: 100,
-          destinationAccountAlias: aliceAlias,
+          destinationAccountId: aliceId,
         })
       })
 
@@ -198,26 +198,26 @@ describe('Errors', () => {
           builder.transfer({
             flavorId: gold.id,
             amount: 50,
-            sourceAccountId: 'unobtanium',
-            destinationAccountId: bobAlias,
+            sourceAccountId: 'unobtainium',
+            destinationAccountId: bobId,
           }) // failure: not found sourceAccountId
           builder.transfer({
             flavorId: gold.id,
             amount: 50,
-            sourceAccountId: aliceAlias,
-            destinationAccountId: bobAlias,
+            sourceAccountId: aliceId,
+            destinationAccountId: bobId,
           }) // success
           builder.transfer({
             flavorId: gold.id,
             amount: 100,
-            sourceAccountId: aliceAlias,
-            destinationAccountId: bobAlias,
+            sourceAccountId: aliceId,
+            destinationAccountId: bobId,
           }) // failure: reserved outputs
           builder.transfer({
             flavorId: gold.id,
             amount: 200,
-            sourceAccountId: aliceAlias,
-            destinationAccountId: bobAlias,
+            sourceAccountId: aliceId,
+            destinationAccountId: bobId,
           }) // failure: insufficient funds
         })
       } catch (err) {

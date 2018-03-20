@@ -107,7 +107,7 @@ export class Connection {
   /**
    * constructor - create a new Sequence client object.
    *
-   * @param {String} ledgerName   Ledger alias or ID.
+   * @param {String} ledgerName   Ledger name.
    * @param {String} credential   Sequence credential for API access.
    * @param {String} agent        https.Agent used to provide TLS config.
    * @returns {Client}

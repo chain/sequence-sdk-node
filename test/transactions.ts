@@ -190,8 +190,9 @@ describe('Transaction', () => {
     return expect(
       client.transactions.transact(builder => {
         builder.issue({
-          flavorId: 'unobtanium',
+          flavorId: 'unobtainium',
           amount: 100,
+          destinationAccountId: 'unobtainable',
         })
       })
     ).to.be.rejectedWith('SEQ706')
@@ -205,7 +206,7 @@ describe('Transaction', () => {
         builder.issue({
           flavorId: flavor.id,
           amount: 1,
-          destinationAccountAlias: account.alias,
+          destinationAccountId: account.id,
         })
       })
       const created = tx.id

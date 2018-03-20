@@ -19,8 +19,8 @@ const {
 describe('Action', () => {
   let flavor1: { id: string }
   let flavor2: { id: string }
-  let account1: { id: string; alias: string }
-  let account2: { id: string; alias: string }
+  let account1: { id: string }
+  let account2: { id: string }
   let refData: { [key: string]: string }
 
   before(async () => {

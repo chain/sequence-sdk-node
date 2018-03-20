@@ -32,20 +32,12 @@
  * The id of the account transferring the tokens (possibly null if the
  * action is an issuance).
  *
- * @property {String} sourceAccountAlias
- * The alias of the account transferring the tokens (possibly null if the
- * action is an issuance).
- *
  * @property {String} sourceAccountTags
  * **Deprecated. Use snapshot instead.**
  * The tags associated with the source account (possibly null).
  *
  * @property {String} destinationAccountId
  * The id of the account receiving the tokens (possibly null if the
- * action is a retirement).
- *
- * @property {String} destinationAccountAlias
- * The alias of the account receiving the tokens (possibly null if the
  * action is a retirement).
  *
  * @property {String} destinationAccountTags

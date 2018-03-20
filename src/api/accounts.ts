@@ -15,10 +15,6 @@ import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
  * @property {String} id
  * Unique identifier of the account.
  *
- * @property {String} alias
- * **Deprecated. Use id instead.**
- * User specified, unique identifier.
- *
  * @property {String[]} keyIds
  * The list of key IDs used to create control programs under the account.
  * Signatures from these keys are required for spending funds held in the
@@ -49,10 +45,6 @@ export const accountsAPI = (client: Client) => {
    * @property {String} [id]
    * Unique identifier. Will be auto-generated if not provided.
    *
-   * @property {String} [alias]
-   * **Deprecated. Use id instead.**
-   * User specified, unique identifier.
-   *
    * @property {String[]} keyIds
    * The list of key IDs used to create control programs under the account.
    *
@@ -73,11 +65,7 @@ export const accountsAPI = (client: Client) => {
    * @typedef {Object} updateTagsRequest
    *
    * @property {String} [id]
-   * The account ID. Either the ID or alias must be specified, but not both.
-   *
-   * @property {String} [alias]
-   * **Deprecated. Use id instead.**
-   * The account alias. Either the ID or alias must be specified, but not both.
+   * The account ID.
    *
    * @property {Object} tags
    * A new set of tags, which will replace the existing tags.
