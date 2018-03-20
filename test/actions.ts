@@ -11,8 +11,8 @@ import { testHelpers } from './testHelpers'
 const {
   client,
   createAccount,
+  createTags,
   createFlavor,
-  createRefData,
   transact,
 } = testHelpers
 
@@ -21,20 +21,20 @@ describe('Action', () => {
   let flavor2: { id: string }
   let account1: { id: string }
   let account2: { id: string }
-  let refData: { [key: string]: string }
+  let actionTags: { [key: string]: string }
 
   before(async () => {
     flavor1 = await createFlavor()
     flavor2 = await createFlavor()
     account1 = await createAccount()
     account2 = await createAccount()
-    refData = await createRefData()
+    actionTags = await createTags()
     await transact((b: TransactionBuilder) => {
       b.issue({
         flavorId: flavor1.id,
         amount: 10,
         destinationAccountId: account1.id,
-        referenceData: refData,
+        actionTags,
       })
     })
     await transact((b: TransactionBuilder) => {
@@ -42,7 +42,7 @@ describe('Action', () => {
         flavorId: flavor2.id,
         amount: 2,
         destinationAccountId: account2.id,
-        referenceData: refData,
+        actionTags,
       })
     })
     await transact((b: TransactionBuilder) => {
@@ -51,7 +51,7 @@ describe('Action', () => {
         amount: 5,
         sourceAccountId: account1.id,
         destinationAccountId: account2.id,
-        referenceData: refData,
+        actionTags,
       })
     })
   })
@@ -59,15 +59,15 @@ describe('Action', () => {
   describe('List query (deprecated)', () => {
     it('should list three actions', async () => {
       const page = await client.actions.list({
-        filter: 'reference_data.test=$1',
-        filterParams: [refData.test],
+        filter: 'tags.test=$1',
+        filterParams: [actionTags.test],
       })
       expect(page.items.length).to.equal(3)
     })
     it('should respect the size argument', async () => {
       const page = await client.actions.list({
-        filter: 'reference_data.test=$1',
-        filterParams: [refData.test],
+        filter: 'tags.test=$1',
+        filterParams: [actionTags.test],
         pageSize: 2,
       })
       expect(page.items.length).to.equal(2)
@@ -78,8 +78,8 @@ describe('Action', () => {
     it('should list three actions', async () => {
       const page = await client.actions
         .list({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
         })
         .page()
       expect(page.items.length).to.equal(3)
@@ -87,8 +87,8 @@ describe('Action', () => {
     it('should respect the size argument', async () => {
       const page = await client.actions
         .list({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
         })
         .page({ size: 2 })
       expect(page.items.length).to.equal(2)
@@ -99,8 +99,8 @@ describe('Action', () => {
     it('should consume three items', async () => {
       const processed = await testHelpers.asyncAll(client.actions
         .list({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
         })
         .all())
       expect(processed.length).to.equal(3)
@@ -111,8 +111,8 @@ describe('Action', () => {
     it('should consume three items', async () => {
       const all = client.actions
         .list({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
         })
         .all() as AsyncIterator<any>
       // NOTE(kr): the type assertion above can go away
@@ -132,8 +132,8 @@ describe('Action', () => {
       const processed: any[] = []
       await client.actions
         .list({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
         })
         .all(action => {
           processed.push(action)
@@ -145,8 +145,8 @@ describe('Action', () => {
   describe('Sum query with groupBy (deprecated)', () => {
     it('should have two items', async () => {
       const page = await client.actions.sum({
-        filter: 'reference_data.test=$1',
-        filterParams: [refData.test],
+        filter: 'tags.test=$1',
+        filterParams: [actionTags.test],
         groupBy: ['type'],
       })
       expect(page.items.find((b: any) => b.type === 'issue').amount).to.equal(
@@ -158,8 +158,8 @@ describe('Action', () => {
     })
     it('should respect the size argument', async () => {
       const page = await client.actions.sum({
-        filter: 'reference_data.test=$1',
-        filterParams: [refData.test],
+        filter: 'tags.test=$1',
+        filterParams: [actionTags.test],
         groupBy: ['type'],
         pageSize: 1,
       })
@@ -171,8 +171,8 @@ describe('Action', () => {
     it('should have two items', async () => {
       const page = await client.actions
         .sum({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
           groupBy: ['type'],
         })
         .page()
@@ -186,8 +186,8 @@ describe('Action', () => {
     it('should respect the size argument', async () => {
       const page = await client.actions
         .sum({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
           groupBy: ['type'],
         })
         .page({ size: 1 })
@@ -199,8 +199,8 @@ describe('Action', () => {
     it('should have two items', async () => {
       const sums = await testHelpers.asyncAll(client.actions
         .sum({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
           groupBy: ['type'],
         })
         .all())
@@ -214,8 +214,8 @@ describe('Action', () => {
       const sums: any[] = []
       await client.actions
         .sum({
-          filter: 'reference_data.test=$1',
-          filterParams: [refData.test],
+          filter: 'tags.test=$1',
+          filterParams: [actionTags.test],
           groupBy: ['type'],
         })
         .all(sum => sums.push(sum))

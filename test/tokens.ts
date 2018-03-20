@@ -14,7 +14,6 @@ const {
   client,
   createAccount,
   createFlavor,
-  createRefData,
   transact,
 } = testHelpers
 

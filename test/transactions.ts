@@ -16,7 +16,6 @@ const {
   client,
   createAccount,
   createFlavor,
-  createRefData,
 } = testHelpers
 
 describe('Transaction', () => {

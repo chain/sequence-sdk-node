@@ -20,7 +20,6 @@ const blacklistAttributes = [
   'destination_account_tags',
   'flavor_tags',
   'next',
-  'reference_data',
   'source_account_tags',
   'tags',
   'token_tags',

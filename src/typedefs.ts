@@ -46,8 +46,4 @@
  *
  * @property {Object} tags
  * User specified, unstructured data embedded within an action (possibly null).
- *
- * @property {Object} referenceData
- * **Deprecated. Use tags instead.**
- * User specified, unstructured data embedded within an action (possibly null).
  */

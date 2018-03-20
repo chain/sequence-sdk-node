@@ -57,7 +57,7 @@ const createFlavor = async (id?: string) => {
     quorum: 1,
   })
 }
-const createRefData = async (keyname = 'test') => {
+const createTags = async (keyname = 'test') => {
   const res: { [key: string]: string } = {}
   res[keyname] = await uuid.v4().toString()
   return res
@@ -89,7 +89,7 @@ export const testHelpers = {
   constructClient,
   createAccount,
   createFlavor,
-  createRefData,
+  createTags,
   transact,
   asyncAll,
 }

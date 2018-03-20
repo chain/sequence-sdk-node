@@ -20,10 +20,6 @@ import { Consumer, QueryParams, sharedAPI } from '../shared'
  * @property {Number} sequenceNumber
  * Sequence number of the transaction.
  *
- * @property {Object} referenceData
- * **Deprecated. Use action tags instead.**
- * User specified, unstructured data embedded within a transaction.
- *
  * @property {Action[]} actions
  * List of specified actions for a transaction.
  */
@@ -34,7 +30,6 @@ import { Consumer, QueryParams, sharedAPI } from '../shared'
  */
 export class TransactionBuilder {
   public actions: any[]
-  public referenceData: any
 
   /**
    * constructor - return a new object used for constructing a transaction.
@@ -46,15 +41,6 @@ export class TransactionBuilder {
      * @type Array
      */
     this.actions = []
-
-    /**
-     * Reference data for the transaction. You can specify reference data at
-     * both the transaction level and for each action.
-     * @name TransactionBuilder#referenceData
-     * @deprecated Use action tags instead.
-     * @type Object
-     */
-    this.referenceData = null
   }
 
   /**
@@ -67,8 +53,6 @@ export class TransactionBuilder {
    *   account controlling the flavor.
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.actionTags - Tags to add to the action.
-   * @param {Object} params.referenceData - **Deprecated. Use actionTags or
-   * tokenTags instead.** Reference data to add to the receiving contract.
    */
   public issue(params: {
     flavorId: string
@@ -76,7 +60,6 @@ export class TransactionBuilder {
     destinationAccountId: string
     tokenTags?: object
     actionTags?: object
-    referenceData?: object
   }) {
     this.actions.push(Object.assign({}, params, { type: 'issue' }))
   }
@@ -92,10 +75,6 @@ export class TransactionBuilder {
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.actionTags - Tags to add to the action.
-   * @param {Object} params.referenceData - **Deprecated. Use actionTags or
-   * tokenTags instead.** Reference data to add to the receiving contract.
-   * @param {Object} params.changeReferenceData - **Deprecated. This happens automatically when using token tags.**
-   *   Reference data to add to the change contract, if it is necessary.
    */
   public retire(params: {
     sourceAccountId: string
@@ -104,8 +83,6 @@ export class TransactionBuilder {
     filter?: string
     filterParams?: object
     actionTags?: object
-    referenceData?: object
-    changeReferenceData?: object
   }) {
     this.actions.push(Object.assign({}, params, { type: 'retire' }))
   }
@@ -124,10 +101,6 @@ export class TransactionBuilder {
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
    * @param {Object} params.actionTags - Tags to add to the action.
-   * @param {Object} params.referenceData - **Deprecated. Use actionTags or
-   *   tokenTags instead.** Reference data to add to the receiving contract.
-   * @param {Object} params.changeReferenceData - **Deprecated. This happens automatically when using token tags.**
-   *   Reference data to add to the change contract, if it is necessary.
    */
   public transfer(params: {
     sourceAccountId: string
@@ -138,8 +111,6 @@ export class TransactionBuilder {
     filterParams?: object
     tokenTags?: object
     actionTags?: object
-    referenceData?: object
-    changeReferenceData?: object
   }) {
     this.actions.push(Object.assign({}, params, { type: 'transfer' }))
   }

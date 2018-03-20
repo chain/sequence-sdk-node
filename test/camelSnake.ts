@@ -23,7 +23,7 @@ describe('camelizer', () => {
   it('does not convert children of blacklisted keys', () => {
     const base = {
       test_leaf: 1,
-      reference_data: {
+      action_tags: {
         dont_convert: 2,
       },
     }
@@ -31,8 +31,8 @@ describe('camelizer', () => {
     const camelized = Connection.camelize(base) as any
     expect(camelized.test_leaf).equals(undefined)
     expect(camelized.testLeaf).equals(1)
-    expect(camelized.referenceData.dont_convert).equals(2)
-    expect(camelized.referenceData.dontConvert).equals(undefined)
+    expect(camelized.actionTags.dont_convert).equals(2)
+    expect(camelized.actionTags.dontConvert).equals(undefined)
   })
 
   it('does not convert all-caps keys', () => {
@@ -67,7 +67,7 @@ describe('snakeizer', () => {
   it('does not convert children of blacklisted keys', () => {
     const base = {
       testLeaf: 1,
-      referenceData: {
+      actionTags: {
         dontConvert: 2,
       },
     }
@@ -75,8 +75,8 @@ describe('snakeizer', () => {
     const snakeized = Connection.snakeize(base) as any
     expect(snakeized.testLeaf).equals(undefined)
     expect(snakeized.test_leaf).equals(1)
-    expect(snakeized.reference_data.dontConvert).equals(2)
-    expect(snakeized.reference_data.dont_Convert).equals(undefined)
+    expect(snakeized.action_tags.dontConvert).equals(2)
+    expect(snakeized.action_tags.dont_Convert).equals(undefined)
   })
 
   it('does not convert all-caps keys', () => {
