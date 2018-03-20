@@ -28,31 +28,36 @@ const ledger = new sequence.Client({
 })
 ```
 
-### Async usage
+### Calling convention
 
-You can use either promises or callbacks for async API calls:
+Most SDK methods return Promise objects,
+which you can use with
+[async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function),
+or consume directly.
 
-With promises:
+With [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function):
 
 ```js
-ledger.accounts.create({...}).then(result => {
-  // operate on result
-}).catch(err => {
-  // handle errors
-})
+async function main() {
+  try {
+    const account = await ledger.accounts.create({...})
+    // operate on account
+  } catch (err) {
+    // handle errors
+  }
+}
 ```
 
-With callbacks:
+With the Promise object itself:
 
 ```js
-ledger.accounts.create({...}, (err, result) => {
-  if (err) {
+function main() {
+  return ledger.accounts.create({...}).then(account => {
+    // operate on account
+  }).catch(err => {
     // handle errors
-    return
-  }
-
-  // operate on result
-})
+  })
+}
 ```
 
 ### Documentation
