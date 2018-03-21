@@ -29,7 +29,6 @@ describe('Errors', () => {
     describe('ApiError types', () => {
       const mockResponse = { headers: { get: () => null } }
       const mockBody = {
-        code: '',
         seqCode: '',
         detail: '',
         message: '',
@@ -97,11 +96,10 @@ describe('Errors', () => {
       expect.fail()
     })
 
-    it('has Chain Code of CH002', async () => {
+    it('has Seq Code of SEQ002', async () => {
       try {
         await unauthedClient.accounts.queryPage()
       } catch (err) {
-        expect(err.code).to.eq('CH002')
         return expect(err.seqCode).to.eq('SEQ002')
       }
       expect.fail()
@@ -226,16 +224,12 @@ describe('Errors', () => {
         const insufficientAction = err.data.actions[2]
 
         expect(notFoundAction.data.index).to.eq(0)
-        expect(notFoundAction.code).to.eq('CH702')
         expect(notFoundAction.seqCode).to.eq('SEQ702')
         expect(reservedAction.data.index).to.eq(2)
-        expect(reservedAction.code).to.eq('CH761')
         expect(reservedAction.seqCode).to.eq('SEQ761')
         expect(insufficientAction.data.index).to.eq(3)
-        expect(insufficientAction.code).to.eq('CH760')
         expect(insufficientAction.seqCode).to.eq('SEQ760')
 
-        expect(err.code).to.eq('CH706')
         return expect(err.seqCode).to.eq('SEQ706')
       }
       expect.fail()

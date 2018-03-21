@@ -1,5 +1,4 @@
 export interface Body {
-  code: string
   detail: string
   message: string
   rawMessage: string
