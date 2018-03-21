@@ -80,7 +80,7 @@ describe('Errors', () => {
 
     it('is an NotFoundError', async () => {
       try {
-        await unauthedClient.accounts.queryPage()
+        await unauthedClient.accounts.list().page()
       } catch (err) {
         return expect(err).to.be.an.instanceof(sequence.errors.NotFoundError)
       }
@@ -89,7 +89,7 @@ describe('Errors', () => {
 
     it('has status code 404', async () => {
       try {
-        await unauthedClient.accounts.queryPage()
+        await unauthedClient.accounts.list().page()
       } catch (err) {
         return expect(err.response.status).to.eq(404)
       }
@@ -98,7 +98,7 @@ describe('Errors', () => {
 
     it('has Seq Code of SEQ002', async () => {
       try {
-        await unauthedClient.accounts.queryPage()
+        await unauthedClient.accounts.list().page()
       } catch (err) {
         return expect(err.seqCode).to.eq('SEQ002')
       }
@@ -107,7 +107,7 @@ describe('Errors', () => {
 
     it('has a request ID', async () => {
       try {
-        await unauthedClient.accounts.queryPage()
+        await unauthedClient.accounts.list().page()
       } catch (err) {
         return expect(err.requestId).to.not.eq(undefined)
       }
@@ -123,7 +123,7 @@ describe('Errors', () => {
 
     before(async () => {
       try {
-        await unauthedClient.accounts.queryPage()
+        await unauthedClient.accounts.list().page()
       } catch (e) {
         err = e
       }

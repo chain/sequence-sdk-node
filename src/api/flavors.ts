@@ -1,4 +1,3 @@
-import * as uuid from 'uuid'
 import { Client } from '../client'
 import { Query } from '../query'
 import { QueryParams } from '../shared'

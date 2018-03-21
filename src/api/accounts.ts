@@ -1,8 +1,7 @@
-import * as uuid from 'uuid'
 import { Client } from '../client'
 import { Page } from '../page'
 import { Query } from '../query'
-import { Consumer, QueryParams } from '../shared'
+import { QueryParams } from '../shared'
 import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
 
 /**
@@ -80,58 +79,6 @@ export const accountsAPI = (client: Client) => {
      */
     updateTags: (params: UpdateTagsRequest) =>
       client.request('/update-account-tags', params),
-
-    /**
-     * Get one page of accounts matching the specified query.
-     *
-     * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @returns {Promise<Page<Account>>} Requested page of results.
-     *
-     * @deprecated Use {@link module:AccountsApi~list|list} instead.
-     */
-    queryPage: (params?: QueryParams) =>
-      sharedAPI.queryPage(
-        client,
-        'accounts',
-        'queryPage',
-        '/list-accounts',
-        params
-      ),
-
-    /**
-     * Iterate over all accounts matching the specified query, calling the
-     * supplied consume callback once per item.
-     *
-     * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {QueryProcessor<Account>} processor - Processing callback.
-     * @returns {Promise} A promise resolved upon processing of all items, or
-     *                   rejected on error.
-     *
-     * @deprecated Use {@link module:AccountsApi~list|list} instead.
-     */
-    queryEach: (params: object, consumer: Consumer) =>
-      sharedAPI.queryEach(client, 'accounts', params, consumer),
-
-    /**
-     * Fetch all accounts matching the specified query.
-     *
-     * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @returns {Promise<Account[]>} A promise resolved upon processing of all items, or
-     *                   rejected on error.
-     *
-     * @deprecated Use {@link module:AccountsApi~list|list} instead.
-     */
-    queryAll: (params?: QueryParams) =>
-      sharedAPI.queryAll(client, 'accounts', params),
 
     /**
      * Query a list of accounts matching the specified query.

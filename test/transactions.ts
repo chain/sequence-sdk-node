@@ -197,23 +197,6 @@ describe('Transaction', () => {
     ).to.be.rejectedWith('SEQ706')
   })
 
-  describe('queryAll (deprecated)', () => {
-    it('success example', async () => {
-      const flavor = await createFlavor()
-      const account = await createAccount()
-      const tx = await client.transactions.transact(builder => {
-        builder.issue({
-          flavorId: flavor.id,
-          amount: 1,
-          destinationAccountId: account.id,
-        })
-      })
-      const created = tx.id
-      const result = await client.transactions.queryAll({})
-      expect(result.map((x: any) => x.id)).to.include(created)
-    })
-  })
-
   describe('List.page query', () => {
     it('fetches a second page with a cursor', async () => {
       await client.devUtils.reset()

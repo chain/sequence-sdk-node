@@ -56,24 +56,6 @@ describe('Action', () => {
     })
   })
 
-  describe('List query (deprecated)', () => {
-    it('should list three actions', async () => {
-      const page = await client.actions.list({
-        filter: 'tags.test=$1',
-        filterParams: [actionTags.test],
-      })
-      expect(page.items.length).to.equal(3)
-    })
-    it('should respect the size argument', async () => {
-      const page = await client.actions.list({
-        filter: 'tags.test=$1',
-        filterParams: [actionTags.test],
-        pageSize: 2,
-      })
-      expect(page.items.length).to.equal(2)
-    })
-  })
-
   describe('List.page query', () => {
     it('should list three actions', async () => {
       const page = await client.actions
@@ -114,9 +96,7 @@ describe('Action', () => {
           filter: 'tags.test=$1',
           filterParams: [actionTags.test],
         })
-        .all() as AsyncIterator<any>
-      // NOTE(kr): the type assertion above can go away
-      // when we remove the old stuff for v2.
+        .all()
       const processed: any[] = []
       while (true) {
         const { value, done } = await all.next()
@@ -124,46 +104,6 @@ describe('Action', () => {
         processed.push(value)
       }
       expect(processed.length).to.equal(3)
-    })
-  })
-
-  describe('List.all legacy query', () => {
-    it('should consume three items', async () => {
-      const processed: any[] = []
-      await client.actions
-        .list({
-          filter: 'tags.test=$1',
-          filterParams: [actionTags.test],
-        })
-        .all(action => {
-          processed.push(action)
-        })
-      expect(processed.length).to.equal(3)
-    })
-  })
-
-  describe('Sum query with groupBy (deprecated)', () => {
-    it('should have two items', async () => {
-      const page = await client.actions.sum({
-        filter: 'tags.test=$1',
-        filterParams: [actionTags.test],
-        groupBy: ['type'],
-      })
-      expect(page.items.find((b: any) => b.type === 'issue').amount).to.equal(
-        12
-      )
-      expect(
-        page.items.find((b: any) => b.type === 'transfer').amount
-      ).to.equal(5)
-    })
-    it('should respect the size argument', async () => {
-      const page = await client.actions.sum({
-        filter: 'tags.test=$1',
-        filterParams: [actionTags.test],
-        groupBy: ['type'],
-        pageSize: 1,
-      })
-      expect(page.items.length).to.equal(1)
     })
   })
 
@@ -204,21 +144,6 @@ describe('Action', () => {
           groupBy: ['type'],
         })
         .all())
-      expect(sums.find((b: any) => b.type === 'issue').amount).to.equal(12)
-      expect(sums.find((b: any) => b.type === 'transfer').amount).to.equal(5)
-    })
-  })
-
-  describe('Sum.all legacy query with groupBy', () => {
-    it('should have two items', async () => {
-      const sums: any[] = []
-      await client.actions
-        .sum({
-          filter: 'tags.test=$1',
-          filterParams: [actionTags.test],
-          groupBy: ['type'],
-        })
-        .all(sum => sums.push(sum))
       expect(sums.find((b: any) => b.type === 'issue').amount).to.equal(12)
       expect(sums.find((b: any) => b.type === 'transfer').amount).to.equal(5)
     })

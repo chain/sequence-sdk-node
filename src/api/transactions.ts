@@ -1,7 +1,7 @@
 import { Client } from '../client'
 import { Page } from '../page'
 import { Query } from '../query'
-import { Consumer, QueryParams, sharedAPI } from '../shared'
+import { QueryParams } from '../shared'
 
 /**
  * A blockchain consists of an immutable set of cryptographically linked
@@ -139,69 +139,6 @@ export const transactionsAPI = (client: Client) => {
    */
 
   return {
-    /**
-     * Get one page of transactions matching the specified query.
-     *
-     * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Number} params.startTime -  A Unix timestamp in milliseconds. When specified, only transactions with a block time greater than the start time will be returned.
-     * @param {Number} params.endTime - A Unix timestamp in milliseconds. When specified, only transactions with a block time less than the start time will be returned.
-     * @param {Number} params.timeout - A time in milliseconds after which a server timeout should occur. Defaults to 1000 (1 second).
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @returns {Promise<Page<Transaction>>} Requested page of results.
-     *
-     * @deprecated Use {@link module:TransactionsApi~list|list} instead.
-     */
-    queryPage: (params: TransactionQueryParameters) =>
-      sharedAPI.queryPage(
-        client,
-        'transactions',
-        'queryPage',
-        '/list-transactions',
-        params
-      ),
-
-    /**
-     * Iterate over all transactions matching the specified query, calling the
-     * supplied consume callback once per item.
-     *
-     * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Number} params.startTime -  A Unix timestamp in milliseconds. When specified, only transactions with a block time greater than the start time will be returned.
-     * @param {Number} params.endTime - A Unix timestamp in milliseconds. When specified, only transactions with a block time less than the start time will be returned.
-     * @param {Number} params.timeout - A time in milliseconds after which a server timeout should occur. Defaults to 1000 (1 second).
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {QueryProcessor<Transaction>} processor - Processing callback.
-     * @returns {Promise} A promise resolved upon processing of all items, or
-     *                   rejected on error.
-     *
-     * @deprecated Use {@link module:TransactionsApi~list|list} instead.
-     */
-    queryEach: (params: TransactionQueryParameters, consumer: Consumer) =>
-      sharedAPI.queryEach(client, 'transactions', params, consumer),
-
-    /**
-     * Request all transactions matching the specified query, calling the
-     * supplied processor callback with each item individually.
-     *
-     * @param {Object} params={} - Filter and pagination information.
-     * @param {String} params.filter - Filter string, see {@link https://dashboard.seq.com/docs/filters}.
-     * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
-     * @param {Number} params.startTime -  A Unix timestamp in milliseconds. When specified, only transactions with a block time greater than the start time will be returned.
-     * @param {Number} params.endTime - A Unix timestamp in milliseconds. When specified, only transactions with a block time less than the start time will be returned.
-     * @param {Number} params.timeout - A time in milliseconds after which a server timeout should occur. Defaults to 1000 (1 second).
-     * @param {Number} params.pageSize - Number of items to return in result set.
-     * @param {QueryProcessor<Transaction>} processor - Processing callback.
-     * @returns {Promise} A promise resolved upon processing of all items, or
-     *                   rejected on error.
-     *
-     * @deprecated Use {@link module:TransactionsApi~list|list} instead.
-     */
-    queryAll: (params: TransactionQueryParameters) =>
-      sharedAPI.queryAll(client, 'transactions', params),
-
     /**
      * Query a list of transactions matching the specified query.
      *

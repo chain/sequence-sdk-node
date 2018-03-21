@@ -30,13 +30,6 @@ describe('Key', () => {
     return expect(client.keys.create({ id })).to.be.rejectedWith('SEQ050')
   })
 
-  it('queryPage should work (deprecated)', async () => {
-    const id = uuid.v4()
-    const key = await client.keys.create({ id })
-    const resp = await client.keys.queryPage({})
-    return expect(resp.items.map((item: any) => item.id)).to.contain(id)
-  })
-
   describe('List.page query', () => {
     it('fetches a second page with a cursor', async () => {
       await client.devUtils.reset()
@@ -63,15 +56,6 @@ describe('Key', () => {
       const items = await testHelpers.asyncAll(client.keys.list().all())
 
       assert.equal(items.length, 2)
-    })
-  })
-
-  describe('queryAll (deprecated)', () => {
-    it('success example', async () => {
-      const id = uuid.v4()
-      await client.keys.create({ id })
-      const res = await client.keys.queryAll({})
-      expect(res.map((r: any) => r.id)).to.include(id)
     })
   })
 })

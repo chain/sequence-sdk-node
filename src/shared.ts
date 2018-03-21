@@ -6,8 +6,6 @@ if (typeof (Symbol as any).asyncIterator === 'undefined') {
 import { Client } from './client'
 import { Page } from './page'
 
-export type Consumer = (item: any, done: () => void) => any
-
 export type PageParams =
   | { size: number; cursor: undefined }
   | { cursor: string; size: undefined }
@@ -28,7 +26,6 @@ function isPageParams(obj?: PageParams | {}): obj is PageParams {
 export interface QueryParams {
   filter?: string
   filterParams?: Array<string | number>
-  pageSize?: number
   cursor?: string
 }
 
@@ -96,91 +93,9 @@ export const sharedAPI = {
     client: Client,
     memberPath: string,
     params = {},
-    consumer?: Consumer,
     opts: {} = {}
   ): any => {
-    if (!consumer) {
-      return queryIterator(client, memberPath, params)
-    } else {
-      return sharedAPI.queryEachAsync(
-        client,
-        memberPath,
-        params,
-        consumer,
-        opts
-      )
-    }
-  },
-
-  queryEachAsync: async (
-    client: Client,
-    memberPath: string,
-    params = {},
-    consumer: Consumer,
-    opts: {} = {}
-  ) => {
-    const processPages = async () => {
-      let over = false
-      let error
-      // to pass to the consumer
-      function done(err?: any) {
-        over = true
-        if (err) {
-          error = err
-        }
-      }
-
-      let page
-      const splitPath = memberPath.split('.')
-      const method = splitPath[splitPath.length - 1]
-      if (method === 'list' || method === 'sum') {
-        page = await getApi(client, memberPath)(params).page()
-      } else {
-        page = await getApi(client, memberPath).queryPage(params)
-      }
-      while (!over) {
-        for (const item of page.items) {
-          // Pass the item to the processor.
-          //
-          // If the consumer calls done(), it ends the loop
-          // (and possibly causes the promise to reject).
-          //
-          // If the consumer returns a promise that throws an error, it
-          // will bubble up and cause this promise to throw an error.
-          await consumer(item, done)
-          if (over) {
-            if (error !== undefined) {
-              throw error
-            }
-            break
-          }
-        }
-        if (page.lastPage) {
-          over = true
-        } else {
-          page = await page.nextPage()
-        }
-      }
-    }
-
-    return processPages()
-  },
-
-  queryAll: (
-    client: Client,
-    memberPath: string,
-    params = {},
-    opts: {} = {}
-  ) => {
-    const items: any = []
-
-    const result = sharedAPI
-      .queryEach(client, memberPath, params, (item: object) => {
-        items.push(item)
-      })
-      .then(() => items)
-
-    return result
+    return queryIterator(client, memberPath, params)
   },
 }
 

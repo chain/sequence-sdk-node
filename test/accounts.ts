@@ -169,16 +169,4 @@ describe('Account', () => {
       assert.equal(items.length, 2)
     })
   })
-
-  describe('queryAll (deprecated)', () => {
-    it('success example', async () => {
-      const key = await client.keys.create()
-      const account = await client.accounts.create({
-        keyIds: [key.id],
-        quorum: 1,
-      })
-      const result = await client.accounts.queryAll()
-      expect(result.map((x: any) => x.id)).to.include(account.id)
-    })
-  })
 })

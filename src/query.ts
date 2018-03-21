@@ -1,6 +1,6 @@
 import { Client } from './client'
 import { Page } from './page'
-import { Consumer, PageParams, sharedAPI } from './shared'
+import { PageParams, sharedAPI } from './shared'
 
 /**
  * A query for Sequence items.
@@ -49,16 +49,13 @@ export class Query<QueryParamType> {
    * See {@link https://github.com/tc39/proposal-async-iteration} for more
    * information about async iterators.
    *
-   * @param {QueryProcessor} processor - **Deprecated. Use all().next() instead.** Processing callback.
    * @returns {AsyncIterableIterator} an async iterator over the query results.
    */
-  public all(consumer?: Consumer) {
+  public all() {
     return sharedAPI.queryEach(
       this.client,
       `${this.itemName}.${this.method}`,
-      this.queryParams,
-      consumer,
-      {}
+      this.queryParams
     )
   }
 }

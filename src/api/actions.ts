@@ -1,11 +1,8 @@
 import { Client } from '../client'
 import { Page } from '../page'
-import { Consumer, PageParams, QueryParams, sharedAPI } from '../shared'
+import { Query } from '../query'
 
-export interface PagePromise<T> extends Promise<T> {
-  page: (pageParams?: PageParams | {}) => Promise<Page>
-  all: (consumer?: Consumer) => AsyncIterator<any> | Promise<any>
-}
+import { QueryParams } from '../shared'
 
 export interface ActionSumParams extends QueryParams {
   groupBy?: string[]
@@ -27,9 +24,7 @@ export const actionsAPI = (client: Client) => {
      *   see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String|Number>} params.filterParams - Parameter values for
      *   filter string (if needed).
-     * @param {Number} params.pageSize - **Deprecated. Use
-     *   list.page({ size: 1 }) instead.** Number of items to return.
-     * @returns {PagePromise<Page<Action>>} A promise of results.
+     * @returns {Promise<Page<Action>>} A promise of results.
      * @example <caption>List all actions for a source account</caption>
      * async () => {
      *   await ledger.actions
@@ -53,37 +48,8 @@ export const actionsAPI = (client: Client) => {
      *     .page({ cursor: page.cursor })
      * }
      */
-    list: (params: QueryParams) => {
-      const promise = sharedAPI.queryPage(
-        client,
-        'actions',
-        'list',
-        '/list-actions',
-        params
-      ) as PagePromise<Page>
-
-      // FIXME: remove the wrapping PagePromise object in 2.0, where
-      // we don't need to maintain both old and new interfaces.
-      const getPage = (pageParams?: PageParams | {}) => {
-        return sharedAPI.queryPage(
-          client,
-          'actions',
-          'list',
-          '/list-actions',
-          params,
-          {},
-          pageParams
-        )
-      }
-
-      const processAll = (consumer?: Consumer) => {
-        return sharedAPI.queryEach(client, 'actions.list', params, consumer)
-      }
-
-      promise.page = getPage
-      promise.all = processAll
-      return promise
-    },
+    list: (params?: QueryParams) =>
+      new Query(client, 'actions', 'list', params),
 
     /**
      * Get sums of actions matching the specified query.
@@ -94,9 +60,7 @@ export const actionsAPI = (client: Client) => {
      * @param {Array<String|Number>} params.filterParams - Parameter values for
      *   filter string (if needed).
      * @param {Array<String>} params.groupBy - Action object fields to group by.
-     * @param {Number} params.pageSize - **Deprecated. Use sum.page({ size: 1 })
-     *   instead.** Number of items to return.
-     * @returns {PagePromise<Page<ActionSum>>} A promise of results.
+     * @returns {Promise<Page<ActionSum>>} A promise of results.
      * @example <caption>Sum actions for an account grouped by type</caption>
      * async () => {
      *   await ledger.actions
@@ -123,34 +87,7 @@ export const actionsAPI = (client: Client) => {
      *     .page({ cursor: page.cursor })
      * }
      */
-    sum: (params: ActionSumParams) => {
-      const promise = sharedAPI.queryPage(
-        client,
-        'actions',
-        'sum',
-        '/sum-actions',
-        params,
-        {}
-      ) as PagePromise<Page>
-
-      const getPage = (pageParams?: PageParams | {}) => {
-        return sharedAPI.queryPage(
-          client,
-          'actions',
-          'sum',
-          '/sum-actions',
-          params,
-          {},
-          pageParams
-        )
-      }
-      const processAll = (consumer?: Consumer) => {
-        return sharedAPI.queryEach(client, 'actions.sum', params, consumer, {})
-      }
-
-      promise.page = getPage
-      promise.all = processAll
-      return promise
-    },
+    sum: (params?: ActionSumParams) =>
+      new Query(client, 'actions', 'sum', params),
   }
 }

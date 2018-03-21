@@ -17,7 +17,7 @@ describe('Page', () => {
   let aliceId: string
 
   before(async () => {
-    const allKeys = await client.keys.queryAll()
+    const allKeys = await testHelpers.asyncAll(client.keys.list().all())
     gold = await createFlavor('gold')
     aliceId = (await createAccount('alice')).id
 
@@ -39,7 +39,7 @@ describe('Page', () => {
 
   describe('nextPage', async () => {
     it('returns two pages of results', async () => {
-      const page = await client.keys.queryPage({})
+      const page = await client.keys.list().page()
       expect(page.items.length).to.eq(100)
       expect(page.lastPage).to.eq(false)
       const nextPage = await page.nextPage()
@@ -47,7 +47,7 @@ describe('Page', () => {
     })
 
     it('returns two pages of results for actions', async () => {
-      const page = await client.actions.list({}).page()
+      const page = await client.actions.list().page()
       expect(page.items.length).to.eq(100)
       expect(page.lastPage).to.eq(false)
       const nextPage = await page.nextPage()

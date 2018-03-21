@@ -1,6 +1,6 @@
 import { Agent } from 'https'
 import { accountsAPI } from './api/accounts'
-import { actionsAPI, ActionSumParams, PagePromise } from './api/actions'
+import { actionsAPI, ActionSumParams } from './api/actions'
 import { devUtilsAPI } from './api/devUtils'
 import { Feed, FeedCreateParameters, feedsAPI } from './api/feeds'
 import { flavorsAPI } from './api/flavors'
