@@ -2,10 +2,7 @@
 
 ## 2.0.0-rc (2018????)
 
-* Removed assets, balances, and contracts.
-* The `alias` field on key and account objects has been removed.
-* The `sourceAccountAlias` and `destinationAccountAlias` field on transactions
-  has been removed.
+* Removed assets, balances, contracts, and all other deprecated code.
 
 ## 1.5.0 (20180316)
 

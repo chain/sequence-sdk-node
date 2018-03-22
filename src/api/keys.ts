@@ -39,11 +39,8 @@ export const keysAPI = (client: Client) => {
     /**
      * Query a list of keys matching the specified query.
      *
-     * @param {Object} params={} - Filter information.
-     * @param {Array.<string>} params.ids - **Deprecated. This param isn't useful.** List of requested ids, max 200.
      * @returns {Query} Query to retrieve results.
      */
-    list: (params?: { ids?: string[] }) =>
-      new Query(client, 'keys', 'list', params),
+    list: () => new Query(client, 'keys', 'list'),
   }
 }

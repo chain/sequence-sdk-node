@@ -88,23 +88,18 @@ export class Client {
    *
    * @param {Object} opts - Plain JS object containing configuration options.
    * @param {String} opts.ledgerName - Ledger name.
-   * @param {String} opts.ledger - Ledger name. **Deprecated; please use ledgerName instead.**
    * @param {String} opts.credential - API credential secret.
    * @returns {Client}
    */
   constructor(
     opts: {
-      ledger?: string
       ledgerName?: string
       credential?: string
       agent?: Agent
     } = {}
   ) {
-    if (
-      (!opts.ledgerName || opts.ledgerName === '') ===
-      (!opts.ledger || opts.ledger === '')
-    ) {
-      throw new Error('ledgerName or ledger (but not both) must be provided')
+    if (!opts.ledgerName || opts.ledgerName === '') {
+      throw new Error('ledgerName must be provided')
     }
 
     /**
@@ -112,7 +107,7 @@ export class Client {
      * @type {Client}
      */
     this.connection = new Connection(
-      opts.ledgerName || (opts.ledger as string),
+      opts.ledgerName,
       opts.credential,
       opts.agent
     )
