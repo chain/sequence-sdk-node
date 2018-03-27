@@ -33,5 +33,6 @@ describe('Stats', () => {
     expect(got.flavorCount).to.equal(initial.flavorCount + 1)
     expect(got.accountCount).to.equal(initial.accountCount + 1)
     expect(got.txCount).to.equal(initial.txCount + 1)
+    expect(got.ledgerType).to.equal('dev')
   })
 })

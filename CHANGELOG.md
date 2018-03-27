@@ -3,6 +3,7 @@
 ## 2.0.0-rc (2018????)
 
 * Removed assets, balances, contracts, and all other deprecated code.
+* Added `Stats#ledgerType`.
 
 ## 1.5.0 (20180316)
 

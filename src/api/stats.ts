@@ -8,6 +8,7 @@ import { Client } from '../client'
  * @property {Number} flavorCount
  * @property {Number} accountCount
  * @property {Number} txCount
+ * @property {String} ledgerType
  */
 
 /**
