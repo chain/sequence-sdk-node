@@ -1,8 +1,7 @@
 import { Client } from '../client'
 import { Page } from '../page'
 import { Query } from '../query'
-import { QueryParams } from '../shared'
-import { CreateRequest, sharedAPI, UpdateTagsRequest } from '../shared'
+import { CreateRequest, QueryParams, UpdateTagsRequest } from '../types'
 
 /**
  * An account is an object in Sequence that tracks ownership of tokens on a

@@ -1,6 +1,11 @@
+if (typeof (Symbol as any).asyncIterator === 'undefined') {
+  // prettier-ignore
+  (Symbol as any).asyncIterator =
+    Symbol.asyncIterator || Symbol('asyncIterator')
+}
 import { Client } from './client'
 import { Page } from './page'
-import { PageParams, sharedAPI } from './shared'
+import { PageParams } from './types'
 
 /**
  * A query for Sequence items.
@@ -25,16 +30,18 @@ export class Query<QueryParamType> {
    * @param {Number} params.size - Number of items to return in result set.
    * @returns {Page} Requested page of results.
    */
-  public page(pageParams?: PageParams | {}): Promise<Page> {
-    return sharedAPI.queryPage(
-      this.client,
-      this.itemName,
-      this.method,
-      `/${this.method}-${this.itemName}`,
-      this.queryParams,
-      {},
-      pageParams
-    )
+  public async page(pageParams?: PageParams | {}): Promise<Page> {
+    const body: { [s: string]: any } = Object.assign({}, this.queryParams)
+    if (isPageParams(pageParams)) {
+      if (pageParams.cursor) {
+        body.cursor = pageParams.cursor
+      } else if (pageParams.size) {
+        body.pageSize = pageParams.size
+      }
+    }
+    const path = `/${this.method}-${this.itemName}`
+    const data = await this.client.request(path, body)
+    return new Page(data, this.client, this.itemName, this.method)
   }
 
   /**
@@ -51,11 +58,22 @@ export class Query<QueryParamType> {
    *
    * @returns {AsyncIterableIterator} an async iterator over the query results.
    */
-  public all() {
-    return sharedAPI.queryEach(
-      this.client,
-      `${this.itemName}.${this.method}`,
-      this.queryParams
-    )
+  public async *all() {
+    const f = (this.client as any)[this.itemName][this.method]
+    let page = await f(this.queryParams).page()
+    for (const item of page.items) {
+      yield item
+    }
+    while (!page.lastPage) {
+      page = await page.nextPage()
+      for (const item of page.items) {
+        yield item
+      }
+    }
   }
+}
+
+function isPageParams(obj?: PageParams | {}): obj is PageParams {
+  const p = obj as PageParams
+  return !!p && (!!p.size || !!p.cursor)
 }

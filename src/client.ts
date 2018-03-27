@@ -15,7 +15,7 @@ import {
 import { Connection } from './connection'
 import { Page } from './page'
 import { Query } from './query'
-import { CreateRequest, QueryParams, UpdateTagsRequest } from './shared'
+import { CreateRequest, QueryParams, UpdateTagsRequest } from './types'
 
 /**
  * The Sequence API Client object is the root object for all API interactions.

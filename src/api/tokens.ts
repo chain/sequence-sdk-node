@@ -1,6 +1,6 @@
 import { Client } from '../client'
 import { Query } from '../query'
-import { QueryParams } from '../shared'
+import { QueryParams } from '../types'
 
 /**
  * More info: {@link https://dashboard.seq.com/docs/tokens}

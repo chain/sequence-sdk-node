@@ -1,7 +1,6 @@
 import { Client } from '../client'
 import { Query } from '../query'
-import { QueryParams } from '../shared'
-import { CreateRequest, sharedAPI } from '../shared'
+import { CreateRequest, QueryParams } from '../types'
 
 export interface FeedCreateParameters extends QueryParams {
   type?: string

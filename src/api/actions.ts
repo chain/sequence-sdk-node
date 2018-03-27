@@ -1,8 +1,7 @@
 import { Client } from '../client'
 import { Page } from '../page'
 import { Query } from '../query'
-
-import { QueryParams } from '../shared'
+import { QueryParams } from '../types'
 
 export interface ActionSumParams extends QueryParams {
   groupBy?: string[]

@@ -1,7 +1,6 @@
 import { Client } from '../client'
 import { Query } from '../query'
-import { QueryParams } from '../shared'
-import { CreateRequest, UpdateTagsRequest } from '../shared'
+import { CreateRequest, QueryParams, UpdateTagsRequest } from '../types'
 
 /**
  * A flavor is a type of value that can be issued on a blockchain. All units of

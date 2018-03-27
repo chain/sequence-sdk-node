@@ -1,7 +1,7 @@
 import { Client } from '../client'
 import { Page } from '../page'
 import { Query } from '../query'
-import { QueryParams } from '../shared'
+import { QueryParams } from '../types'
 
 /**
  * A blockchain consists of an immutable set of cryptographically linked
