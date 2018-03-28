@@ -18,6 +18,25 @@ To install, add the `sequence-sdk` NPM module to your `package.json`:
 }
 ```
 
+### TypeScript
+
+If you're using TypeScript, include the following in your `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "lib": ["es2015", "es2016", "esnext"],
+    "types": ["node"]
+  }
+}
+```
+
+Also, run:
+
+```
+npm i --save-dev @types/node
+```
+
 ### In your code
 
 ```js
