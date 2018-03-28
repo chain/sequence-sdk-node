@@ -8,12 +8,12 @@ import sequence from '../src/index'
 const constructClient = () => {
   const ledgerName = process.env.LEDGER_NAME || 'test'
   const teamName = process.env.TEAM_NAME || 'team'
-  const macaroon = process.env.MACAROON
+  const credential = process.env.SEQCRED
   const ca = process.env.ROOT_CA_CERTS
 
   const constructingClient = new sequence.Client({
     ledgerName,
-    credential: macaroon,
+    credential: credential,
     agent: new https.Agent({ ca }),
   })
   constructingClient.connection.getRefreshTokenInfo = function() {
