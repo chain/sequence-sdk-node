@@ -5,6 +5,7 @@ import * as uuid from 'uuid'
 
 // some ugly business to get the right types for fetch while still polyfilling
 const fetch: typeof window.fetch = require('fetch-ponyfill')().fetch
+import { readFileSync } from 'fs'
 import { Agent } from 'https'
 import { errors } from './errors'
 
@@ -97,7 +98,6 @@ export class Connection {
   public retryMaxDelayMs = 20000
   public baseUrl: string
   public credential?: string
-  public agent?: Agent
   public ledgerName: string
   public sessionBaseUrl: string
   public ledgerUrl: string
@@ -108,16 +108,14 @@ export class Connection {
    *
    * @param {String} ledgerName   Ledger name.
    * @param {String} credential   Sequence credential for API access.
-   * @param {String} agent        https.Agent used to provide TLS config.
    * @returns {Client}
    */
-  constructor(ledgerName: string, credential?: string, agent?: Agent) {
+  constructor(ledgerName: string, credential?: string) {
     const host = process.env.SEQADDR || 'api.seq.com'
     this.baseUrl = 'https://' + host
     this.sessionBaseUrl = 'https://session-' + host
     this.ledgerName = ledgerName
     this.credential = credential
-    this.agent = agent
   }
 
   /**
@@ -207,8 +205,9 @@ export class Connection {
       body: JSON.stringify(snakeBody),
     }
 
-    if (this.agent) {
-      req.agent = this.agent
+    const cafile = process.env.SEQTLSCA
+    if (cafile) {
+      req.agent = new Agent({ ca: readFileSync(cafile) })
     }
 
     let resp: Response

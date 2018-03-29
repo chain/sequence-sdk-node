@@ -1,4 +1,3 @@
-import { Agent } from 'https'
 import { accountsAPI } from './api/accounts'
 import { actionsAPI, ActionSumParams } from './api/actions'
 import { devUtilsAPI } from './api/devUtils'
@@ -95,7 +94,6 @@ export class Client {
     opts: {
       ledgerName?: string
       credential?: string
-      agent?: Agent
     } = {}
   ) {
     if (!opts.ledgerName || opts.ledgerName === '') {
@@ -106,11 +104,7 @@ export class Client {
      * The client's connection to Sequence
      * @type {Client}
      */
-    this.connection = new Connection(
-      opts.ledgerName,
-      opts.credential,
-      opts.agent
-    )
+    this.connection = new Connection(opts.ledgerName, opts.credential)
   }
 
   /**

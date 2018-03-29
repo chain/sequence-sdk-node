@@ -1,5 +1,4 @@
 import * as fs from 'fs'
-import * as https from 'https'
 import * as uuid from 'uuid'
 import { TransactionBuilder } from '../src/api/transactions'
 import { Client } from '../src/client'
@@ -9,12 +8,10 @@ const constructClient = () => {
   const ledgerName = process.env.LEDGER_NAME || 'test'
   const teamName = process.env.TEAM_NAME || 'team'
   const credential = process.env.SEQCRED
-  const ca = process.env.ROOT_CA_CERTS
 
   const constructingClient = new sequence.Client({
     ledgerName,
-    credential: credential,
-    agent: new https.Agent({ ca }),
+    credential,
   })
   constructingClient.connection.getRefreshTokenInfo = function() {
     const tenHours = 10 * 60 * 60 * 1000
