@@ -9,11 +9,6 @@ import { readFileSync } from 'fs'
 import { Agent } from 'https'
 import { errors } from './errors'
 
-export interface SessionToken {
-  secret: string
-  refreshAt: number
-}
-
 const blacklistAttributes = [
   'account_tags',
   'action_tags',
@@ -99,9 +94,7 @@ export class Connection {
   public baseUrl: string
   public credential?: string
   public ledgerName: string
-  public sessionBaseUrl: string
   public ledgerUrl: string
-  public sessTok: { secret: string; refreshAt: number }
 
   /**
    * constructor - create a new Sequence client object.
@@ -113,7 +106,6 @@ export class Connection {
   constructor(ledgerName: string, credential?: string) {
     const host = process.env.SEQADDR || 'api.seq.com'
     this.baseUrl = 'https://' + host
-    this.sessionBaseUrl = 'https://session-' + host
     this.ledgerName = ledgerName
     this.credential = credential
   }
@@ -130,16 +122,14 @@ export class Connection {
     body = {},
     headers = {}
   ): Promise<ApiObject> {
-    if (this.needRefresh()) {
-      await this.refreshSession()
-      return this.request(path, body, headers)
+    if (!this.ledgerUrl) {
+      await this.getLedgerUrl()
     }
     return this.requestRaw(
       this.ledgerUrl + path,
       body,
       Object.assign({}, headers, {
-        Macaroon: this.credential,
-        'Discharge-Macaroon': this.sessTok.secret,
+        Credential: this.credential,
         'Idempotency-Key': uuid.v4(),
         'Name-Set': 'camel|snake',
       })
@@ -263,32 +253,14 @@ export class Connection {
     }
   }
 
-  public needRefresh() {
-    const now = Math.round(new Date().getTime() / 1000)
-    return !this.sessTok || this.sessTok.refreshAt < now
-  }
-
-  // also sets ledgerUrl
-  public async refreshSession() {
-    const { sessTok, ledgerUrl } = await this.getRefreshTokenInfo()
-    this.ledgerUrl = ledgerUrl
-    this.sessTok = sessTok
-  }
-
-  // Unit tests can override this to inject a discharge macaroon
-  // and far-future refreshAt time.
-  public async getRefreshTokenInfo() {
-    const url = this.sessionBaseUrl + '/sessions/validate'
-    const body = (await this.requestRaw(url, {
-      macaroon: this.credential,
-    })) as any
-    return {
-      sessTok: {
-        refreshAt: body.refreshAt,
-        secret: body.refreshToken,
-      } as SessionToken,
-      ledgerUrl: this.baseUrl + '/' + body.teamName + '/' + this.ledgerName,
-    }
+  public async getLedgerUrl() {
+    const url = this.baseUrl + '/hello'
+    const body = (await this.requestRaw(
+      url,
+      {},
+      { Credential: this.credential }
+    )) as any
+    this.ledgerUrl = this.baseUrl + '/' + body.teamName + '/' + this.ledgerName
   }
 }
 

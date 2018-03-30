@@ -6,23 +6,12 @@ import sequence from '../src/index'
 
 const constructClient = () => {
   const ledgerName = process.env.LEDGER_NAME || 'test'
-  const teamName = process.env.TEAM_NAME || 'team'
   const credential = process.env.SEQCRED
 
   const constructingClient = new sequence.Client({
     ledgerName,
     credential,
   })
-  constructingClient.connection.getRefreshTokenInfo = function() {
-    const tenHours = 10 * 60 * 60 * 1000
-    return Promise.resolve({
-      sessTok: {
-        refreshAt: Date.now() + tenHours,
-        secret: ' ',
-      },
-      ledgerUrl: this.baseUrl + '/' + teamName + '/' + ledgerName,
-    })
-  }
   return constructingClient
 }
 
