@@ -131,7 +131,7 @@ export class Connection {
       Object.assign({}, headers, {
         Credential: this.credential,
         'Idempotency-Key': uuid.v4(),
-        'Name-Set': 'camel|snake',
+        'Name-Set': 'camel',
       })
     )
   }

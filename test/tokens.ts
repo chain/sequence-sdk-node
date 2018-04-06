@@ -49,7 +49,7 @@ describe('Token queries', () => {
 
       const page = await client.tokens
         .list({
-          filter: 'account_id=$1',
+          filter: 'accountId=$1',
           filterParams: [account2.id],
         })
         .page()
@@ -154,7 +154,7 @@ describe('Token queries', () => {
         .sum({
           filter: 'tags.test=$1',
           filterParams: [tokenTags.test],
-          groupBy: ['account_id'],
+          groupBy: ['accountId'],
         })
         .page({ size: 1 })
 
@@ -187,7 +187,7 @@ describe('Token queries', () => {
         .sum({
           filter: 'tags.test=$1',
           filterParams: [tokenTags.test],
-          groupBy: ['account_id'],
+          groupBy: ['accountId'],
         })
         .all())
 
@@ -240,7 +240,7 @@ describe('Token spending', () => {
 
     const page = await client.tokens
       .list({
-        filter: 'account_id=$1',
+        filter: 'accountId=$1',
         filterParams: [account1.id],
       })
       .page()

@@ -41,13 +41,13 @@ describe('Transaction', () => {
 
       let balance = await balanceByFlavorId(
         client.tokens
-          .sum({ filter: `account_id='${alice.id}'`, groupBy: ['flavor_id'] })
+          .sum({ filter: `accountId='${alice.id}'`, groupBy: ['flavorId'] })
           .page()
       )
       assert.deepEqual(balance, { [gold.id]: 100 })
       balance = await balanceByFlavorId(
         client.tokens
-          .sum({ filter: `account_id='${bob.id}'`, groupBy: ['flavor_id'] })
+          .sum({ filter: `accountId='${bob.id}'`, groupBy: ['flavorId'] })
           .page()
       )
       assert.deepEqual(balance, { [silver.id]: 200 })
@@ -97,7 +97,7 @@ describe('Transaction', () => {
 
       const balance = await balanceByFlavorId(
         client.tokens
-          .sum({ filter: `account_id='${bob.id}'`, groupBy: ['flavor_id'] })
+          .sum({ filter: `accountId='${bob.id}'`, groupBy: ['flavorId'] })
           .page()
       )
       assert.deepEqual(balance, { [gold.id]: 100 })
@@ -152,7 +152,7 @@ describe('Transaction', () => {
 
       const balance = await balanceByFlavorId(
         client.tokens
-          .sum({ filter: `account_id='${alice.id}'`, groupBy: ['flavor_id'] })
+          .sum({ filter: `accountId='${alice.id}'`, groupBy: ['flavorId'] })
           .page()
       )
       assert.deepEqual(balance, { [gold.id]: 100 })
@@ -272,10 +272,9 @@ describe('Transaction', () => {
       expect(items.length).to.equal(1)
     })
 
-    it('filters transactions in snake_case (deprecated)', async () => {
+    it('should not list transactions based on filter using snake_case', async () => {
       const gold = await createFlavor('gold')
       const alice = await createAccount('alice')
-      const bob = await createAccount('bob')
       await client.transactions.transact(builder => {
         builder.issue({
           flavorId: gold.id,
@@ -283,22 +282,14 @@ describe('Transaction', () => {
           destinationAccountId: alice.id,
         })
       })
-      await client.transactions.transact(builder => {
-        builder.issue({
-          flavorId: gold.id,
-          amount: 200,
-          destinationAccountId: bob.id,
-        })
-      })
 
-      const items = await testHelpers.asyncAll(client.transactions
+      return expect(testHelpers.asyncAll(client.transactions
         .list({
           filter: 'actions(destination_account_id=$1)',
           filterParams: [alice.id],
         })
         .all())
-
-      expect(items.length).to.equal(1)
+      ).to.be.rejectedWith('SEQ602')
     })
   })
 

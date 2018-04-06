@@ -84,7 +84,7 @@ describe('Feed', () => {
     const actionFeed = await client.feeds.create({
       type: 'action',
       id: `actionFeed-${uuid.v4()}`,
-      filter: 'tags.type=$1',
+      filter: 'snapshot.actionTags.type=$1',
       filterParams: [tag],
     })
     const transactionFeed = await client.feeds.create({
@@ -139,7 +139,7 @@ describe('Feed', () => {
     const actionFeed = await client.feeds.create({
       type: 'action',
       id: `actionFeed-${uuid.v4()}`,
-      filter: 'tags.type=$1',
+      filter: 'snapshot.actionTags.type=$1',
       filterParams: [tag],
     })
     const transactionFeed = await client.feeds.create({
