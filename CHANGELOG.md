@@ -1,6 +1,6 @@
 # Sequence Node SDK changelog
 
-## 2.0.0-rc (2018????)
+## 2.0.0-rc.1 (20180411)
 
 * Removed assets, balances, contracts, and all other deprecated code.
 * Added `Stats#ledgerType`.

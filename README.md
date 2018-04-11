@@ -13,7 +13,7 @@ To install, add the `sequence-sdk` NPM module to your `package.json`:
 ```json
 {
   "dependencies": {
-    "sequence-sdk": "~1.5.0"
+    "sequence-sdk": "~2.0.0-rc.1"
   }
 }
 ```
@@ -49,12 +49,12 @@ const ledger = new sequence.Client({
 
 ### Calling convention
 
-Most SDK methods return Promise objects,
-which you can use with
+Most SDK methods return Promise objects, which you can use with
 [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function),
 or consume directly.
 
-With [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function):
+With
+[async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function):
 
 ```js
 async function main() {
