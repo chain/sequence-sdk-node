@@ -87,7 +87,7 @@ export class Feed {
    * See {@link https://github.com/tc39/proposal-async-iteration} for more
    * information about async iterators.
    *
-   * @return a { value, done } tuple.
+   * @return {Object} a { value: item } tuple.
    */
   public async next() {
     while (this.page.items.length === 0) {
