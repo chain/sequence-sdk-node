@@ -9,7 +9,7 @@ import { readFileSync } from 'fs'
 import { Agent } from 'https'
 import { errors } from './errors'
 
-const blacklistAttributes = [
+const userJsonAttributes = [
   'account_tags',
   'action_tags',
   'after',
@@ -43,7 +43,7 @@ const snakeize = (object: ApiObject) => {
 
       if (
         typeof value === 'object' &&
-        blacklistAttributes.indexOf(newKey) === -1
+        userJsonAttributes.indexOf(newKey) === -1
       ) {
         value = snakeize(value)
       }
@@ -66,10 +66,7 @@ const camelize = (object: ApiObject) => {
         delete object[key]
       }
 
-      if (
-        typeof value === 'object' &&
-        blacklistAttributes.indexOf(key) === -1
-      ) {
+      if (typeof value === 'object' && userJsonAttributes.indexOf(key) === -1) {
         value = camelize(value)
       }
 
@@ -226,6 +223,7 @@ export class Connection {
     let body
     try {
       body = await resp.json()
+      body = filterLegacyData(body)
     } catch {
       throw new errors.JsonError(resp)
     }
@@ -262,6 +260,45 @@ export class Connection {
     )) as any
     this.ledgerUrl = this.baseUrl + '/' + body.teamName + '/' + this.ledgerName
   }
+}
+
+const legacyAttributes = [
+  'after',
+  'alias',
+  'asset_alias',
+  'asset_count',
+  'asset_id',
+  'asset_tags',
+  'code',
+  'contract_version',
+  'contracts',
+  'destination_account_alias',
+  'destination_account_tags',
+  'keys',
+  'next',
+  'reference_data',
+  'source_account_alias',
+  'source_account_tags',
+]
+
+const filterLegacyData = (input: any) => {
+  const keys = Object.keys(input)
+  keys.forEach(key => {
+    const value = input[key]
+    if (legacyAttributes.includes(key)) {
+      delete input[key]
+    } else {
+      if (
+        typeof value === 'object' &&
+        value != null &&
+        !userJsonAttributes.includes(key)
+      ) {
+        input[key] = filterLegacyData(value)
+      }
+    }
+  })
+
+  return input
 }
 
 function sleep(ms: number) {
