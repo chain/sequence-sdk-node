@@ -4,8 +4,7 @@ import { Query } from '../query'
 import { CreateRequest, QueryParams, UpdateTagsRequest } from '../types'
 
 /**
- * An account is an object in Sequence that tracks ownership of tokens on a
- * blockchain by creating and tracking control programs.
+ * A container that holds tokens in a ledger.
  *
  * More info: {@link https://dashboard.seq.com/docs/accounts}
  * @typedef {Object} Account
@@ -15,12 +14,11 @@ import { CreateRequest, QueryParams, UpdateTagsRequest } from '../types'
  * Unique identifier of the account.
  *
  * @property {String[]} keyIds
- * The list of key IDs used to create control programs under the account.
- * Signatures from these keys are required for spending funds held in the
- * account.
+ * The list of IDs for the keys that control the account.
  *
  * @property {Number} quorum
- * The number of keys required to sign transactions for the account.
+ * The number of keys required to sign transactions that transfer or retire
+ * tokens from the account.
  *
  * @property {Object} tags
  * User-specified tag structure for the account.
@@ -40,11 +38,11 @@ export const accountsAPI = (client: Client) => {
    * Unique identifier. Will be auto-generated if not provided.
    *
    * @property {String[]} keyIds
-   * The list of key IDs used to create control programs under the account.
+   * The list of IDs for the keys that control the account.
    *
    * @property {Number} [quorum]
-   * The number of keys required to sign transactions for the account. Defaults
-   * to the size of rootXpubs.
+   * The number of keys required to sign transactions that transfer or retire
+   * tokens from the account. Defaults to the number of keys provided.
    *
    * @property {Object} [tags]
    * User-specified tag structure for the account.

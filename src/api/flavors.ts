@@ -3,9 +3,7 @@ import { Query } from '../query'
 import { CreateRequest, QueryParams, UpdateTagsRequest } from '../types'
 
 /**
- * A flavor is a type of value that can be issued on a blockchain. All units of
- * a given flavor are fungible. Units of a flavor can be transacted directly
- * between parties without the involvement of the issuer.
+ * A taxonomy used to differentiate different types of tokens in a ledger.
  *
  * More info: {@link https://dashboard.seq.com/docs/flavors}
  * @typedef {Object} Flavor
@@ -15,10 +13,11 @@ import { CreateRequest, QueryParams, UpdateTagsRequest } from '../types'
  * Unique identifier of the flavor.
  *
  * @property {String[]} keyIds
- * The list of key IDs used to issue units of the flavor.
+ * The list of IDs for the keys that control the flavor.
  *
  * @property {Number} quorum
- * The number of signatures required to issue new units of the flavor.
+ * The number of keys required to sign transactions that issue tokens of the
+ * flavor.
  *
  * @property {Object} tags
  * User-specified tag structure for the flavor.
@@ -38,11 +37,11 @@ export const flavorsAPI = (client: Client) => {
    * Unique identifier. Will be auto-generated if not provided.
    *
    * @property {String[]} keyIds
-   * The list of key IDs used to create the issuance program for the flavor.
+   * The list of IDs for the keys that control the flavor.
    *
    * @property {Number} [quorum]
-   * The number of keys required to issue units of the flavor. Defaults to the
-   * size of rootXpubs.
+   * The number of keys required to sign transactions that issue tokens of the
+   * flavor. Defaults to the number keys provided.
    *
    * @property {Object} [tags]
    * User-specified, arbitrary/unstructured data.
