@@ -33,7 +33,7 @@ export const keysAPI = (client: Client) => {
      * @returns {Promise<Key>} Newly created key.
      */
     create: (params?: { id?: string }) => {
-      return client.request('/create-key', params)
+      return client.request('/create-key', params, 'CreateKeySchema')
     },
 
     /**

@@ -16,11 +16,12 @@
     "lint": "tslint \"src/**\"",
     "format": "prettier --write src/*/*.ts && prettier --write src/*.ts",
     "pretest": "npm run build",
-    "test": "mocha test/*$MATCH*.ts --compilers ts:./node_modules/ts-node/register",
+    "test": "mocha --require ./node_modules/ts-node/register \"test/*$MATCH*.{js,ts}\"",
     "build": "tsc",
     "prepublish": "npm run lint && npm run format && npm run build"
   },
   "dependencies": {
+    "ajv": "^6.4.0",
     "btoa": "^1.1.2",
     "fetch-ponyfill": "^3.0.2",
     "uuid": "~3.0.0"

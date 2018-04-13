@@ -1,3 +1,5 @@
+import { ErrorObject } from 'ajv'
+
 export interface Body {
   detail: string
   message: string
@@ -59,6 +61,24 @@ export class NoRequestIdError extends BaseError {
       'Chain-Request-Id header is missing. There may be an issue with your proxy or network configuration.'
     )
     this.response = response
+  }
+}
+
+export class InvalidParametersError extends BaseError {
+  public errObject: ErrorObject
+
+  constructor(errObject: ErrorObject) {
+    if (errObject.keyword === 'additionalProperties') {
+      super(
+        errObject.message +
+          " '." +
+          (errObject.params as any).additionalProperty +
+          "'"
+      )
+    } else {
+      super(errObject.message || 'invalid parameters')
+    }
+    this.errObject = errObject
   }
 }
 

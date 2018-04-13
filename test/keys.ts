@@ -3,7 +3,6 @@ import * as chai from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
 import 'mocha'
 import * as uuid from 'uuid'
-import sequence from '../src/index'
 
 import { testHelpers } from './testHelpers'
 

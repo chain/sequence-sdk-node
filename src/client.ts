@@ -15,6 +15,7 @@ import { Connection } from './connection'
 import { Page } from './page'
 import { Query } from './query'
 import { CreateRequest, QueryParams, UpdateTagsRequest } from './types'
+import { validate } from './validate'
 
 /**
  * The Sequence API Client object is the root object for all API interactions.
@@ -114,7 +115,15 @@ export class Client {
    * @param {object} [body={}]
    * @returns {Promise}
    */
-  public async request(path: string, body = {}): Promise<any> {
+  public async request(
+    path: string,
+    body = {},
+    schemaKey?: string
+  ): Promise<any> {
+    if (body !== undefined && schemaKey !== undefined) {
+      validate(body, schemaKey)
+    }
+
     try {
       return await this.connection.request(path, body)
     } catch (err) {
