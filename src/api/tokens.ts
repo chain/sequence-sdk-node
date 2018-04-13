@@ -2,6 +2,10 @@ import { Client } from '../client'
 import { Query } from '../query'
 import { QueryParams } from '../types'
 
+export interface TokenSumParams extends QueryParams {
+  groupBy?: string[]
+}
+
 /**
  * More info: {@link https://dashboard.seq.com/docs/tokens}
  *
@@ -52,12 +56,8 @@ import { QueryParams } from '../types'
  * The tags of the tokens in the group.
  */
 
-export interface TokenSumParams extends QueryParams {
-  groupBy?: string[]
-}
-
 /**
- * API for interacting with {@link Token tokens}.
+ * API for interacting with {@link TokenGroup tokens}.
  *
  * More info: {@link https://dashboard.seq.com/docs/tokens}
  * @module TokensApi
