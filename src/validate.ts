@@ -21,3 +21,17 @@ ajv.addSchema(
   },
   'CreateKeySchema'
 )
+
+ajv.addSchema(
+  {
+    type: 'object',
+    properties: {
+      id: { type: 'string' },
+      keyIds: { type: 'array', items: { type: 'string' } },
+      quorum: { type: 'number' },
+      tags: { type: 'object' },
+    },
+    additionalProperties: false,
+  },
+  'CreateAccountSchema'
+)

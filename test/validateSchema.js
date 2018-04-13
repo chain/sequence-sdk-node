@@ -12,11 +12,23 @@ const client = testHelpers.client
 const expect = chai.expect
 
 describe('Schemas', () => {
+  describe('Account', () => {
+    it('rejects creation with alias', () => {
+      return client.accounts.create({ alias: 'foo' })
+      .then(() => assert(false, 'should not accept `alias` field'))
+      .catch(err => {
+        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+      })
+    })
+  })
+
   describe('Key', () => {
-    it('rejects key creation with alias', () => {
-      expect(client.keys.create({ alias: 'anything' })).to.be.rejectedWith(
-        "should NOT have additional properties '.alias'"
-      )
+    it('rejects creation with alias', () => {
+      return client.keys.create({ alias: 'foo' })
+      .then(() => assert(false, 'should not accept `alias` field'))
+      .catch(err => {
+        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+      })
     })
   })
 })
