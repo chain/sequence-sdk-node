@@ -1,5 +1,10 @@
 # Sequence Node SDK changelog
 
+## 2.0.0-rc.2 (20180416)
+
+* Omit deprecated attributes returned from the API from all response objects.
+* Prevent submitting deprecated parameters in API requests.
+
 ## 2.0.0-rc.1 (20180411)
 
 * Removed assets, balances, contracts, and all other deprecated code.
