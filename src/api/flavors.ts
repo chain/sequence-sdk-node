@@ -64,7 +64,8 @@ export const flavorsAPI = (client: Client) => {
      * @param {module:FlavorsApi~createRequest} params - Parameters for flavor creation.
      * @returns {Promise<Flavor>} Newly created flavor.
      */
-    create: (params: CreateRequest) => client.request('/create-flavor', params),
+    create: (params: CreateRequest) =>
+      client.request('/create-flavor', params, 'CreateAccountOrFlavorSchema'),
 
     /**
      * Update flavor tags.

@@ -33,5 +33,5 @@ ajv.addSchema(
     },
     additionalProperties: false,
   },
-  'CreateAccountSchema'
+  'CreateAccountOrFlavorSchema'
 )

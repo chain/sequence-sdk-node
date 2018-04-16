@@ -66,7 +66,7 @@ export const accountsAPI = (client: Client) => {
      * @returns {Promise<Account>} Newly created account.
      */
     create: (params: CreateRequest) =>
-      client.request('/create-account', params, 'CreateAccountSchema'),
+      client.request('/create-account', params, 'CreateAccountOrFlavorSchema'),
 
     /**
      * Update account tags.
