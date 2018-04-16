@@ -105,4 +105,46 @@ describe('Schemas', () => {
       assert(false, 'should not accept `startTime` field')
     })
   })
+
+  describe('Transaction', () => {
+    it('rejects issue with destinationAccountAlias', () => {
+      return client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: 'foo',
+          amount: 1,
+          destinationAccountAlias: 'foo',
+        })
+      }).then(() => assert(false, 'should not accept `destinationAccountAlias` field'))
+      .catch(err => {
+        expect(err.message).to.contain("should NOT have additional properties '.destinationAccountAlias'")
+      })
+    })
+
+    it('rejects transfer with destinationAccountAlias', () => {
+      return client.transactions.transact(builder => {
+        builder.transfer({
+          flavorId: 'foo',
+          amount: 1,
+          destinationAccountAlias: 'foo',
+        })
+      }).then(() => assert(false, 'should not accept `destinationAccountAlias` field'))
+      .catch(err => {
+        expect(err.message).to.contain("should NOT have additional properties '.destinationAccountAlias'")
+      })
+    })
+    
+    it('rejects retire with sourceAccountAlias', () => {
+      return client.transactions.transact(builder => {
+        builder.retire({
+          flavorId: 'foo',
+          amount: 1,
+          sourceAccountAlias: 'foo',
+        })
+      }).then(() => assert(false, 'should not accept `sourceAccountAlias` field'))
+      .catch(err => {
+        expect(err.message).to.contain("should NOT have additional properties '.sourceAccountAlias'")
+      })
+    })
+  })
+
 })

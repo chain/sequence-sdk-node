@@ -6,11 +6,7 @@ import { flavorsAPI } from './api/flavors'
 import { keysAPI } from './api/keys'
 import { statsAPI } from './api/stats'
 import { tokensAPI, TokenSumParams } from './api/tokens'
-import {
-  TransactionBuilder,
-  TransactionQueryParameters,
-  transactionsAPI,
-} from './api/transactions'
+import { TransactionBuilder, transactionsAPI } from './api/transactions'
 import { Connection } from './connection'
 import { Page } from './page'
 import { Query } from './query'

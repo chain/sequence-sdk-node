@@ -2,6 +2,7 @@ import { Client } from '../client'
 import { Page } from '../page'
 import { Query } from '../query'
 import { QueryParams } from '../types'
+import { validate } from '../validate'
 
 /**
  * A blockchain consists of an immutable set of cryptographically linked
@@ -61,6 +62,7 @@ export class TransactionBuilder {
     tokenTags?: object
     actionTags?: object
   }) {
+    validate(params, 'IssueActionSchema')
     this.actions.push(Object.assign({}, params, { type: 'issue' }))
   }
 
@@ -84,6 +86,7 @@ export class TransactionBuilder {
     filterParams?: object
     actionTags?: object
   }) {
+    validate(params, 'RetireActionSchema')
     this.actions.push(Object.assign({}, params, { type: 'retire' }))
   }
 
@@ -94,6 +97,7 @@ export class TransactionBuilder {
    * @param {Object} params Action parameters
    * @param {String} params.sourceAccountId - Account ID specifying the account
    *   controlling the flavor.
+   * @param {String} params.flavorId - ID of flavor to be transferred.
    * @param {Integer} params.amount - Amount of the flavor to be transferred.
    * @param {String} params.destinationAccountId - Account ID specifying the
    *   account controlling the flavor.
@@ -112,14 +116,9 @@ export class TransactionBuilder {
     tokenTags?: object
     actionTags?: object
   }) {
+    validate(params, 'TransferActionSchema')
     this.actions.push(Object.assign({}, params, { type: 'transfer' }))
   }
-}
-
-export interface TransactionQueryParameters extends QueryParams {
-  startTime?: number
-  endTime?: number
-  timeout?: number
 }
 
 /**

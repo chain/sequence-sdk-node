@@ -67,3 +67,49 @@ ajv.addSchema(
   },
   'QueryParamsSchema'
 )
+
+ajv.addSchema(
+  {
+    properties: {
+      actionTags: { type: 'object' },
+      amount: { type: 'number' },
+      destinationAccountId: { type: 'string' },
+      filter: { type: 'string' },
+      filterParams: { type: 'array' },
+      flavorId: { type: 'string' },
+      sourceAccountId: { type: 'string' },
+      tokenTags: { type: 'object' },
+    },
+    additionalProperties: false,
+  },
+  'TransferActionSchema'
+)
+
+ajv.addSchema(
+  {
+    properties: {
+      actionTags: { type: 'object' },
+      amount: { type: 'number' },
+      destinationAccountId: { type: 'string' },
+      flavorId: { type: 'string' },
+      tokenTags: { type: 'object' },
+    },
+    additionalProperties: false,
+  },
+  'IssueActionSchema'
+)
+
+ajv.addSchema(
+  {
+    properties: {
+      actionTags: { type: 'object' },
+      amount: { type: 'number' },
+      filter: { type: 'string' },
+      filterParams: { type: 'array' },
+      flavorId: { type: 'string' },
+      sourceAccountId: { type: 'string' },
+    },
+    additionalProperties: false,
+  },
+  'RetireActionSchema'
+)
