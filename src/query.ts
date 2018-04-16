@@ -6,6 +6,7 @@ if (typeof (Symbol as any).asyncIterator === 'undefined') {
 import { Client } from './client'
 import { Page } from './page'
 import { PageParams } from './types'
+import { validate } from './validate'
 
 /**
  * A query for Sequence items.
@@ -20,7 +21,11 @@ export class Query<QueryParamType> {
     private itemName: string,
     private method: string,
     private queryParams?: QueryParamType
-  ) {}
+  ) {
+    if (queryParams) {
+      validate(queryParams, 'QueryParamsSchema')
+    }
+  }
 
   /**
    * Retrieve a page of results.

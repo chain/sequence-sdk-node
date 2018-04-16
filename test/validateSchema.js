@@ -73,4 +73,36 @@ describe('Schemas', () => {
       })
     })
   })
+
+  describe('Query', () => {
+    it('rejects list with after', () => {
+      try {
+        client.accounts.list({ after: 'foo' }).all()
+      } catch (err) {
+        expect(err.message).to.contain("should NOT have additional properties '.after'")
+        return
+      }
+      assert(false, 'should not accept `after` field')
+    })
+
+    it('rejects sum with sum by', () => {
+      try {
+        client.actions.sum({ sumBy: ['foo'] }).all()
+      } catch (err) {
+        expect(err.message).to.contain("should NOT have additional properties '.sumBy'")
+        return
+      }
+      assert(false, 'should not accept `sumBy` field')
+    })
+
+    it('rejects list with start time', () => {
+      try {
+        client.transactions.list({ startTime: 0 }).all()
+      } catch (err) {
+        expect(err.message).to.contain("should NOT have additional properties '.startTime'")
+        return
+      }
+      assert(false, 'should not accept `startTime` field')
+    })
+  })
 })

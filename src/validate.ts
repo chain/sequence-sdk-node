@@ -46,3 +46,24 @@ ajv.addSchema(
   },
   'UpdateTagsSchema'
 )
+
+ajv.addSchema(
+  {
+    type: 'object',
+    properties: {
+      filter: { type: 'string' },
+      filterParams: {
+        type: 'array',
+        items: {
+          anyOf: [{ type: 'string' }, { type: 'number' }],
+        },
+      },
+      pageSize: { type: 'number' },
+      cursor: { type: 'string' },
+      summary: { type: 'boolean' },
+      groupBy: { type: 'array', items: { type: 'string' } },
+    },
+    additionalProperties: false,
+  },
+  'QueryParamsSchema'
+)
