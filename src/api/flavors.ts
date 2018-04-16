@@ -74,7 +74,7 @@ export const flavorsAPI = (client: Client) => {
      * @returns {Promise<Object>} Success message.
      */
     updateTags: (params: UpdateTagsRequest) =>
-      client.request('/update-flavor-tags', params),
+      client.request('/update-flavor-tags', params, 'UpdateTagsSchema'),
 
     /**
      * Query a list of flavors matching the specified query.

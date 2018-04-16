@@ -21,6 +21,14 @@ describe('Schemas', () => {
       })
     })
 
+    it('rejects tag updates with alias', () => {
+      return client.accounts.updateTags({alias: 'foo', tags: {foo: 'bar'}})
+      .then(() => assert(false, 'should not accept `alias` field'))
+      .catch(err => {
+        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+      })
+    })
+
     it('rejects creation with keys', () => {
       return client.accounts.create({ keys: [1,2,3] })
       .then(() => assert(false, 'should not accept `keys` field'))
@@ -39,6 +47,14 @@ describe('Schemas', () => {
       })
     })
 
+    it('rejects tag updates with alias', () => {
+      return client.flavors.updateTags({alias: 'foo', tags: {foo: 'bar'}})
+      .then(() => assert(false, 'should not accept `alias` field'))
+      .catch(err => {
+        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+      })
+    })
+    
     it('rejects creation with keys', () => {
       return client.flavors.create({ keys: [1,2,3] })
       .then(() => assert(false, 'should not accept `keys` field'))

@@ -35,3 +35,14 @@ ajv.addSchema(
   },
   'CreateAccountOrFlavorSchema'
 )
+
+ajv.addSchema(
+  {
+    properties: {
+      id: { type: 'string' },
+      tags: { type: 'object' },
+    },
+    additionalProperties: false,
+  },
+  'UpdateTagsSchema'
+)
