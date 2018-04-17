@@ -211,7 +211,10 @@ export class Connection {
 
     if (this.agent) {
       req.agent = this.agent
+    } else {
+      req.agent = new Agent()
     }
+    req.agent.keepAlive = true
 
     let resp: Response
 
