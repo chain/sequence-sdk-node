@@ -1,5 +1,9 @@
 # Sequence Node SDK changelog
 
+## 1.5.1 (20180417)
+
+* Enable `keepAlive` on the HTTP agent
+
 ## 1.5.0 (20180316)
 
 For full details on the 1.5 release and how to migrate your code,
@@ -13,9 +17,8 @@ For full details on the 1.5 release and how to migrate your code,
 * Added support for camel-case identifiers in filter queries. Identifiers in
   query strings are now consistent with identifiers in Node source code.
   Snake-case names in query strings are deprecated.
-* Changed method `all` to return a standard async iterator.
-  The previous callback-based interface still works
-  but is deprecated.
+* Changed method `all` to return a standard async iterator. The previous
+  callback-based interface still works but is deprecated.
 
 ## 1.4.0 (20180308)
 
