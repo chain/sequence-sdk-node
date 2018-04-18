@@ -5,6 +5,7 @@ import * as uuid from 'uuid'
 
 // some ugly business to get the right types for fetch while still polyfilling
 const fetch: typeof window.fetch = require('fetch-ponyfill')().fetch
+const version: string = require('../package.json').version
 import { readFileSync } from 'fs'
 import { Agent } from 'https'
 import { errors } from './errors'
@@ -168,27 +169,26 @@ export class Connection {
     // processing.
     const snakeBody = snakeize(requestBody) // Ssssssssssss
 
+    headers = Object.assign(
+      {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      headers
+    )
+
+    // Node-only, User-Agent not allowed to be overriden in web browsers
+    if (typeof window === 'undefined') {
+      headers = Object.assign(
+        { 'User-Agent': 'sequence-sdk-node/' + version },
+        headers
+      )
+    }
+
     // TypeScript's DOM-based RequestInfo "type" doesn't have an "agent" prop
     const req: any = {
       method: 'POST',
-      headers: Object.assign(
-        {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-
-          // TODO(jeffomatic): The Fetch API has inconsistent behavior between
-          // browser implementations and polyfills.
-          //
-          // - For Edge: we can't use the browser's fetch API because it doesn't
-          // always returns a WWW-Authenticate challenge to 401s.
-          // - For Safari/Chrome: using fetch-ponyfill (the polyfill) causes
-          // console warnings if the user agent string is provided.
-          //
-          // For now, let's not send the UA string.
-          // 'User-Agent': 'chain-sdk-js/0.0'
-        },
-        headers
-      ),
+      headers,
       body: JSON.stringify(snakeBody),
     }
 
