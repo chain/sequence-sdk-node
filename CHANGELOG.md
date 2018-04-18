@@ -1,5 +1,9 @@
 # Sequence Node SDK changelog
 
+## 2.0.0-rc.3 (201804??)
+
+* Enable `keepAlive` on the HTTP agent.
+
 ## 2.0.0-rc.2 (20180416)
 
 * Omit deprecated attributes returned from the API from all response objects.
@@ -9,6 +13,10 @@
 
 * Removed assets, balances, contracts, and all other deprecated code.
 * Added `Stats#ledgerType`.
+
+## 1.5.1 (20180417)
+
+* Enable `keepAlive` on the HTTP agent.
 
 ## 1.5.0 (20180316)
 

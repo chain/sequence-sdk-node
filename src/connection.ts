@@ -195,7 +195,11 @@ export class Connection {
     const cafile = process.env.SEQTLSCA
     if (cafile) {
       req.agent = new Agent({ ca: readFileSync(cafile) })
+    } else {
+      req.agent = new Agent()
     }
+
+    req.agent.keepAlive = true
 
     let resp: Response
 
