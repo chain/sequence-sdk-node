@@ -1,8 +1,11 @@
 # Sequence Node SDK changelog
 
-## 2.0.0-rc.3 (201804??)
+## 2.0.0 (20180418)
 
-* Enable `keepAlive` on the HTTP agent.
+* Enabled `keepAlive` on the HTTP agent.
+* Added copy of Apache 2.0 license to source.
+* Added `User-Agent` header when in a Node program,
+  is `sequence-sdk-node/#{VERSION}`.
 
 ## 2.0.0-rc.2 (20180416)
 
