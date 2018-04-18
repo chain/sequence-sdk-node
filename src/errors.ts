@@ -45,9 +45,11 @@ export class BaseError {
 
 export class ConnectivityError extends BaseError {
   public source: any
+  public requestId: string
 
-  constructor(sourceErr: any) {
-    super('Fetch error: ' + sourceErr.toString())
+  constructor(sourceErr: any, reqId: string) {
+    super('Request ID: ' + reqId + ', Fetch error: ' + sourceErr.toString())
+    this.requestId = reqId
     this.source = sourceErr
   }
 }

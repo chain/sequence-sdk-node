@@ -1,5 +1,10 @@
 # Sequence Node SDK changelog
 
+## 1.5.2 (20180417)
+
+* Generate unique request IDs for each API request to aid in debugging and
+  testing.
+
 ## 1.5.1 (20180417)
 
 * Enable `keepAlive` on the HTTP agent

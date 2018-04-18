@@ -60,7 +60,7 @@ describe('Errors', () => {
 
     describe('Other error types', () => {
       const errs = [
-        new sequence.errors.ConnectivityError(''),
+        new sequence.errors.ConnectivityError('', ''),
         new sequence.errors.NoRequestIdError(),
         new sequence.errors.JsonError(),
       ]
@@ -137,8 +137,11 @@ describe('Errors', () => {
     it('has no status code', () => {
       return expect(err.status).to.eq(undefined)
     })
-    it('has no request ID', () => {
-      return expect(err.requestId).to.eq(undefined)
+    it('has a request ID', () => {
+      return expect(err.requestId).to.not.eq(undefined)
+    })
+    it('has a request ID that is not an empty string', () => {
+      return expect(err.requestId).to.not.eq('')
     })
   })
 

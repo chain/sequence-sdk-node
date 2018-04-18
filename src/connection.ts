@@ -138,6 +138,8 @@ export class Connection {
       await this.refreshSession()
       return this.request(path, body, headers)
     }
+
+    const reqId = uuid.v4()
     return this.requestRaw(
       this.ledgerUrl + path,
       body,
@@ -146,7 +148,8 @@ export class Connection {
         'Discharge-Macaroon': this.sessTok.secret,
         'Idempotency-Key': uuid.v4(),
         'Name-Set': 'camel|snake',
-      })
+      }),
+      reqId
     )
   }
 
@@ -154,6 +157,7 @@ export class Connection {
     url: string,
     requestBody = {},
     headers = {},
+    reqId = '',
     previousStartTime?: number,
     attempt = 1
   ): Promise<ApiObject> {
@@ -161,6 +165,7 @@ export class Connection {
       requestBody = {}
     }
 
+    const attemptId = `${reqId}/${attempt}`
     const startTime = previousStartTime || Date.now()
 
     const retry = async (errIfTimeout: Error, timeout: number) => {
@@ -178,7 +183,14 @@ export class Connection {
       if (Date.now() - startTime > timeout) {
         throw errIfTimeout
       }
-      return this.requestRaw(url, requestBody, headers, startTime, attempt + 1)
+      return this.requestRaw(
+        url,
+        requestBody,
+        headers,
+        reqId,
+        startTime,
+        attempt + 1
+      )
     }
 
     // Convert camelcased request body field names to use snakecase for API
@@ -192,6 +204,7 @@ export class Connection {
         {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          Id: attemptId,
 
           // TODO(jeffomatic): The Fetch API has inconsistent behavior between
           // browser implementations and polyfills.
@@ -222,7 +235,7 @@ export class Connection {
       resp = await fetch(url, req)
     } catch (err) {
       return retry(
-        new errors.ConnectivityError(err),
+        new errors.ConnectivityError(err, attemptId),
         this.retryConnectionTimeoutMs
       )
     }
