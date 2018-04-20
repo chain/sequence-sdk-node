@@ -68,7 +68,7 @@ describe('Account', () => {
           // ID intentionally omitted
           tags: { x: 1 },
         } as any)
-      ).to.be.rejectedWith('SEQ051')
+      ).to.be.rejectedWith('SEQ008')
     })
   })
 
