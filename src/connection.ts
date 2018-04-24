@@ -110,7 +110,7 @@ export class Connection {
    *
    * @param {String} ledgerName   Ledger alias or ID.
    * @param {String} credential   Sequence credential for API access.
-   * @param {String} agent        https.Agent used to provide TLS config.
+   * @param {https.Agent} agent   https agent for optional TLS/network config.
    * @returns {Client}
    */
   constructor(ledgerName: string, credential?: string, agent?: Agent) {
