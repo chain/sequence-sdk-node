@@ -91,6 +91,7 @@ export class Connection {
   public retryMaxDelayMs = 20000
   public baseUrl: string
   public credential?: string
+  public agent?: Agent
   public ledgerName: string
   public ledgerUrl: string
 
@@ -99,13 +100,15 @@ export class Connection {
    *
    * @param {String} ledgerName   Ledger name.
    * @param {String} credential   Sequence credential for API access.
+   * @param {https.Agent} agent   https agent for optional TLS/network config.
    * @returns {Client}
    */
-  constructor(ledgerName: string, credential?: string) {
+  constructor(ledgerName: string, credential?: string, agent?: Agent) {
     const host = process.env.SEQADDR || 'api.seq.com'
     this.baseUrl = 'https://' + host
     this.ledgerName = ledgerName
     this.credential = credential
+    this.agent = agent
   }
 
   /**
@@ -192,14 +195,16 @@ export class Connection {
       body: JSON.stringify(snakeBody),
     }
 
-    const cafile = process.env.SEQTLSCA
-    if (cafile) {
-      req.agent = new Agent({ ca: readFileSync(cafile) })
+    if (this.agent) {
+      req.agent = this.agent
     } else {
-      req.agent = new Agent()
+      req.agent = new Agent({ keepAlive: true })
     }
 
-    req.agent.keepAlive = true
+    const cafile = process.env.SEQTLSCA
+    if (cafile) {
+      req.agent.options.ca = readFileSync(cafile)
+    }
 
     let resp: Response
 

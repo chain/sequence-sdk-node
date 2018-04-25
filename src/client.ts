@@ -85,6 +85,7 @@ export class Client {
    * @param {Object} opts - Plain JS object containing configuration options.
    * @param {String} opts.ledgerName - Ledger name.
    * @param {String} opts.credential - API credential secret.
+   * @param {https.Agent} [opts.agent] - optional, passed to Connection class.
    * @returns {Client}
    */
   constructor(
