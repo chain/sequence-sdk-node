@@ -10,6 +10,8 @@ import { readFileSync } from 'fs'
 import { Agent } from 'https'
 import { errors } from './errors'
 
+const crypto = require('crypto')
+
 const userJsonAttributes = [
   'account_tags',
   'action_tags',
@@ -127,7 +129,7 @@ export class Connection {
       await this.getLedgerUrl()
     }
 
-    const reqId = uuid.v4()
+    const reqId = crypto.randomBytes(10).toString('hex')
     return this.requestRaw(
       this.ledgerUrl + path,
       body,
