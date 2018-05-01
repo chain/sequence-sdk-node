@@ -1,11 +1,17 @@
 # Sequence Node SDK changelog
 
+## 2.0.1 (20180501)
+
+* Generate unique request IDs in the client for easier debugging support
+* Restore the ability to set a custom HTTPS agent for specific network
+  configuration.
+
 ## 2.0.0 (20180418)
 
 * Enabled `keepAlive` on the HTTP agent.
 * Added copy of Apache 2.0 license to source.
-* Added `User-Agent` header when in a Node program,
-  is `sequence-sdk-node/#{VERSION}`.
+* Added `User-Agent` header when in a Node program, is
+  `sequence-sdk-node/#{VERSION}`.
 
 ## 2.0.0-rc.2 (20180416)
 
