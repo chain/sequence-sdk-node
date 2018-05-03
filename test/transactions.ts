@@ -9,6 +9,7 @@ import * as uuid from 'uuid'
 chai.use(chaiAsPromised)
 const expect = chai.expect
 
+import { BigNumber } from 'bignumber.js'
 import { testHelpers } from './testHelpers'
 
 const {
@@ -72,6 +73,38 @@ describe('Transaction', () => {
         .all())
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'issue')
+    })
+
+    it('handles large numbers', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const amount = '9223372036854775807'
+
+      const tx = await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: new BigNumber(amount),
+          destinationAccountId: alice.id,
+        })
+      })
+
+      assert.equal(amount, tx.actions[0].amount.toString())
+    })
+
+    it('throws an error at the amount boundary', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const amount = '9223372036854775808'
+
+      expect(
+        client.transactions.transact(builder => {
+          builder.issue({
+            flavorId: gold.id,
+            amount: new BigNumber(amount),
+            destinationAccountId: alice.id,
+          })
+        })
+      ).to.be.rejectedWith('SEQ706')
     })
   })
 

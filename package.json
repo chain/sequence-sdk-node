@@ -24,6 +24,7 @@
     "ajv": "^6.4.0",
     "btoa": "^1.1.2",
     "fetch-ponyfill": "^3.0.2",
+    "json-bigint": "^0.2.3",
     "uuid": "~3.0.0"
   },
   "devDependencies": {

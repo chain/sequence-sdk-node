@@ -3,14 +3,15 @@
 // use the ponyfill for unsupported browsers.
 import * as uuid from 'uuid'
 
-// some ugly business to get the right types for fetch while still polyfilling
-const fetch: typeof window.fetch = require('fetch-ponyfill')().fetch
-const version: string = require('../package.json').version
 import { readFileSync } from 'fs'
 import { Agent } from 'https'
 import { errors } from './errors'
 
 const crypto = require('crypto')
+// some ugly business to get the right types for fetch while still polyfilling
+const fetch: typeof window.fetch = require('fetch-ponyfill')().fetch
+const JSONbig = require('json-bigint')
+const version: string = require('../package.json').version
 
 const userJsonAttributes = [
   'account_tags',
@@ -207,7 +208,7 @@ export class Connection {
     const req: any = {
       method: 'POST',
       headers,
-      body: JSON.stringify(snakeBody),
+      body: JSONbig.stringify(snakeBody),
     }
 
     if (this.agent) {
@@ -246,7 +247,8 @@ export class Connection {
 
     let body
     try {
-      body = await resp.json()
+      const text = await resp.text()
+      body = JSONbig.parse(text)
       body = filterLegacyData(body)
     } catch {
       throw new errors.JsonError(resp)

@@ -72,7 +72,9 @@ ajv.addSchema(
   {
     properties: {
       actionTags: { type: 'object' },
-      amount: { type: 'number' },
+      amount: {
+        anyOf: [{ type: 'number' }, { type: 'object' }],
+      },
       destinationAccountId: { type: 'string' },
       filter: { type: 'string' },
       filterParams: { type: 'array' },
@@ -89,7 +91,9 @@ ajv.addSchema(
   {
     properties: {
       actionTags: { type: 'object' },
-      amount: { type: 'number' },
+      amount: {
+        anyOf: [{ type: 'number' }, { type: 'object' }],
+      },
       destinationAccountId: { type: 'string' },
       flavorId: { type: 'string' },
       tokenTags: { type: 'object' },
@@ -103,7 +107,9 @@ ajv.addSchema(
   {
     properties: {
       actionTags: { type: 'object' },
-      amount: { type: 'number' },
+      amount: {
+        anyOf: [{ type: 'number' }, { type: 'object' }],
+      },
       filter: { type: 'string' },
       filterParams: { type: 'array' },
       flavorId: { type: 'string' },
