@@ -96,7 +96,7 @@ describe('Transaction', () => {
       const alice = await createAccount('alice')
       const amount = '9223372036854775808'
 
-      expect(
+      return expect(
         client.transactions.transact(builder => {
           builder.issue({
             flavorId: gold.id,
@@ -105,6 +105,22 @@ describe('Transaction', () => {
           })
         })
       ).to.be.rejectedWith('SEQ706')
+    })
+
+    it('throws an error when losing precision', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const amount = 9999999999999999
+
+      return expect(
+        client.transactions.transact(builder => {
+          builder.issue({
+            flavorId: gold.id,
+            amount,
+            destinationAccountId: alice.id,
+          })
+        })
+      ).to.be.rejectedWith('should be <= 9007199254740991')
     })
   })
 

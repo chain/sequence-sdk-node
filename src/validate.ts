@@ -73,7 +73,14 @@ ajv.addSchema(
     properties: {
       actionTags: { type: 'object' },
       amount: {
-        anyOf: [{ type: 'number' }, { type: 'object' }],
+        anyOf: [
+          {
+            type: 'number',
+            minimum: 0,
+            maximum: Number.MAX_SAFE_INTEGER,
+          },
+          { type: 'object' },
+        ],
       },
       destinationAccountId: { type: 'string' },
       filter: { type: 'string' },
@@ -92,7 +99,14 @@ ajv.addSchema(
     properties: {
       actionTags: { type: 'object' },
       amount: {
-        anyOf: [{ type: 'number' }, { type: 'object' }],
+        anyOf: [
+          {
+            type: 'number',
+            minimum: 0,
+            maximum: Number.MAX_SAFE_INTEGER,
+          },
+          { type: 'object' },
+        ],
       },
       destinationAccountId: { type: 'string' },
       flavorId: { type: 'string' },
@@ -108,7 +122,14 @@ ajv.addSchema(
     properties: {
       actionTags: { type: 'object' },
       amount: {
-        anyOf: [{ type: 'number' }, { type: 'object' }],
+        anyOf: [
+          {
+            type: 'number',
+            minimum: 0,
+            maximum: Number.MAX_SAFE_INTEGER,
+          },
+          { type: 'object' },
+        ],
       },
       filter: { type: 'string' },
       filterParams: { type: 'array' },
