@@ -1,5 +1,11 @@
 # Sequence Node SDK changelog
 
+## 2.0.2 (20180507)
+
+* Deserialize numbers greater than 15 digits into `BigNumber` objects.
+  This fixes a bug where numbers that large were losing precision.
+* Throw validation error for numbers larger than the max limit.
+
 ## 2.0.1 (20180501)
 
 * Generate unique request IDs in the client for easier debugging support
