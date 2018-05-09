@@ -24,6 +24,9 @@ import { validate } from '../validate'
  *
  * @property {Action[]} actions
  * List of specified actions for a transaction.
+ *
+ * @property {Object} tags
+ * User-specified key-value data embedded in the transaction.
  */
 
 /**
@@ -32,6 +35,7 @@ import { validate } from '../validate'
  */
 export class TransactionBuilder {
   public actions: any[]
+  public transactionTags: any
 
   /**
    * constructor - return a new object used for constructing a transaction.
@@ -43,6 +47,13 @@ export class TransactionBuilder {
      * @type Array
      */
     this.actions = []
+
+    /**
+     * Key-value tags for the transaction.
+     * @name TransactionBuilder#transactionTags
+     * @type Object
+     */
+    this.transactionTags = null
   }
 
   /**

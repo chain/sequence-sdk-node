@@ -75,6 +75,40 @@ describe('Transaction', () => {
       assert.deepEqual(items[0].type, 'issue')
     })
 
+    it('adds transaction tags', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const tags = { foo: uuid.v4().toString() }
+
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 100,
+          destinationAccountId: alice.id,
+        })
+        builder.transactionTags = tags
+      })
+
+      const txs = await testHelpers.asyncAll(client.transactions
+        .list({
+          filter: `actions(snapshot.transactionTags.foo=$1)`,
+          filterParams: [tags.foo],
+        })
+        .all())
+
+      expect(txs.length).to.equal(1)
+
+      txs.forEach(tx => {
+        assert.deepEqual(tx.tags, tags)
+        const action = tx.actions[0]
+        assert.deepEqual(action.snapshot.transactionTags, tags)
+        assert.deepEqual(action.type, 'issue')
+        assert.deepEqual(action.amount, 100)
+        assert.deepEqual(action.flavorId, gold.id)
+        assert.deepEqual(action.destinationAccountId, alice.id)
+      })
+    })
+
     it('handles large numbers', async () => {
       const gold = await createFlavor('gold')
       const alice = await createAccount('alice')
