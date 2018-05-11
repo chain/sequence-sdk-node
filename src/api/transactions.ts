@@ -61,7 +61,7 @@ export class TransactionBuilder {
    *
    * @param {Object} params - Action parameters.
    * @param {String} params.flavorId - ID of flavor to be issued.
-   * @param {Number|BigNumber} params.amount - Amount of the flavor to be issued.
+   * @param {Number|String|BigNumber} params.amount - Amount of the flavor to be issued.
    * @param {String} params.destinationAccountId - Account ID specifying the
    *   account controlling the flavor.
    * @param {Object} params.tokenTags - Tags to add to the receiving tokens.
@@ -69,12 +69,13 @@ export class TransactionBuilder {
    */
   public issue(params: {
     flavorId: string
-    amount: number | BigNumber
+    amount: number | string | BigNumber
     destinationAccountId: string
     tokenTags?: object
     actionTags?: object
   }) {
     validate(params, 'IssueActionSchema')
+    params.amount = new BigNumber(params.amount)
     this.actions.push(Object.assign({}, params, { type: 'issue' }))
   }
 
@@ -85,7 +86,7 @@ export class TransactionBuilder {
    * @param {String} params.sourceAccountId - Account ID specifying the account
    *   controlling the flavor.
    * @param {String} params.flavorId - ID of flavor to be retired.
-   * @param {Number|BigNumber} params.amount - Amount of the flavor to be retired.
+   * @param {Number|String|BigNumber} params.amount - Amount of the flavor to be retired.
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
    * @param {Array<String|Number>} params.filterParams - Parameter values for filter string (if needed).
    * @param {Object} params.actionTags - Tags to add to the action.
@@ -93,12 +94,13 @@ export class TransactionBuilder {
   public retire(params: {
     sourceAccountId: string
     flavorId: string
-    amount: number | BigNumber
+    amount: number | string | BigNumber
     filter?: string
     filterParams?: object
     actionTags?: object
   }) {
     validate(params, 'RetireActionSchema')
+    params.amount = new BigNumber(params.amount)
     this.actions.push(Object.assign({}, params, { type: 'retire' }))
   }
 
@@ -110,7 +112,7 @@ export class TransactionBuilder {
    * @param {String} params.sourceAccountId - Account ID specifying the account
    *   controlling the flavor.
    * @param {String} params.flavorId - ID of flavor to be transferred.
-   * @param {Number|BigNumber} params.amount - Amount of the flavor to be transferred.
+   * @param {Number|String|BigNumber} params.amount - Amount of the flavor to be transferred.
    * @param {String} params.destinationAccountId - Account ID specifying the
    *   account controlling the flavor.
    * @param {String} params.filter - Token filter string, see {@link https://dashboard.seq.com/docs/filters}.
@@ -121,7 +123,7 @@ export class TransactionBuilder {
   public transfer(params: {
     sourceAccountId: string
     flavorId: string
-    amount: number | BigNumber
+    amount: number | string | BigNumber
     destinationAccountId: string
     filter?: string
     filterParams?: object
@@ -129,6 +131,7 @@ export class TransactionBuilder {
     actionTags?: object
   }) {
     validate(params, 'TransferActionSchema')
+    params.amount = new BigNumber(params.amount)
     this.actions.push(Object.assign({}, params, { type: 'transfer' }))
   }
 }

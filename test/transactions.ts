@@ -125,6 +125,22 @@ describe('Transaction', () => {
       assert.equal(amount, tx.actions[0].amount.toString())
     })
 
+    it('handles large numbers as strings', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const amount = '9223372036854775807'
+
+      const tx = await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: amount,
+          destinationAccountId: alice.id,
+        })
+      })
+
+      assert.equal(amount, tx.actions[0].amount.toString())
+    })
+
     it('throws an error at the amount boundary', async () => {
       const gold = await createFlavor('gold')
       const alice = await createAccount('alice')
