@@ -1,0 +1,1 @@
+tests: dropdb --if-exists ledger && $CHAIN/sdk/node/bin/tests
