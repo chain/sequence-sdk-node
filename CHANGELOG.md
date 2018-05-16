@@ -1,5 +1,10 @@
 # Sequence Node SDK changelog
 
+## 2.1.0 (20180516)
+
+* Added transaction tags.
+  [More info](https://dashboard.seq.com/docs/transactions)
+
 ## 2.0.2 (20180507)
 
 * Deserialize numbers greater than 15 digits into `BigNumber` objects.
