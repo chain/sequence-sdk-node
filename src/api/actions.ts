@@ -1,7 +1,7 @@
 import { Client } from '../client'
 import { Page } from '../page'
 import { Query } from '../query'
-import { QueryParams } from '../types'
+import { QueryParams, UpdateTagsRequest } from '../types'
 
 export interface ActionSumParams extends QueryParams {
   groupBy?: string[]
@@ -140,5 +140,14 @@ export const actionsAPI = (client: Client) => {
      */
     sum: (params?: ActionSumParams) =>
       new Query(client, 'actions', 'sum', params),
+
+    /**
+     * Update action tags.
+     *
+     * @param {module:ActionsApi~updateTagsRequest} params - Parameters for updating action tags.
+     * @returns {Promise<Object>} Success message.
+     */
+    updateTags: (params: UpdateTagsRequest) =>
+      client.request('/update-action-tags', params, 'UpdateTagsSchema'),
   }
 }
