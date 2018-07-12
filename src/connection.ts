@@ -92,7 +92,6 @@ export class Connection {
   public retryConnectionTimeoutMs = 5000 // 5 seconds
   public retryBaseDelayMs = 40
   public retryMaxDelayMs = 20000
-  public baseUrl: string
   public credential?: string
   public agent?: Agent
   public ledgerName: string
@@ -107,8 +106,6 @@ export class Connection {
    * @returns {Client}
    */
   constructor(ledgerName: string, credential?: string, agent?: Agent) {
-    const host = process.env.SEQADDR || 'api.seq.com'
-    this.baseUrl = 'https://' + host
     this.ledgerName = ledgerName
     this.credential = credential
     this.agent = agent
@@ -278,13 +275,15 @@ export class Connection {
   }
 
   public async getLedgerUrl() {
-    const url = this.baseUrl + '/hello'
+    const helloUrl =
+      'https://' + (process.env.SEQADDR || 'api.seq.com') + '/hello'
     const body = (await this.requestRaw(
-      url,
+      helloUrl,
       {},
       { Credential: this.credential }
     )) as any
-    this.ledgerUrl = this.baseUrl + '/' + body.teamName + '/' + this.ledgerName
+    this.ledgerUrl =
+      'https://' + body.addr + '/' + body.teamName + '/' + this.ledgerName
   }
 }
 

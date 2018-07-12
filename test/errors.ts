@@ -59,7 +59,7 @@ describe('Errors', () => {
 
     describe('Other error types', () => {
       const errs = [
-        new sequence.errors.ConnectivityError('' , ''),
+        new sequence.errors.ConnectivityError('', ''),
         new sequence.errors.NoRequestIdError(),
         new sequence.errors.JsonError(),
       ]
@@ -117,16 +117,22 @@ describe('Errors', () => {
 
   describe('no server', () => {
     const unauthedClient = testHelpers.constructClient()
-    unauthedClient.connection.baseUrl = 'http://localhost:12345'
+    const oldAddr = process.env.SEQADDR
 
     let err: any
 
     before(async () => {
+      process.env.SEQADDR = 'localhost:12345'
+
       try {
         await unauthedClient.accounts.list().page()
       } catch (e) {
         err = e
       }
+    })
+
+    after(async () => {
+      process.env.SEQADDR = oldAddr
     })
 
     it('is a ConnectivityError', () => {
