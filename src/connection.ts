@@ -95,7 +95,8 @@ export class Connection {
   public credential?: string
   public agent?: Agent
   public ledgerName: string
-  public ledgerUrl: string
+  private ledgerUrl: string
+  private deadline: number
 
   /**
    * constructor - create a new Sequence client object.
@@ -125,6 +126,14 @@ export class Connection {
   ): Promise<ApiObject> {
     if (!this.ledgerUrl) {
       await this.getLedgerUrl()
+    }
+
+    if (!this.deadline || Date.now() >= this.deadline) {
+      // Extend the deadline long enough to get a fresh addr.
+      this.deadline = Date.now() + this.retryTimeoutMs
+
+      // Do not block current request. Update deadline, ledgerUrl in background.
+      this.getLedgerUrl()
     }
 
     const reqId = crypto.randomBytes(10).toString('hex')
@@ -275,13 +284,13 @@ export class Connection {
   }
 
   public async getLedgerUrl() {
-    const helloUrl =
-      'https://' + (process.env.SEQADDR || 'api.seq.com') + '/hello'
     const body = (await this.requestRaw(
-      helloUrl,
+      'https://' + (process.env.SEQADDR || 'api.seq.com') + '/hello',
       {},
       { Credential: this.credential }
     )) as any
+
+    this.deadline = Date.now() + body.addrTtlSeconds * 1000
     this.ledgerUrl =
       'https://' + body.addr + '/' + body.teamName + '/' + this.ledgerName
   }
