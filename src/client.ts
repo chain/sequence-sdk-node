@@ -3,6 +3,7 @@ import { actionsAPI, ActionSumParams } from './api/actions'
 import { devUtilsAPI } from './api/devUtils'
 import { Feed, FeedCreateParameters, feedsAPI } from './api/feeds'
 import { flavorsAPI } from './api/flavors'
+import { indexesAPI } from './api/indexes'
 import { keysAPI } from './api/keys'
 import { statsAPI } from './api/stats'
 import { tokensAPI, TokenSumParams } from './api/tokens'
@@ -51,6 +52,12 @@ export class Client {
    * @type {module:FlavorsApi}
    */
   public flavors = flavorsAPI(this)
+
+  /**
+   * API actions for indexes.
+   * @type {module:IndexesApi}
+   */
+  public indexes = indexesAPI(this)
 
   /**
    * API actions for keys.

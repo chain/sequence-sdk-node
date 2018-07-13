@@ -27,6 +27,20 @@ ajv.addSchema(
     type: 'object',
     properties: {
       id: { type: 'string' },
+      type: { type: 'string' },
+      filter: { type: 'string' },
+      groupBy: { type: 'array', items: { type: 'string' } },
+    },
+    additionalProperties: false,
+  },
+  'CreateIndexSchema'
+)
+
+ajv.addSchema(
+  {
+    type: 'object',
+    properties: {
+      id: { type: 'string' },
       keyIds: { type: 'array', items: { type: 'string' } },
       quorum: { type: 'number' },
       tags: { type: 'object' },
