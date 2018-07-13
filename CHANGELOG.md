@@ -1,5 +1,11 @@
 # Sequence Node SDK changelog
 
+## 2.2.0 (????????)
+
+* Added `Indexes` for precomputing complex queries.
+* Added preliminary support for dynamically addressing
+  different API hosts when needed.
+
 ## 2.1.0 (20180516)
 
 * Added transaction tags.
