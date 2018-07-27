@@ -13,10 +13,13 @@ import { Query } from '../query'
  * Unique identifier of the index.
  *
  * @property {String} type
- * Type of index, "action" or "token".
+ * Type of index, currently must be "token".
+ *
+ * @property {String} method
+ * Method for index, currently must be "sum".
  *
  * @property {String[]} groupBy
- * Token/Action object fields to group by.
+ * Token object fields to group by.
  *
  * @property {String} filter
  * The query filter used to select matching items.
@@ -35,7 +38,8 @@ export const indexesAPI = (client: Client) => {
      * Create a new index.
      *
      * @param {Object} params - Parameters for index creation.
-     * @param {String} params.type - Type of index, "action" or "token".
+     * @param {String} params.type - Type of index, currently only "token".
+     * @param {String} params.method - Method for index, currently only "sum".
      * @param {String} params.filter - filter string, see {@link https://dashboard.seq.com/docs/filters}.
      * @param {Array<String>} params.groupBy - object fields to group by.
      * @param {String} params.id - Unique identifier. Will be auto-generated if
@@ -44,6 +48,7 @@ export const indexesAPI = (client: Client) => {
      */
     create: (params: {
       type: string
+      method: string
       id?: string
       filter: string
       groupBy?: string[]

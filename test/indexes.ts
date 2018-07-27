@@ -14,25 +14,46 @@ import { testHelpers } from './testHelpers'
 const { client, createAccount, createFlavor } = testHelpers
 
 describe('Index', () => {
-  it('creates an action index', async () => {
-    const uuidCreated = uuid.v4()
-
-    const index = await client.indexes.create({
-      type: 'action',
-      id: `actionIndex-${uuidCreated}`,
-      filter: `tags.type-${uuidCreated}=$1`,
-    })
-    expect(index.type).to.equal('action')
+  it('rejects bad types', () => {
+    return expect(client.indexes.create({
+      type: 'not-a-type',
+      method: 'sum',
+      filter: `tags.type=$1`,
+    }) as any).to.be.rejectedWith(
+      'SEQ611'
+    )
   })
 
-  it('creates a token index', async () => {
+  it('rejects bad methods', () => {
+    return expect(client.indexes.create({
+      type: 'token',
+      method: 'not-a-method',
+      filter: `tags.type=$1`,
+    }) as any).to.be.rejectedWith(
+      'SEQ611'
+    )
+  })
+
+  it('creates an index', async () => {
     const uuidCreated = uuid.v4()
 
     const index = await client.indexes.create({
       type: 'token',
+      method: 'sum',
       id: `tokenIndex-${uuidCreated}`,
       filter: `tags.type-${uuidCreated}=$1`,
       groupBy: ["flavorId"],
+    })
+    expect(index.type).to.equal('token')
+  })
+
+  it('creates an index without id', async () => {
+    const uuidCreated = uuid.v4()
+
+    const index = await client.indexes.create({
+      type: 'token',
+      method: 'sum',
+      filter: `tags.type-${uuidCreated}=$1`,
     })
     expect(index.type).to.equal('token')
   })
@@ -41,7 +62,8 @@ describe('Index', () => {
     const uuidDeleted = uuid.v4()
 
     const index = await client.indexes.create({
-      type: 'action',
+      type: 'token',
+      method: 'sum',
       id: `index-${uuidDeleted}`,
       filter: `tags.type-${uuidDeleted}=$1`,
     })
@@ -55,21 +77,23 @@ describe('Index', () => {
   it('lists indexes', async () => {
     const uuidListed = uuid.v4()
 
-    const actionIndex = await client.indexes.create({
-      type: 'action',
-      id: `actionIndex-${uuidListed}`,
-      filter: `tags.type-${uuidListed}=$1`,
-    })
-
-    const tokenIndex = await client.indexes.create({
+    const tokenIndex1 = await client.indexes.create({
       type: 'token',
-      id: `tokenIndex-${uuidListed}`,
+      method: 'sum',
       filter: `tags.type-${uuidListed}=$1`,
       groupBy: ["flavorId"],
     })
 
+    const tokenIndex2 = await client.indexes.create({
+      type: 'token',
+      method: 'sum',
+      filter: `tags.type-${uuidListed}=$1`,
+      groupBy: ["flavorId", "accountId"],
+    })
+
+
     const items = await testHelpers.asyncAll(client.indexes.list().all())
     const ids = items.map(item => item.id)
-    expect(ids).to.include(actionIndex.id, tokenIndex.id)
+    expect(ids).to.include(tokenIndex1.id, tokenIndex2.id)
   })
 })

@@ -28,6 +28,7 @@ ajv.addSchema(
     properties: {
       id: { type: 'string' },
       type: { type: 'string' },
+      method: { type: 'string' },
       filter: { type: 'string' },
       groupBy: { type: 'array', items: { type: 'string' } },
     },
