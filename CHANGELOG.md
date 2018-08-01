@@ -2,7 +2,6 @@
 
 ## 2.2.0 (????????)
 
-* Added `Indexes` for precomputing complex queries.
 * Added preliminary support for dynamically addressing
   different API hosts when needed.
 
