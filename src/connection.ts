@@ -286,7 +286,9 @@ export class Connection {
   public async getLedgerUrl() {
     const body = (await this.requestRaw(
       'https://' + (process.env.SEQADDR || 'api.seq.com') + '/hello',
-      {},
+      {
+        ledger_name: this.ledgerName,
+      },
       { Credential: this.credential }
     )) as any
 
