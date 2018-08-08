@@ -1,6 +1,6 @@
 {
   "name": "sequence-sdk",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "SDK for Sequence",
   "homepage": "https://github.com/sequence/sequence-sdk-node",
   "main": "dist/index.js",
