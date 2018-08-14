@@ -116,7 +116,6 @@ describe('Errors', () => {
   })
 
   describe('no server', () => {
-    const unauthedClient = testHelpers.constructClient()
     const oldAddr = process.env.SEQADDR
 
     let err: any
@@ -125,6 +124,7 @@ describe('Errors', () => {
       process.env.SEQADDR = 'localhost:12345'
 
       try {
+        const unauthedClient = testHelpers.constructClient()
         await unauthedClient.accounts.list().page()
       } catch (e) {
         err = e

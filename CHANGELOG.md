@@ -1,9 +1,14 @@
 # Sequence Node SDK changelog
 
+## 2.2.1 (??????)
+
+* Added support for setting a custom API URL when run outside
+  of a Node process.
+
 ## 2.2.0 (20180808)
 
 * Added `updateTags` to `Action`.
-* Added support for dynamically addressing different API hosts for 
+* Added support for dynamically addressing different API hosts for
   individual ledgers. Internal APIs only, works automatically.
 
 ## 2.1.0 (20180516)
