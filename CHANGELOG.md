@@ -1,6 +1,6 @@
 # Sequence Node SDK changelog
 
-## 2.2.1 (??????)
+## 2.2.1 (20180814)
 
 * Added support for setting a custom API URL when run outside
   of a Node process.
