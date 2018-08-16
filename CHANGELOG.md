@@ -1,6 +1,6 @@
 # Sequence Node SDK changelog
 
-## 2.2.1 (??????)
+## 2.2.2 (20180816)
 
 * Add support for setting custom HTTP request headers at
   the client level.
