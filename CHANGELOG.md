@@ -1,5 +1,10 @@
 # Sequence Node SDK changelog
 
+## 2.2.1 (??????)
+
+* Add support for setting custom HTTP request headers at
+  the client level.
+
 ## 2.2.1 (20180814)
 
 * Added support for setting a custom API URL when run outside

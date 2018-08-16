@@ -95,6 +95,7 @@ export class Connection {
   public credential?: string
   public baseUrl: string
   public agent?: Agent
+  public customHeaders: { [key: string]: string }
   public ledgerName: string
   private ledgerUrl: string
   private deadline: number
@@ -112,6 +113,7 @@ export class Connection {
     this.ledgerName = ledgerName
     this.credential = credential
     this.agent = agent
+    this.customHeaders = {}
   }
 
   /**
@@ -142,11 +144,16 @@ export class Connection {
     return this.requestRaw(
       this.ledgerUrl + path,
       body,
-      Object.assign({}, headers, {
-        Credential: this.credential,
-        'Idempotency-Key': uuid.v4(),
-        'Name-Set': 'camel',
-      }),
+      Object.assign(
+        {},
+        headers,
+        {
+          Credential: this.credential,
+          'Idempotency-Key': uuid.v4(),
+          'Name-Set': 'camel',
+        },
+        this.customHeaders
+      ),
       reqId
     )
   }
@@ -263,7 +270,9 @@ export class Connection {
     }
     if (resp.status / 100 === 2) {
       Object.defineProperty(body, '_rawResponse', { writable: true })
+      Object.defineProperty(body, '_rawRequest', { writable: true })
       body._rawResponse = resp
+      body._rawRequest = req
       return camelize(body)
     }
 

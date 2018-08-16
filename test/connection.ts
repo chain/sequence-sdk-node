@@ -26,4 +26,12 @@ describe('Connection', () => {
 
     expect((client.connection as any).deadline).to.equal(initial)
   })
+
+  it('passes additional headers to the api when set', async () => {
+    const client = testHelpers.constructClient()
+    client.connection.customHeaders = {Foo: 'bar'}
+
+    const resp = await client.stats.get()
+    expect(resp._rawRequest.headers.Foo).to.equal('bar')
+  })
 })
