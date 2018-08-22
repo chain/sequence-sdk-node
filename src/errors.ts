@@ -1,5 +1,3 @@
-import { ErrorObject } from 'ajv'
-
 export interface Body {
   detail: string
   message: string
@@ -66,23 +64,7 @@ export class NoRequestIdError extends BaseError {
   }
 }
 
-export class InvalidParametersError extends BaseError {
-  public errObject: ErrorObject
-
-  constructor(errObject: ErrorObject) {
-    if (errObject.keyword === 'additionalProperties') {
-      super(
-        errObject.message +
-          " '." +
-          (errObject.params as any).additionalProperty +
-          "'"
-      )
-    } else {
-      super(errObject.message || 'invalid parameters')
-    }
-    this.errObject = errObject
-  }
-}
+export class InvalidParametersError extends BaseError {}
 
 export class JsonError extends BaseError {
   public response: any

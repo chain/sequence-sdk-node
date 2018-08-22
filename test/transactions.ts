@@ -125,6 +125,22 @@ describe('Transaction', () => {
       assert.equal(amount, tx.actions[0].amount.toString())
     })
 
+    it('handles max safe integer as a number', async () => {
+      const gold = await createFlavor('gold')
+      const alice = await createAccount('alice')
+      const amount = 9007199254740991
+
+      const tx = await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount,
+          destinationAccountId: alice.id,
+        })
+      })
+
+      assert.equal(amount, tx.actions[0].amount)
+    })
+
     it('handles large numbers as strings', async () => {
       const gold = await createFlavor('gold')
       const alice = await createAccount('alice')
@@ -133,7 +149,7 @@ describe('Transaction', () => {
       const tx = await client.transactions.transact(builder => {
         builder.issue({
           flavorId: gold.id,
-          amount: amount,
+          amount,
           destinationAccountId: alice.id,
         })
       })
@@ -170,7 +186,7 @@ describe('Transaction', () => {
             destinationAccountId: alice.id,
           })
         })
-      ).to.be.rejectedWith('should be <= 9007199254740991')
+      ).to.be.rejectedWith('should be >= 0 and <= 9007199254740991')
     })
   })
 

@@ -17,7 +17,7 @@ describe('Schemas', () => {
       return client.accounts.create({ alias: 'foo' })
       .then(() => assert(false, 'should not accept `alias` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
 
@@ -25,7 +25,7 @@ describe('Schemas', () => {
       return client.accounts.updateTags({alias: 'foo', tags: {foo: 'bar'}})
       .then(() => assert(false, 'should not accept `alias` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
 
@@ -33,7 +33,7 @@ describe('Schemas', () => {
       return client.accounts.create({ keys: [1,2,3] })
       .then(() => assert(false, 'should not accept `keys` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.keys'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
   })
@@ -43,7 +43,7 @@ describe('Schemas', () => {
       return client.flavors.create({ alias: 'foo' })
       .then(() => assert(false, 'should not accept `alias` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
 
@@ -51,15 +51,15 @@ describe('Schemas', () => {
       return client.flavors.updateTags({alias: 'foo', tags: {foo: 'bar'}})
       .then(() => assert(false, 'should not accept `alias` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
-    
+
     it('rejects creation with keys', () => {
       return client.flavors.create({ keys: [1,2,3] })
       .then(() => assert(false, 'should not accept `keys` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.keys'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
   })
@@ -69,7 +69,7 @@ describe('Schemas', () => {
       return client.keys.create({ alias: 'foo' })
       .then(() => assert(false, 'should not accept `alias` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.alias'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
   })
@@ -79,7 +79,7 @@ describe('Schemas', () => {
       try {
         client.accounts.list({ after: 'foo' }).all()
       } catch (err) {
-        expect(err.message).to.contain("should NOT have additional properties '.after'")
+        expect(err.message).to.contain("object had unexpected properties")
         return
       }
       assert(false, 'should not accept `after` field')
@@ -89,7 +89,7 @@ describe('Schemas', () => {
       try {
         client.actions.sum({ sumBy: ['foo'] }).all()
       } catch (err) {
-        expect(err.message).to.contain("should NOT have additional properties '.sumBy'")
+        expect(err.message).to.contain("object had unexpected properties")
         return
       }
       assert(false, 'should not accept `sumBy` field')
@@ -99,7 +99,7 @@ describe('Schemas', () => {
       try {
         client.transactions.list({ startTime: 0 }).all()
       } catch (err) {
-        expect(err.message).to.contain("should NOT have additional properties '.startTime'")
+        expect(err.message).to.contain("object had unexpected properties")
         return
       }
       assert(false, 'should not accept `startTime` field')
@@ -116,7 +116,7 @@ describe('Schemas', () => {
         })
       }).then(() => assert(false, 'should not accept `destinationAccountAlias` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.destinationAccountAlias'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
 
@@ -129,10 +129,10 @@ describe('Schemas', () => {
         })
       }).then(() => assert(false, 'should not accept `destinationAccountAlias` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.destinationAccountAlias'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
-    
+
     it('rejects retire with sourceAccountAlias', () => {
       return client.transactions.transact(builder => {
         builder.retire({
@@ -142,7 +142,7 @@ describe('Schemas', () => {
         })
       }).then(() => assert(false, 'should not accept `sourceAccountAlias` field'))
       .catch(err => {
-        expect(err.message).to.contain("should NOT have additional properties '.sourceAccountAlias'")
+        expect(err.message).to.contain("object had unexpected properties")
       })
     })
   })
