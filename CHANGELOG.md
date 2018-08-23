@@ -1,5 +1,10 @@
 # Sequence Node SDK changelog
 
+## 2.2.3 (20180823)
+
+* Switch object validation libraries from `ajv` to `yup` to
+  support browsers with a strict Content Security Policy.
+
 ## 2.2.2 (20180816)
 
 * Add support for setting custom HTTP request headers at
