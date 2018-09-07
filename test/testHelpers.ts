@@ -26,12 +26,13 @@ const balanceByFlavorId = async (balances: any) => {
   return res
 }
 
-const createAccount = async (account = 'account') => {
+const createAccount = async (account = 'account', tags = {}) => {
   const key = await client.keys.create()
   return await client.accounts.create({
     id: `${account}-${uuid.v4()}`,
     keyIds: [key.id],
     quorum: 1,
+    tags,
   })
 }
 

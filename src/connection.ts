@@ -338,7 +338,8 @@ const filterLegacyData = (input: any) => {
       if (
         typeof value === 'object' &&
         value != null &&
-        !userJsonAttributes.includes(key)
+        !userJsonAttributes.includes(key) &&
+        key !== 'snapshot'
       ) {
         input[key] = filterLegacyData(value)
       }

@@ -12,12 +12,7 @@ const expect = chai.expect
 import { BigNumber } from 'bignumber.js'
 import { testHelpers } from './testHelpers'
 
-const {
-  balanceByFlavorId,
-  client,
-  createAccount,
-  createFlavor,
-} = testHelpers
+const { balanceByFlavorId, client, createAccount, createFlavor } = testHelpers
 
 describe('Transaction', () => {
   describe('Issuance', () => {
@@ -68,9 +63,11 @@ describe('Transaction', () => {
         })
       })
 
-      const items = await testHelpers.asyncAll(client.actions
-        .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
-        .all())
+      const items = await testHelpers.asyncAll(
+        client.actions
+          .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
+          .all()
+      )
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'issue')
     })
@@ -89,12 +86,14 @@ describe('Transaction', () => {
         builder.transactionTags = tags
       })
 
-      const txs = await testHelpers.asyncAll(client.transactions
-        .list({
-          filter: `actions(snapshot.transactionTags.foo=$1)`,
-          filterParams: [tags.foo],
-        })
-        .all())
+      const txs = await testHelpers.asyncAll(
+        client.transactions
+          .list({
+            filter: `actions(snapshot.transactionTags.foo=$1)`,
+            filterParams: [tags.foo],
+          })
+          .all()
+      )
 
       expect(txs.length).to.equal(1)
 
@@ -107,6 +106,39 @@ describe('Transaction', () => {
         assert.deepEqual(action.flavorId, gold.id)
         assert.deepEqual(action.destinationAccountId, alice.id)
       })
+    })
+
+    it('adds account tags', async () => {
+      const gold = await createFlavor('gold')
+      const tags = { foo: 'bar' }
+      const alice = await createAccount('alice', tags)
+
+      await client.transactions.transact(builder => {
+        builder.issue({
+          flavorId: gold.id,
+          amount: 100,
+          destinationAccountId: alice.id,
+        })
+        builder.retire({
+          flavorId: gold.id,
+          amount: 100,
+          sourceAccountId: alice.id,
+        })
+      })
+
+      const txs = await testHelpers.asyncAll(
+        client.transactions
+          .list({
+            filter: `actions(flavorId=$1)`,
+            filterParams: [gold.id],
+          })
+          .all()
+      )
+
+      expect(txs.length).to.equal(1)
+      const tx = txs[0]
+      assert.deepEqual(tx.actions[0].snapshot.destinationAccountTags, tags)
+      assert.deepEqual(tx.actions[1].snapshot.sourceAccountTags, tags)
     })
 
     it('handles large numbers', async () => {
@@ -239,9 +271,11 @@ describe('Transaction', () => {
         })
       })
 
-      const items = await testHelpers.asyncAll(client.actions
-        .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
-        .all())
+      const items = await testHelpers.asyncAll(
+        client.actions
+          .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
+          .all()
+      )
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'transfer')
     })
@@ -292,9 +326,11 @@ describe('Transaction', () => {
         })
       })
 
-      const items = await testHelpers.asyncAll(client.actions
-        .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
-        .all())
+      const items = await testHelpers.asyncAll(
+        client.actions
+          .list({ filter: `tags.actingAccount='${actionTags.actingAccount}'` })
+          .all()
+      )
       assert.deepEqual(items[0].tags, actionTags)
       assert.deepEqual(items[0].type, 'retire')
     })
@@ -377,12 +413,14 @@ describe('Transaction', () => {
         })
       })
 
-      const items = await testHelpers.asyncAll(client.transactions
-        .list({
-          filter: 'actions(destinationAccountId=$1)',
-          filterParams: [alice.id],
-        })
-        .all())
+      const items = await testHelpers.asyncAll(
+        client.transactions
+          .list({
+            filter: 'actions(destinationAccountId=$1)',
+            filterParams: [alice.id],
+          })
+          .all()
+      )
 
       expect(items.length).to.equal(1)
     })
@@ -398,12 +436,15 @@ describe('Transaction', () => {
         })
       })
 
-      return expect(testHelpers.asyncAll(client.transactions
-        .list({
-          filter: 'actions(destination_account_id=$1)',
-          filterParams: [alice.id],
-        })
-        .all())
+      return expect(
+        testHelpers.asyncAll(
+          client.transactions
+            .list({
+              filter: 'actions(destination_account_id=$1)',
+              filterParams: [alice.id],
+            })
+            .all()
+        )
       ).to.be.rejectedWith('SEQ602')
     })
   })
