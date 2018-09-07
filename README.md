@@ -13,7 +13,7 @@ To install, add the `sequence-sdk` NPM module to your `package.json`:
 ```json
 {
   "dependencies": {
-    "sequence-sdk": "~2.2.3"
+    "sequence-sdk": "~2.2.4"
   }
 }
 ```

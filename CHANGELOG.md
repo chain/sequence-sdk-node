@@ -1,5 +1,10 @@
 # Sequence Node SDK changelog
 
+## 2.2.4 (20180907)
+
+* Fix bug that filtered out `snapshot.sourceAccountTags` and
+  `snapshot.destinationAccountTags` in actions.
+
 ## 2.2.3 (20180823)
 
 * Switch object validation libraries from `ajv` to `yup` to
