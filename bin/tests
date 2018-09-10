@@ -1,6 +1,6 @@
 #!/bin/bash
 set -xeo pipefail
 createdb-if-not-exists ledger
-cd $CHAIN/sdk/node
+cd $I10R/sdk/node
 npm install --scripts-prepend-node-path
 with-ledgerd npm test --scripts-prepend-node-path
