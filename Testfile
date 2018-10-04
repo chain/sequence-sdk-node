@@ -1,1 +1,0 @@
-tests: dropdb --if-exists ledger && $I10R/sdk/node/bin/tests
