@@ -1,0 +1,9 @@
+src
+test
+doc
+packed
+DO_NOT_COMMIT*
+*.tgz
+testCompiled
+README.internal.md
+examples

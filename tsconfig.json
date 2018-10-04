@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "target": "es5",
+    "lib": ["es2015", "es2016", "dom", "esnext"],
+    "types": ["node"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "declaration": true
+  },
+  "include": ["src/**/*"],
+  "_comment":
+    "NOTE: don't include `test/**/*` in 'include'; it will break the packaging of the SDK by changing the directory structure."
+}

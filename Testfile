@@ -1,0 +1,1 @@
+tests: dropdb --if-exists ledger && $I10R/sequence/sdk/node/bin/tests
