@@ -47,7 +47,7 @@ describe('Flavor', () => {
     it('with missing keys is rejected', () => {
       return expect(
         client.flavors.create({ id: 'flavor' } as any)
-      ).to.be.rejectedWith('SEQ202')
+      ).to.be.rejectedWith('SEQ052')
     })
   })
 

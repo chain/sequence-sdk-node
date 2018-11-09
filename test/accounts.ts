@@ -29,7 +29,7 @@ describe('Account', () => {
 
     it('with missing keys is rejected', () => {
       expect(client.accounts.create({ id: 'david' } as any)).to.be.rejectedWith(
-        'SEQ202'
+        'SEQ052'
       )
     })
   })
