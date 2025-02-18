@@ -1,0 +1,56 @@
+{
+  "name": "sequence-sdk",
+  "version": "2.2.4",
+  "description": "SDK for Sequence",
+  "homepage": "https://github.com/sequence/sequence-sdk-node",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "Chain Engineering",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=4.7"
+  },
+  "scripts": {
+    "develop": "npm run build -- --watch",
+    "docs": "tsc --outDir docDist --target es2015 && jsdoc -c jsdoc.conf.json ; rm -rf docDist",
+    "lint": "tslint \"src/**\"",
+    "format": "prettier --write src/*/*.ts && prettier --write src/*.ts",
+    "pretest": "npm run build",
+    "test": "mocha --require ./node_modules/ts-node/register \"test/*$MATCH*.{js,ts}\"",
+    "build": "tsc",
+    "prepublish": "npm run lint && npm run format && npm run build"
+  },
+  "dependencies": {
+    "btoa": "^1.1.2",
+    "fetch-ponyfill": "^3.0.2",
+    "json-bigint": "^0.2.3",
+    "uuid": "~3.0.0",
+    "yup": "0.24.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@types/chai": "^4.0.4",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/mocha": "^2.2.43",
+    "@types/node": "^8.0.46",
+    "@types/uuid": "^3.4.3",
+    "@types/yup": "^0.24.9",
+    "async": "^2.1.4",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "eslint": "^5.5.0",
+    "ink-docstrap": "^1.3.0",
+    "jsdoc": "^3.4.3",
+    "mocha": "^5.2.0",
+    "prettier": "^1.8.2",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.7.0",
+    "tslint-config-prettier": "^1.6.0",
+    "typescript": "^2.5.3"
+  },
+  "files": [
+    "dist"
+  ]
+}
